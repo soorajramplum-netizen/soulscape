@@ -465,94 +465,57 @@ input[type=range].vsl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;h
 
 <!-- ── POSTCARD SCREEN ── -->
 <div class="sc" id="spc">
-  <div style="max-width:500px;width:100%;padding-top:16px">
-
-    <!-- Mode selector -->
-    <div id="pc-mode-sel">
-      <div class="pc-ey">✉ Postcard</div>
-      <h2 class="pc-ttl">Send a place</h2>
-      <p class="pc-sub">Two ways to send someone somewhere beautiful.</p>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
-        <button class="bp" onclick="pcMode('share')" style="padding:16px;text-align:left;border-radius:12px;text-transform:none;letter-spacing:0;font-size:15px">
-          <div style="font-weight:700;margin-bottom:4px">📍 Share this place</div>
-          <div style="font-size:12px;opacity:.7;font-weight:400">Write a line and send where you are right now</div>
-        </button>
-        <button class="bw" onclick="pcMode('find')" style="padding:16px;text-align:left;border-radius:12px;text-transform:none;letter-spacing:0;font-size:15px">
-          <div style="font-weight:600;margin-bottom:4px">🔍 Find their place</div>
-          <div style="font-size:12px;opacity:.6;font-weight:400">Tell us about them — AI picks their perfect destination</div>
-        </button>
-        <button class="bw" onclick="goto('sd')" style="padding:13px;font-size:13px">← Back</button>
-      </div>
-    </div>
-
-    <!-- Mode A: Share current place -->
-    <div id="pc-share-form" style="display:none">
-      <div class="pc-ey">📍 Share this place</div>
-      <h2 class="pc-ttl" id="pc-share-title">Sending from here</h2>
-      <p class="pc-sub">Write something personal — AI will design the postcard.</p>
-      <label class="pc-lbl">To</label>
-      <input class="pc-in" id="pcs-to" placeholder="Their name…" maxlength="40">
-      <label class="pc-lbl">Your message</label>
-      <textarea class="pc-ta" id="pcs-msg" placeholder="Thinking of you. Found this place and it reminded me of you…" maxlength="200"></textarea>
-      <label class="pc-lbl">From (optional)</label>
-      <input class="pc-in" id="pcs-from" placeholder="Your name…" maxlength="40">
-      <div style="display:flex;gap:10px">
-        <button class="bp" onclick="makeSharePostcard()" style="flex:1;padding:15px">Create postcard →</button>
-        <button class="bw" onclick="pcMode(null)" style="width:auto;padding:15px 18px">← Back</button>
-      </div>
-    </div>
-
-    <!-- Mode B: Find their place -->
-    <div id="pc-find-form" style="display:none">
-      <div class="pc-ey">🔍 Find their place</div>
-      <h2 class="pc-ttl">Tell us about them</h2>
-      <p class="pc-sub">AI finds their perfect place and writes the message.</p>
-      <label class="pc-lbl">Who are you sending to?</label>
-      <input class="pc-in" id="pcf-to" placeholder="Their name…" maxlength="40">
-      <label class="pc-lbl">What's going on with them?</label>
-      <textarea class="pc-ta" id="pcf-about" placeholder="They've been really stressed lately, or just had something wonderful happen…"></textarea>
-      <label class="pc-lbl">From (optional)</label>
-      <input class="pc-in" id="pcf-from" placeholder="Your name…" maxlength="40">
+  <div style="max-width:480px;width:100%">
+    <div id="pc-form">
+      <div class="pc-ey">✉ Send a Place</div>
+      <h2 class="pc-ttl">Send someone<br>a world away</h2>
+      <p class="pc-sub">Tell us about them. AI finds their perfect place and writes something personal.</p>
+      <label class="pc-lbl">Who are you sending this to?</label>
+      <input class="pc-in" id="pc-to" placeholder="Their name…" maxlength="40">
+      <label class="pc-lbl">What's going on with them right now?</label>
+      <textarea class="pc-ta" id="pc-about" placeholder="They've been really stressed at work lately, or just went through a breakup, or had something wonderful happen…"></textarea>
+      <label class="pc-lbl">Your name (optional)</label>
+      <input class="pc-in" id="pc-from" placeholder="From…" maxlength="40">
       <div style="display:flex;gap:10px">
         <button class="bp" onclick="createPostcard()" style="flex:1;padding:15px">Find their place →</button>
-        <button class="bw" onclick="pcMode(null)" style="width:auto;padding:15px 18px">← Back</button>
+        <button class="bw" onclick="goto('sd')" style="width:auto;padding:15px 18px">← Back</button>
       </div>
     </div>
-
-    <!-- Thinking -->
     <div class="pc-think" id="pc-think">
       <div class="think-dots"><span></span><span></span><span></span></div>
-      <p class="pc-think-txt" id="pc-think-txt">Creating your postcard…</p>
+      <p class="pc-think-txt" id="pc-think-txt">Finding their perfect place…</p>
     </div>
-
-    <!-- Postcard canvas preview -->
-    <div id="pc-prev" style="display:none">
-      <div style="display:flex;justify-content:center;margin-bottom:14px">
-        <canvas id="pc-canvas" width="340" height="220" style="border-radius:4px;box-shadow:0 12px 40px rgba(0,0,0,.6);max-width:100%"></canvas>
+    <div class="pc-prev" id="pc-prev">
+      <div class="pc-card">
+        <div class="pc-card-top"><div class="pc-em" id="pc-em">🌊</div></div>
+        <div class="pc-card-body">
+          <div class="pc-card-cat" id="pc-cat"></div>
+          <div class="pc-card-name" id="pc-name"></div>
+          <p class="pc-card-msg" id="pc-msg"></p>
+          <div class="pc-card-from" id="pc-frm"></div>
+        </div>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="bp" onclick="sharePostcard()" style="flex:1;padding:14px">Share postcard →</button>
-        <button class="sbtn" onclick="copyLink()" id="copy-btn" style="padding:14px 18px">📋 Copy link</button>
+      <button class="bp" onclick="sharePostcard()" style="padding:15px">Share this postcard →</button>
+      <div style="display:flex;gap:10px">
+        <button class="sbtn" onclick="copyLink()" id="copy-btn" style="flex:1;justify-content:center">📋 Copy link</button>
+        <button class="bw" onclick="resetPC()" style="flex:1;padding:12px">← Make another</button>
       </div>
-      <button class="bw" onclick="resetPC()" style="width:100%;padding:12px;margin-top:10px">← Make another</button>
     </div>
-
   </div>
 </div>
-
 
 <!-- ── PASSPORT SCREEN ── -->
 <div class="sc" id="spsp">
   <div style="max-width:480px;width:100%">
-    <div class="psp-ey">✈ SoulScape</div>
-    <h2 class="psp-ttl">Your Passport</h2>
-    <p class="psp-sub">Every destination you've visited, stamped and recorded.</p>
+    <div class="psp-ey">Your Journey</div>
+    <h2 class="psp-ttl">Emotional Passport</h2>
+    <p class="psp-sub">Every place you visited, and what you were feeling when you got there.</p>
     <div class="psp-stats">
       <div class="psp-stat"><div class="psp-sn" id="psp-n">0</div><div class="psp-sl">Places</div></div>
       <div class="psp-stat"><div class="psp-sn" id="psp-w">0</div><div class="psp-sl">Worlds</div></div>
       <div class="psp-stat"><div class="psp-sn" id="psp-s">0</div><div class="psp-sl">Sessions</div></div>
     </div>
-    <div class="psp-cvs-wrap"><canvas id="psp-cvs" width="320" height="460"></canvas></div>
+    <div class="psp-cvs-wrap"><canvas id="psp-cvs" width="300" height="400"></canvas></div>
     <div class="psp-acts">
       <button class="bp" onclick="dlPassport()" style="padding:13px 24px">⬇ Download</button>
       <button class="sbtn" onclick="sharePassport()">Share 🔗</button>
@@ -842,12 +805,10 @@ async function fetchVid(dest, idx) {
     city:'city skyline night timelapse',arctic:'aurora northern lights night sky'
   };
   const qs = [dest.q1, dest.q2, CATS[dest.cat].fb, fallbackQ[dest.cat]];
-  // Hash dest name for consistent but unique page/pick per destination
-  const nameHash = dest.name.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
-  const page = (nameHash % 4) + 1;   // pages 1-4
-  const pick = (nameHash + idx) % 10; // picks 0-9
+  const page = (Math.floor(idx/4) % 3) + 1;
+  const pick = idx % 8;
   for (const q of qs) {
-    const k = dest.name+'|'+q+'|'+page;
+    const k = q+'|'+page;
     if (VC[k]) return VC[k];
     try {
       const r = await fetch(
@@ -1201,9 +1162,7 @@ async function loadVideoBackground(D, gi, sentence){
       currentClips=[res.url, res.url, res.url];
       playClip(0,''); // sentence already shown above
       // Load a second clip quietly and swap in
-      // Pass a modified dest so cache key differs for clip 2
-    const destClip2 = Object.assign({}, D, {name: D.name + '_c2'});
-    fetchVid(destClip2, gi+19).then(r2=>{if(r2)currentClips[1]=r2.url;});
+      fetchVid(D, gi+19).then(r2=>{if(r2)currentClips[1]=r2.url;});
     }
   }catch(e){
     document.getElementById('vl').classList.add('done');
@@ -1276,286 +1235,48 @@ function closeLetter(){document.getElementById('letter-ov').classList.remove('sh
 /* ════════════════════════════════════════════════
    POSTCARD
 ════════════════════════════════════════════════ */
-let pcDest=null,pcMsg='',pcToName='',pcFromName='';
-
-/* ── POSTCARD MODE SWITCHER ── */
-function pcMode(mode){
-  ['pc-mode-sel','pc-share-form','pc-find-form'].forEach(id=>{
-    document.getElementById(id).style.display='none';
-  });
-  if(!mode){
-    document.getElementById('pc-mode-sel').style.display='block';
-    return;
-  }
-  if(mode==='share'){
-    // Pre-fill with current destination
-    const D=activeDests[curIdx];
-    if(D){
-      document.getElementById('pc-share-title').textContent='From '+D.name;
-      pcDest=D;
-    }
-    document.getElementById('pc-share-form').style.display='block';
-  }
-  if(mode==='find'){
-    document.getElementById('pc-find-form').style.display='block';
-  }
-}
-
-function openPostcard(){
-  goto('spc');
-  resetPC();
-}
-
-function resetPC(){
-  ['pc-mode-sel','pc-share-form','pc-find-form','pc-think','pc-prev'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.style.display='none';
-  });
-  document.getElementById('pc-think').classList.remove('show');
-  document.getElementById('pc-prev').style.display='none';
-  document.getElementById('pc-mode-sel').style.display='block';
-  ['pcs-to','pcs-msg','pcs-from','pcf-to','pcf-about','pcf-from'].forEach(id=>{
-    const el=document.getElementById(id);if(el)el.value='';
-  });
-  pcDest=null;pcMsg='';pcToName='';pcFromName='';
-}
-
-/* ── MODE A: Share current place ── */
-function makeSharePostcard(){
-  const D=activeDests[curIdx];if(!D)return;
-  const msg=document.getElementById('pcs-msg').value.trim();
-  const toName=document.getElementById('pcs-to').value.trim();
-  const fromName=document.getElementById('pcs-from').value.trim();
-  if(!msg){alert('Write a message first.');return;}
-  pcDest=D;
-  pcMsg=msg;
-  pcToName=toName;
-  pcFromName=fromName;
-  document.getElementById('pc-share-form').style.display='none';
-  drawPostcardCanvas(D,msg,toName,fromName);
-  document.getElementById('pc-prev').style.display='block';
-}
-
-/* ── MODE B: Find their place with AI ── */
+let pcDest=null,pcMsg='';
 const PC_MSGS=['Finding their perfect place…','Reading what you shared…','Choosing their world…','Writing something personal…'];
 
+function openPostcard(){goto('spc');resetPC();}
+function resetPC(){document.getElementById('pc-form').style.display='block';document.getElementById('pc-think').classList.remove('show');document.getElementById('pc-prev').classList.remove('show');document.getElementById('pc-to').value='';document.getElementById('pc-about').value='';document.getElementById('pc-from').value='';pcDest=null;pcMsg='';}
+
 async function createPostcard(){
-  const about=document.getElementById('pcf-about').value.trim();
-  const toName=document.getElementById('pcf-to').value.trim();
-  const fromName=document.getElementById('pcf-from').value.trim();
+  const about=document.getElementById('pc-about').value.trim();
+  const toName=document.getElementById('pc-to').value.trim();
+  const fromName=document.getElementById('pc-from').value.trim();
   if(!about||about.length<10){alert('Tell us a little more about them first.');return;}
-  document.getElementById('pc-find-form').style.display='none';
-  const th=document.getElementById('pc-think');th.classList.add('show');th.style.display='flex';
+  document.getElementById('pc-form').style.display='none';
+  const th=document.getElementById('pc-think');th.classList.add('show');
   const ttxt=document.getElementById('pc-think-txt');ttxt.textContent=PC_MSGS[0];
   let mi=0;const tmr=setInterval(()=>{mi=(mi+1)%PC_MSGS.length;ttxt.textContent=PC_MSGS[mi];},900);
-
-  // 5-second timeout fallback
-  const timeout=setTimeout(()=>{
-    clearInterval(tmr);
-    pcDest=fallbackMatch(about);
-    pcMsg='Found a place I think you need right now. Thinking of you.';
-    pcToName=toName;pcFromName=fromName;
-    th.classList.remove('show');th.style.display='none';
-    drawPostcardCanvas(pcDest,pcMsg,toName,fromName);
-    document.getElementById('pc-prev').style.display='block';
-  },5000);
-
   try{
     const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+GK,{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({contents:[{parts:[{text:GPROMPT+'
-
-Choose a place for someone ELSE.
-Friend shared: "'+about+'"
-Write a postcard message from '+(fromName||'a friend')+' to '+(toName||'them')+' — warm, specific, 2-3 sentences.
-Return JSON: {"need":[n1,n2,n3,n4,n5,n6],"sentence":"postcard message","emotion":"one word"}'}]}],generationConfig:{temperature:0.75,maxOutputTokens:300}})
+      body:JSON.stringify({contents:[{parts:[{text:GPROMPT+'\n\nYou are choosing a place for someone ELSE.\nWhat their friend shared: "'+about+'"\nAlso write a postcard message from '+(fromName||'a friend')+' to '+(toName||'them')+' — warm, specific, 2-3 sentences. Not generic.\nReturn JSON: {"need":[n1,n2,n3,n4,n5,n6],"sentence":"the postcard message","emotion":"one word"}'}]}],generationConfig:{temperature:0.75,maxOutputTokens:300}})
     });
-    clearTimeout(timeout);clearInterval(tmr);
+    clearInterval(tmr);
     const data=await r.json();
     const text=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
     const jm=text.match(/\{[\s\S]*\}/);
     if(!jm)throw new Error('no json');
     const parsed=JSON.parse(jm[0]);
     pcDest=matchDest(parsed.need);
-    pcMsg=parsed.sentence||'Found a place I think you need right now.';
+    pcMsg=parsed.sentence||'Found a place I think you need right now. Thinking of you.';
   }catch(e){
-    clearTimeout(timeout);clearInterval(tmr);
+    clearInterval(tmr);
     pcDest=fallbackMatch(about);
     pcMsg='Found a place I think you need right now. Thinking of you.';
   }
-  pcToName=toName;pcFromName=fromName;
-  th.classList.remove('show');th.style.display='none';
+  th.classList.remove('show');
   if(pcDest){
-    drawPostcardCanvas(pcDest,pcMsg,toName,fromName);
-    document.getElementById('pc-prev').style.display='block';
+    document.getElementById('pc-em').textContent=CATS[pcDest.cat].emoji;
+    document.getElementById('pc-cat').textContent=CATS[pcDest.cat].name.toUpperCase();
+    document.getElementById('pc-name').textContent=pcDest.name;
+    document.getElementById('pc-msg').textContent=pcMsg;
+    document.getElementById('pc-frm').textContent=fromName?'— '+fromName:'';
+    document.getElementById('pc-prev').classList.add('show');
   }
-}
-
-/* ── CANVAS POSTCARD — looks like the reference image ── */
-function drawPostcardCanvas(dest, msg, toName, fromName){
-  const cvs=document.getElementById('pc-canvas');if(!cvs)return;
-  const ctx=cvs.getContext('2d');
-  const W=340,H=220;
-  cvs.width=W;cvs.height=H;
-
-  // ── BACKGROUND — aged cream paper ──
-  const bg=ctx.createLinearGradient(0,0,W,H);
-  bg.addColorStop(0,'#F5F0E8');
-  bg.addColorStop(0.5,'#EDE8DC');
-  bg.addColorStop(1,'#E8E0D0');
-  ctx.fillStyle=bg;
-  ctx.fillRect(0,0,W,H);
-
-  // Paper grain texture
-  for(let i=0;i<1200;i++){
-    const x=Math.random()*W,y=Math.random()*H;
-    ctx.fillStyle='rgba(0,0,0,'+(Math.random()*0.03)+')';
-    ctx.fillRect(x,y,1,1);
-  }
-
-  // Slightly aged edges
-  const vignette=ctx.createRadialGradient(W/2,H/2,W*0.3,W/2,H/2,W*0.8);
-  vignette.addColorStop(0,'rgba(0,0,0,0)');
-  vignette.addColorStop(1,'rgba(0,0,0,0.08)');
-  ctx.fillStyle=vignette;ctx.fillRect(0,0,W,H);
-
-  // ── SERRATED BORDER ──
-  ctx.strokeStyle='rgba(0,0,0,0.15)';ctx.lineWidth=1;ctx.setLineDash([4,3]);
-  ctx.strokeRect(6,6,W-12,H-12);
-  ctx.setLineDash([]);
-
-  // ── LEFT SIDE — correspondence area ──
-  const mid=W*0.52;
-
-  // "POSTCARD" header
-  ctx.fillStyle='rgba(30,20,10,0.85)';
-  ctx.font='700 22px Playfair Display, Cormorant Garamond, serif';
-  ctx.textAlign='left';
-  ctx.fillText('POSTCARD',18,36);
-
-  // Italic subtitle — destination name
-  ctx.fillStyle='rgba(30,20,10,0.5)';
-  ctx.font='italic 600 12px Cormorant Garamond, serif';
-  ctx.fillText('from '+dest.name,18,50);
-
-  // TO line
-  ctx.fillStyle='rgba(30,20,10,0.6)';
-  ctx.font='italic 11px Cormorant Garamond, serif';
-  ctx.fillText('To:',18,78);
-  ctx.strokeStyle='rgba(0,0,0,0.2)';ctx.lineWidth=0.5;
-  ctx.beginPath();ctx.moveTo(38,79);ctx.lineTo(mid-14,79);ctx.stroke();
-  if(toName){
-    ctx.fillStyle='rgba(30,20,10,0.75)';
-    ctx.font='500 11px DM Sans, sans-serif';
-    ctx.fillText(toName,40,77);
-  }
-
-  // Message lines
-  ctx.fillStyle='rgba(30,20,10,0.6)';
-  ctx.font='italic 11px Cormorant Garamond, serif';
-  ctx.fillText('Message:',18,100);
-  // Word-wrap the message
-  const words=msg.split(' ');
-  let line='';const lines=[];const maxW=mid-28;
-  ctx.font='italic 10px Cormorant Garamond, serif';
-  words.forEach(w=>{
-    const test=line+(line?' ':'')+w;
-    if(ctx.measureText(test).width>maxW&&line){lines.push(line);line=w;}
-    else line=test;
-  });
-  if(line)lines.push(line);
-  ctx.fillStyle='rgba(30,20,10,0.8)';
-  ctx.font='italic 11px Cormorant Garamond, serif';
-  lines.slice(0,4).forEach((l,i)=>{
-    if(i<3||lines.length<=4) ctx.fillText(l,18,115+i*14);
-    else ctx.fillText(l+'…',18,115+i*14);
-  });
-
-  // FROM
-  if(fromName){
-    ctx.fillStyle='rgba(30,20,10,0.65)';
-    ctx.font='italic 11px Cormorant Garamond, serif';
-    ctx.fillText('— '+fromName,18,H-20);
-  }
-
-  // DATE
-  ctx.fillStyle='rgba(30,20,10,0.4)';
-  ctx.font='10px DM Sans, sans-serif';
-  ctx.textAlign='left';
-  ctx.fillText(new Date().toLocaleDateString('en',{day:'numeric',month:'long',year:'numeric'}),18,H-8);
-
-  // ── VERTICAL DIVIDER ──
-  ctx.strokeStyle='rgba(0,0,0,0.12)';ctx.lineWidth=0.5;ctx.setLineDash([]);
-  ctx.beginPath();ctx.moveTo(mid,14);ctx.lineTo(mid,H-14);ctx.stroke();
-
-  // ── RIGHT SIDE — stamp + photo area ──
-  const rx=mid+10;
-  const rw=W-mid-18;
-
-  // ── POSTAGE STAMP ──
-  const sx=W-60,sy=12,sw=44,sh=36;
-  // Stamp border — serrated effect
-  ctx.fillStyle='white';
-  ctx.fillRect(sx-2,sy-2,sw+4,sh+4);
-  ctx.fillStyle='rgba(0,0,0,0.1)';
-  ctx.fillRect(sx-2,sy-2,sw+4,sh+4);
-  // Stamp serration
-  ctx.fillStyle='#EDE8DC';
-  for(let x=sx-2;x<sx+sw+2;x+=4){
-    ctx.beginPath();ctx.arc(x+2,sy-2,2,0,Math.PI*2);ctx.fill();
-    ctx.beginPath();ctx.arc(x+2,sy+sh+2,2,0,Math.PI*2);ctx.fill();
-  }
-  for(let y=sy;y<sy+sh;y+=4){
-    ctx.beginPath();ctx.arc(sx-2,y+2,2,0,Math.PI*2);ctx.fill();
-    ctx.beginPath();ctx.arc(sx+sw+2,y+2,2,0,Math.PI*2);ctx.fill();
-  }
-  // Stamp fill
-  ctx.fillStyle=CATS[dest.cat].color+'33';
-  ctx.fillRect(sx,sy,sw,sh);
-  // Stamp emoji
-  ctx.font='18px serif';ctx.textAlign='center';
-  ctx.fillText(CATS[dest.cat].emoji,sx+sw/2,sy+sh/2+6);
-  // Stamp value
-  ctx.fillStyle='rgba(30,20,10,0.5)';
-  ctx.font='500 6px DM Sans, sans-serif';
-  ctx.fillText('SOULSCAPE',sx+sw/2,sy+sh-4);
-
-  // ── POSTMARK ──
-  const pmx=W-92,pmy=24;
-  ctx.strokeStyle='rgba(30,20,10,0.2)';ctx.lineWidth=0.8;
-  ctx.beginPath();ctx.arc(pmx,pmy,18,0,Math.PI*2);ctx.stroke();
-  ctx.beginPath();ctx.arc(pmx,pmy,12,0,Math.PI*2);ctx.stroke();
-  // Wavy postmark lines
-  for(let i=0;i<3;i++){
-    ctx.beginPath();
-    ctx.moveTo(pmx-26,pmy-8+i*8);
-    ctx.bezierCurveTo(pmx-20,pmy-12+i*8,pmx-14,pmy-4+i*8,pmx-8,pmy-8+i*8);
-    ctx.strokeStyle='rgba(30,20,10,0.15)';ctx.lineWidth=0.7;ctx.stroke();
-  }
-  ctx.fillStyle='rgba(30,20,10,0.25)';
-  ctx.font='700 7px DM Sans, sans-serif';ctx.textAlign='center';
-  ctx.fillText('ARRIVAL',pmx,pmy-3);
-  ctx.font='500 6px DM Sans, sans-serif';
-  ctx.fillText(new Date().getFullYear(),pmx,pmy+7);
-
-  // ── PLACE INFO ──
-  ctx.fillStyle='rgba(30,20,10,0.45)';
-  ctx.font='500 7px DM Sans, sans-serif';ctx.textAlign='left';
-  ctx.fillText(CATS[dest.cat].name.toUpperCase(),rx,76);
-
-  ctx.fillStyle='rgba(30,20,10,0.85)';
-  ctx.font='700 14px Cormorant Garamond, serif';
-  const nm=dest.name.length>18?dest.name.slice(0,16)+'…':dest.name;
-  ctx.fillText(nm,rx,92);
-
-  ctx.fillStyle='rgba(30,20,10,0.5)';
-  ctx.font='400 10px DM Sans, sans-serif';
-  ctx.fillText(dest.country,rx,104);
-
-  // ── SOULSCAPE FOOTER ──
-  ctx.fillStyle='rgba(30,20,10,0.3)';
-  ctx.font='italic 8px Cormorant Garamond, serif';
-  ctx.textAlign='right';
-  ctx.fillText('soulscape.app',W-14,H-8);
 }
 
 function buildPCURL(){
@@ -1571,7 +1292,6 @@ function copyLink(){
   const url=buildPCURL();const btn=document.getElementById('copy-btn');
   navigator.clipboard?.writeText(url).then(()=>{if(btn){btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent='📋 Copy link',2000);}});
 }
-
 
 function checkIncomingPostcard(){
   const p=new URLSearchParams(location.search);
@@ -1615,163 +1335,42 @@ function openPassport(){
 
 function drawPSP(places){
   const cvs=document.getElementById('psp-cvs');if(!cvs)return;
-  const ctx=cvs.getContext('2d'),W=320,H=460;
+  const ctx=cvs.getContext('2d'),W=300,H=400;
   cvs.width=W;cvs.height=H;
-
-  // ── PASSPORT COVER ──
-  // Dark forest green — classic passport colour
-  const coverGrad=ctx.createLinearGradient(0,0,W,H);
-  coverGrad.addColorStop(0,'#1B3A2D');
-  coverGrad.addColorStop(0.5,'#14291F');
-  coverGrad.addColorStop(1,'#0E1F17');
-  ctx.fillStyle=coverGrad;
-  ctx.fillRect(0,0,W,H);
-
-  // Leather texture — subtle noise pattern
-  for(let i=0;i<800;i++){
-    const x=Math.random()*W,y=Math.random()*H;
-    ctx.fillStyle='rgba(255,255,255,'+(Math.random()*0.025)+')';
-    ctx.fillRect(x,y,1,1);
-  }
-
-  // Gold border — outer
-  ctx.strokeStyle='rgba(212,175,55,0.6)';ctx.lineWidth=2;
-  ctx.strokeRect(8,8,W-16,H-16);
-  // Gold border — inner
-  ctx.strokeStyle='rgba(212,175,55,0.25)';ctx.lineWidth=0.5;
-  ctx.strokeRect(12,12,W-24,H-24);
-
-  // Corner ornaments
-  const corners=[[16,16],[W-16,16],[16,H-16],[W-16,H-16]];
-  corners.forEach(([cx,cy])=>{
-    ctx.strokeStyle='rgba(212,175,55,0.6)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);ctx.stroke();
-    ctx.beginPath();ctx.arc(cx,cy,2,0,Math.PI*2);
-    ctx.fillStyle='rgba(212,175,55,0.7)';ctx.fill();
+  const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#1A1030');bg.addColorStop(.5,'#0E1428');bg.addColorStop(1,'#14102A');
+  ctx.fillStyle=bg;if(ctx.roundRect)ctx.roundRect(0,0,W,H,14);else ctx.rect(0,0,W,H);ctx.fill();
+  ctx.strokeStyle='rgba(232,146,74,.4)';ctx.lineWidth=1;ctx.strokeRect(10,10,W-20,H-20);
+  ctx.strokeStyle='rgba(232,146,74,.12)';ctx.lineWidth=.5;ctx.strokeRect(14,14,W-28,H-28);
+  [[20,20],[W-20,20],[20,H-20],[W-20,H-20]].forEach(([cx,cy])=>{ctx.beginPath();ctx.arc(cx,cy,4,0,Math.PI*2);ctx.fillStyle='rgba(232,146,74,.5)';ctx.fill();});
+  ctx.fillStyle='rgba(232,146,74,.65)';ctx.font='600 8px DM Sans, sans-serif';ctx.textAlign='center';ctx.fillText('EMOTIONAL PASSPORT',W/2,44);
+  ctx.fillStyle='#F2EBE0';ctx.font='700 32px Cormorant Garamond, serif';ctx.fillText('SoulScape',W/2,80);
+  ctx.beginPath();ctx.moveTo(35,92);ctx.lineTo(W-35,92);ctx.strokeStyle='rgba(232,146,74,.22)';ctx.lineWidth=.7;ctx.stroke();
+  const total=places.length,cats=new Set(places.map(x=>x.cat)).size;
+  [{v:total,l:'PLACES',x:75},{v:cats,l:'WORLDS',x:W/2},{v:Math.max(1,Math.round(total/3)),l:'JOURNEYS',x:W-75}].forEach(s=>{
+    ctx.fillStyle='#E8924A';ctx.font='700 24px Cormorant Garamond, serif';ctx.textAlign='center';ctx.fillText(s.v,s.x,118);
+    ctx.fillStyle='rgba(154,136,120,.75)';ctx.font='500 7px DM Sans, sans-serif';ctx.fillText(s.l,s.x,130);
   });
-
-  // ── EMBLEM (globe circle) ──
-  const ex=W/2,ey=110,er=38;
-  // Globe circle
-  ctx.beginPath();ctx.arc(ex,ey,er,0,Math.PI*2);
-  ctx.strokeStyle='rgba(212,175,55,0.55)';ctx.lineWidth=1.5;ctx.stroke();
-  // Globe inner lines
-  ctx.strokeStyle='rgba(212,175,55,0.2)';ctx.lineWidth=0.7;
-  // Latitude lines
-  [-18,0,18].forEach(offset=>{
-    ctx.beginPath();ctx.arc(ex,ey+offset,Math.sqrt(er*er-offset*offset),0,Math.PI*2);
-    ctx.stroke();
-  });
-  // Vertical line through globe
-  ctx.beginPath();ctx.moveTo(ex,ey-er);ctx.lineTo(ex,ey+er);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(ex-er,ey);ctx.lineTo(ex+er,ey);ctx.stroke();
-
-  // ── COUNTRY / APP NAME ──
-  ctx.fillStyle='rgba(212,175,55,0.5)';
-  ctx.font='500 8px DM Sans, sans-serif';
-  ctx.letterSpacing='4px';
-  ctx.textAlign='center';
-  ctx.fillText('SOULSCAPE',W/2,164);
-
-  // ── MAIN TITLE ──
-  ctx.fillStyle='rgba(240,235,215,0.92)';
-  ctx.font='600 22px Cormorant Garamond, serif';
-  ctx.fillText('TRAVEL PASSPORT',W/2,192);
-
-  // Thin gold line separator
-  ctx.beginPath();ctx.moveTo(W/2-60,202);ctx.lineTo(W/2+60,202);
-  ctx.strokeStyle='rgba(212,175,55,0.35)';ctx.lineWidth=0.7;ctx.stroke();
-
-  // ── STATS — like passport data page ──
-  const total=places.length;
-  const cats=new Set(places.map(x=>x.cat)).size;
-  const sessions=Math.max(1,Math.round(total/3));
-
-  // Field labels
-  ctx.fillStyle='rgba(212,175,55,0.55)';
-  ctx.font='500 7px DM Sans, sans-serif';
-  ctx.textAlign='left';
-  [[24,228,'DESTINATIONS VISITED'],[122,228,'WORLDS EXPLORED'],[220,228,'JOURNEYS']].forEach(([x,y,lbl])=>{
-    ctx.fillText(lbl,x,y);
-  });
-
-  // Field values
-  ctx.fillStyle='rgba(240,235,215,0.9)';
-  ctx.font='600 20px Cormorant Garamond, serif';
-  [[24,248,total],[122,248,cats],[220,248,sessions]].forEach(([x,y,val])=>{
-    ctx.textAlign='left';
-    ctx.fillText(val,x,y);
-  });
-
-  // Divider
-  ctx.beginPath();ctx.moveTo(24,255);ctx.lineTo(W-24,255);
-  ctx.strokeStyle='rgba(212,175,55,0.15)';ctx.lineWidth=0.5;ctx.stroke();
-
-  // ── WORLD STAMPS — category exploration ──
-  ctx.fillStyle='rgba(212,175,55,0.5)';
-  ctx.font='500 7px DM Sans, sans-serif';
-  ctx.textAlign='left';
-  ctx.fillText('WORLDS EXPLORED',24,272);
-
-  const catCts={};
-  places.forEach(p=>{catCts[p.cat]=(catCts[p.cat]||0)+1;});
-  const sortedC=Object.entries(catCts).sort((a,b)=>b[1]-a[1]).slice(0,4);
-
+  const catCts={};places.forEach(p=>{catCts[p.cat]=(catCts[p.cat]||0)+1;});
+  const sortedC=Object.entries(catCts).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  ctx.fillStyle='rgba(154,136,120,.55)';ctx.font='500 7px DM Sans, sans-serif';ctx.textAlign='left';ctx.fillText('WORLDS EXPLORED',24,152);
   sortedC.forEach(([cat,count],i)=>{
-    const row=Math.floor(i/2),col=i%2;
-    const x=24+col*148,y=290+row*28;
-    // Stamp circle
-    ctx.beginPath();ctx.arc(x+10,y-5,10,0,Math.PI*2);
-    ctx.strokeStyle='rgba(212,175,55,0.35)';ctx.lineWidth=1;ctx.stroke();
-    ctx.font='12px serif';ctx.textAlign='center';
-    ctx.fillStyle='rgba(240,235,215,0.8)';
-    ctx.fillText(CATS[cat].emoji,x+10,y-1);
-    // Name
-    ctx.font='500 9px DM Sans, sans-serif';ctx.textAlign='left';
-    ctx.fillStyle='rgba(240,235,215,0.65)';
-    ctx.fillText(CATS[cat].name,x+24,y-6);
-    ctx.fillStyle='rgba(212,175,55,0.7)';
-    ctx.font='500 8px DM Sans, sans-serif';
-    ctx.fillText(count+' visited',x+24,y+4);
+    const y=167+i*20,bw=Math.round((count/Math.max(total,1))*(W-80));
+    const bg2=ctx.createLinearGradient(24,y,24+bw,y);bg2.addColorStop(0,'rgba(232,146,74,.7)');bg2.addColorStop(1,'rgba(123,108,176,.4)');
+    ctx.fillStyle=bg2;if(ctx.roundRect)ctx.roundRect(24,y-9,bw,11,3);else ctx.fillRect(24,y-9,bw,11);ctx.fill();
+    ctx.fillStyle='rgba(242,235,224,.85)';ctx.font='500 9px DM Sans, sans-serif';ctx.fillText(CATS[cat].emoji+' '+CATS[cat].name,24,y);
   });
-
-  // Divider
-  ctx.beginPath();ctx.moveTo(24,350);ctx.lineTo(W-24,350);
-  ctx.strokeStyle='rgba(212,175,55,0.15)';ctx.lineWidth=0.5;ctx.stroke();
-
-  // ── RECENT STAMPS — last 4 places ──
-  ctx.fillStyle='rgba(212,175,55,0.5)';
-  ctx.font='500 7px DM Sans, sans-serif';ctx.textAlign='left';
-  ctx.fillText('RECENT DESTINATIONS',24,366);
-
-  const recent=[...places].reverse().slice(0,4);
+  const recent=[...places].reverse().slice(0,5);
+  ctx.fillStyle='rgba(154,136,120,.55)';ctx.font='500 7px DM Sans, sans-serif';ctx.fillText('RECENT PLACES',24,283);
   recent.forEach((item,i)=>{
-    const y=384+i*16;
-    const nm=item.name.length>22?item.name.slice(0,20)+'…':item.name;
-    ctx.fillStyle='rgba(240,235,215,0.72)';
-    ctx.font='400 11px Cormorant Garamond, serif';
-    ctx.textAlign='left';
-    ctx.fillText(item.emoji+' '+nm,24,y);
-    ctx.fillStyle='rgba(212,175,55,0.5)';
-    ctx.font='400 8px DM Sans, sans-serif';
-    ctx.textAlign='right';
-    ctx.fillText(new Date(item.ts).toLocaleDateString('en',{month:'short',day:'numeric'}),W-24,y);
+    const y=298+i*17;const nm=item.name.length>24?item.name.slice(0,22)+'…':item.name;
+    ctx.fillStyle='rgba(242,235,224,.75)';ctx.font='400 10px Cormorant Garamond, serif';ctx.textAlign='left';ctx.fillText(item.emoji+' '+nm,24,y);
+    ctx.fillStyle='rgba(232,146,74,.6)';ctx.font='400 9px DM Sans, sans-serif';ctx.textAlign='right';ctx.fillText(new Date(item.ts).toLocaleDateString('en',{month:'short',day:'numeric'}),W-24,y);
   });
-
-  // ── BOTTOM STRIP — machine readable zone ──
-  ctx.fillStyle='rgba(0,0,0,0.4)';
-  ctx.fillRect(0,H-34,W,34);
-  ctx.fillStyle='rgba(212,175,55,0.3)';
-  ctx.font='500 7px Courier New, monospace';
-  ctx.textAlign='center';
-  const mrz='P<SCL<<'+('EXPLORER').padEnd(20,'<')+'<<<<<<<<';
-  ctx.fillText(mrz,W/2,H-20);
-  ctx.fillText('SOULSCAPE<<'+total.toString().padStart(3,'0')+'<<'+cats.toString().padStart(2,'0')+'<<'+sessions,W/2,H-9);
+  ctx.fillStyle='rgba(154,136,120,.35)';ctx.font='400 8px DM Sans, sans-serif';ctx.textAlign='center';ctx.fillText('soulscape.app · your emotional geography',W/2,H-24);
 }
 
-
 function dlPassport(){const cvs=document.getElementById('psp-cvs');if(!cvs)return;const a=document.createElement('a');a.download='soulscape-passport.png';a.href=cvs.toDataURL('image/png');a.click();}
-function sharePassport(){if(navigator.share){navigator.share({title:'My SoulScape Travel Passport',text:'I\'ve explored '+getPassport().length+' places on SoulScape.',url:location.href});}else{navigator.clipboard?.writeText(location.href);alert('Link copied!');}}
+function sharePassport(){if(navigator.share){navigator.share({title:'My SoulScape Emotional Passport',text:'I\'ve explored '+getPassport().length+' places on SoulScape.',url:location.href});}else{navigator.clipboard?.writeText(location.href);alert('Link copied!');}}
 
 /* ════════════════════════════════════════════════
    HOME
