@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0A0812">
+<title>SoulScape</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --ink:#0A0812;--ink2:#130F1E;--ink3:#1E1830;
+  --amber:#E8924A;--amber2:#F4AA6A;--violet:#7B6CB0;
+  --sand:#F2EBE0;--mist:#9A8878;
+  --border:rgba(232,146,74,.18);
+  --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;height:-webkit-fill-available;overflow:hidden;position:fixed;width:100%}
+body{font-family:'DM Sans',sans-serif;color:var(--sand);
+  background:radial-gradient(ellipse at 30% 0%,#1A0F28 0%,#0A0812 60%)}
+
+/* Screens */
+.sc{position:fixed;inset:0;z-index:10;opacity:0;pointer-events:none;
+  transition:opacity .55s ease,transform .55s ease;transform:translateY(12px);
+  display:flex;flex-direction:column}
+.sc.on{opacity:1;pointer-events:all;transform:translateY(0)}
+.sc.out{opacity:0;transform:translateY(-12px)}
+
+/* Buttons */
+.bp{background:var(--amber);color:var(--ink);border:none;width:100%;padding:17px 20px;
+  border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;letter-spacing:.5px;text-transform:uppercase;
+  transition:background .2s,transform .15s;box-shadow:0 8px 28px rgba(232,146,74,.35)}
+.bp:active{transform:scale(.97);background:var(--amber2)}
+.bp:disabled{opacity:.4;cursor:default;transform:none;box-shadow:none}
+.bw{background:transparent;color:var(--sand);border:1px solid rgba(240,235,224,.18);
+  width:100%;padding:16px 20px;border-radius:8px;font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:400;cursor:pointer;letter-spacing:.5px;text-transform:uppercase;
+  transition:border-color .2s,transform .15s}
+.bw:active{transform:scale(.97);border-color:var(--amber)}
+
+/* ── LANDING ── */
+#sl{align-items:center;justify-content:center;padding:max(50px,calc(var(--st)+24px)) 26px max(36px,calc(var(--sb)+20px));background:var(--ink)}
+.l-badge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border);
+  padding:6px 16px;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:4px;
+  text-transform:uppercase;color:var(--amber);margin-bottom:24px}
+.l-dot{width:5px;height:5px;border-radius:50%;background:var(--amber);
+  animation:blink 2.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+.l-title{font-family:'Cormorant Garamond',serif;text-align:center;margin-bottom:18px}
+.l-t1{display:block;font-size:clamp(52px,13vw,88px);font-weight:300;line-height:.9;
+  letter-spacing:-2px;color:var(--sand)}
+.l-t2{display:block;font-size:clamp(52px,13vw,88px);font-weight:700;color:var(--amber);
+  letter-spacing:-2px;line-height:.95}
+.l-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;
+  color:var(--mist);text-align:center;margin-bottom:36px;max-width:280px;line-height:1.7}
+.l-ctas{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px}
+
+/* ── GLOBE ── */
+#sg{background:var(--ink);padding:0}
+#gc{position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:none}
+#gc:active{cursor:grabbing}
+.g-top{position:absolute;top:max(16px,calc(var(--st)+8px));left:18px;right:18px;
+  z-index:20;display:flex;justify-content:space-between;align-items:center}
+.g-logo{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:17px;
+  color:rgba(240,232,214,.9)}
+.g-back{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  color:rgba(240,232,214,.7);padding:7px 16px;border-radius:100px;font-size:13px;cursor:pointer}
+.g-tip{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:20;
+  text-align:center;pointer-events:none;transition:opacity .6s}
+.g-tip p{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;
+  color:rgba(240,232,214,.4);margin-bottom:6px}
+.g-tip span{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(240,232,214,.2)}
+.g-hov{position:absolute;z-index:25;background:rgba(10,8,18,.94);border:1px solid var(--border);
+  border-radius:12px;padding:12px 16px;pointer-events:none;min-width:170px;max-width:230px;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);opacity:0;transition:opacity .2s;
+  transform:translate(-50%,-115%)}
+.g-hov.show{opacity:1}
+.gh-cat{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+.gh-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;
+  color:var(--sand);line-height:1.2;margin-bottom:2px}
+.gh-co{font-size:11px;color:var(--mist)}
+.gh-cta{font-size:9px;color:var(--amber);margin-top:7px;letter-spacing:1px;text-transform:uppercase}
+.g-cats{position:absolute;bottom:max(18px,calc(var(--sb)+14px));left:0;right:0;z-index:20;
+  display:flex;gap:7px;padding:0 14px;overflow-x:auto;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch}
+.g-cats::-webkit-scrollbar{display:none}
+.gcat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:rgba(240,232,214,.55);padding:7px 14px;border-radius:100px;font-size:11px;
+  white-space:nowrap;cursor:pointer;transition:all .2s;flex-shrink:0}
+.gcat.a{background:rgba(232,146,74,.2);border-color:var(--amber);color:var(--amber)}
+.g-count{position:absolute;bottom:max(56px,calc(var(--sb)+52px));left:50%;
+  transform:translateX(-50%);z-index:20;font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;color:rgba(240,232,214,.3);white-space:nowrap}
+
+/* ── TALK / AI ── */
+#st{background:var(--ink);align-items:center;justify-content:center;
+  padding:max(50px,calc(var(--st)+24px)) 22px max(22px,calc(var(--sb)+12px))}
+.ai-wrap{width:100%;max-width:520px;display:flex;flex-direction:column;align-items:center}
+.ai-intro{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center}
+.ai-logo{font-size:42px;margin-bottom:20px;animation:breathe 4s ease-in-out infinite;
+  filter:drop-shadow(0 6px 18px rgba(232,146,74,.35))}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.ai-head{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,8vw,52px);
+  font-weight:300;color:var(--sand);letter-spacing:-1px;margin-bottom:10px;line-height:1}
+.ai-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;
+  color:var(--mist);max-width:310px;line-height:1.7;margin-bottom:26px}
+.ai-inp-wrap{width:100%;position:relative}
+.ai-ta{width:100%;background:var(--ink2);border:1px solid rgba(240,232,214,.12);
+  border-radius:16px;padding:18px 58px 18px 18px;font-family:'Cormorant Garamond',serif;
+  font-size:18px;line-height:1.75;color:var(--sand);resize:none;min-height:130px;
+  outline:none;transition:border-color .3s,box-shadow .3s}
+.ai-ta:focus{border-color:rgba(232,146,74,.45);box-shadow:0 0 0 3px rgba(232,146,74,.08)}
+.ai-ta::placeholder{color:rgba(154,136,120,.4);font-style:italic}
+.ai-send{position:absolute;bottom:12px;right:12px;width:38px;height:38px;border-radius:50%;
+  background:var(--amber);color:var(--ink);border:none;font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,transform .15s,opacity .2s;font-weight:700}
+.ai-send:disabled{opacity:.3;cursor:default;transform:none}
+.ai-send:not(:disabled):active{transform:scale(.92);background:var(--amber2)}
+.ai-back-btn{position:absolute;top:max(16px,calc(var(--st)+8px));left:18px;z-index:30;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:rgba(240,232,214,.6);padding:7px 14px;border-radius:100px;font-size:13px;cursor:pointer}
+
+/* Thinking dots */
+.think-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;display:none}
+.think-wrap.show{display:flex}
+.think-dots{display:flex;gap:8px;align-items:center}
+.think-dots span{width:8px;height:8px;border-radius:50%;background:var(--amber);
+  animation:tdot 1.4s ease-in-out infinite}
+.think-dots span:nth-child(2){animation-delay:.2s}
+.think-dots span:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,80%,100%{transform:scale(.5);opacity:.3}40%{transform:scale(1);opacity:1}}
+.think-txt{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;
+  color:var(--mist);text-align:center;animation:lp 2s ease-in-out infinite;max-width:260px}
+@keyframes lp{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* ── LOADING ── */
+#slo{background:var(--ink);align-items:center;justify-content:center;gap:22px}
+.lc{font-size:48px;animation:cspin 3s ease-in-out infinite}
+@keyframes cspin{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(18deg)}}
+.lm{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;
+  color:var(--sand);animation:lp 2.2s ease-in-out infinite;text-align:center;
+  max-width:260px;line-height:1.5}
+.ls{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--mist)}
+
+/* ── BROWSE ── */
+#sbr{background:var(--ink);justify-content:flex-start;
+  padding:max(52px,calc(var(--st)+24px)) 20px max(20px,calc(var(--sb)+12px));
+  overflow-y:auto;-webkit-overflow-scrolling:touch}
+.br-hd{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;
+  color:var(--sand);text-align:center;margin-bottom:5px}
+.br-sd{font-size:13px;color:var(--mist);text-align:center;margin-bottom:20px}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:480px;margin:0 auto}
+.ctile{background:var(--ink2);border:1px solid rgba(240,232,214,.08);border-radius:16px;
+  padding:18px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:9px;
+  transition:border-color .2s,transform .15s}
+.ctile:active{transform:scale(.97);border-color:var(--amber)}
+.ct-em{font-size:28px}
+.ct-nm{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:700;
+  color:var(--sand);text-align:center;line-height:1.3}
+.ct-ct{font-size:11px;color:var(--mist)}
+
+/* ── DESTINATION 80/20 ── */
+#sd{padding:0;display:flex;flex-direction:column}
+.vs{position:relative;flex:0 0 80%;overflow:hidden;background:var(--ink)}
+.ve{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
+  transition:opacity 1s ease}
+.ve.on{opacity:1}
+.vbg{position:absolute;inset:0;z-index:0;transition:background 1.4s}
+.vl{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:10px;transition:opacity .6s}
+.vl.done{opacity:0;pointer-events:none}
+.vring{width:32px;height:32px;border:2px solid rgba(232,146,74,.2);
+  border-top-color:var(--amber);border-radius:50%;animation:spin .85s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vtxt{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--mist)}
+/* Top bar */
+.vtop{position:absolute;top:max(14px,calc(var(--st)+6px));left:16px;right:16px;
+  z-index:20;display:flex;justify-content:space-between;align-items:center}
+.vlogo{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:15px;
+  color:rgba(255,255,255,.85);text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.vctr{font-size:11px;color:rgba(255,255,255,.7);background:rgba(0,0,0,.4);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:100px}
+/* Clip progress */
+.vcp-row{position:absolute;top:max(50px,calc(var(--st)+42px));left:50%;
+  transform:translateX(-50%);z-index:20;display:flex;gap:5px}
+.vcp{width:30px;height:3px;border-radius:100px;background:rgba(255,255,255,.22);overflow:hidden}
+.vcp-f{height:100%;width:0%;background:#fff;border-radius:100px;transition:width linear}
+.vcp.done .vcp-f{width:100%;background:rgba(255,255,255,.5)}
+/* Nav arrows */
+.varr{position:absolute;top:50%;transform:translateY(-50%);z-index:20;width:38px;height:38px;
+  border-radius:50%;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);
+  color:rgba(255,255,255,.8);font-size:18px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .2s,transform .15s}
+.varr.vp{left:10px}.varr.vn{right:10px}
+.varr:active{transform:translateY(-50%) scale(.9)}
+/* Progress dots */
+.vdots{position:absolute;bottom:10px;left:0;right:0;z-index:20;display:flex;
+  justify-content:center;gap:4px;pointer-events:none}
+.vd{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.18);
+  transition:background .3s,transform .3s}
+.vd.cur{background:#fff;transform:scale(1.35)}.vd.nb{background:rgba(255,255,255,.45)}
+/* Category tag */
+.vcat{position:absolute;bottom:28px;left:16px;z-index:20;font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:rgba(255,255,255,.55);background:rgba(0,0,0,.28);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.1);padding:4px 11px;border-radius:100px}
+/* AI sentence overlay */
+.vai{position:absolute;bottom:calc(20% + 30px);left:0;right:0;z-index:25;
+  padding:0 22px;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
+.vai.show{opacity:1}
+.vai-txt{font-family:'Cormorant Garamond',serif;font-size:clamp(16px,4vw,21px);
+  font-style:italic;color:rgba(255,255,255,.92);text-align:center;line-height:1.7;
+  text-shadow:0 2px 20px rgba(0,0,0,.8);max-width:380px;margin:0 auto}
+/* Content panel 20% */
+.cp{flex:1;background:var(--ink);border-top:1px solid rgba(232,146,74,.12);
+  display:flex;flex-direction:column;justify-content:center;padding:0 18px;overflow:hidden}
+.cp-cr{display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.cp-co{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--mist)}
+.cp-sep{font-size:10px;color:rgba(154,136,120,.35)}
+.cp-ct{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--mist)}
+.cp-nm{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,6vw,38px);font-weight:700;
+  color:var(--sand);line-height:1;letter-spacing:-.5px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.cp-ds{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;
+  color:rgba(240,232,214,.48);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cp-acts{display:flex;gap:7px;align-items:center;margin-top:7px;flex-wrap:nowrap}
+.ca{background:var(--ink3);border:1px solid rgba(240,232,214,.1);color:rgba(240,232,214,.7);
+  padding:9px 14px;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:11px;
+  font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;
+  transition:border-color .2s,color .2s,transform .15s;white-space:nowrap;
+  letter-spacing:.3px;flex-shrink:0}
+.ca:active{transform:scale(.95)}
+.ca.on{border-color:var(--amber);color:var(--amber)}
+.vrow{display:flex;align-items:center;gap:6px}
+input[type=range].vsl{-webkit-appearance:none;appearance:none;width:62px;height:3px;
+  border-radius:100px;background:rgba(240,232,214,.15);outline:none;cursor:pointer}
+input[type=range].vsl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;
+  border-radius:50%;background:var(--amber);cursor:pointer}
+.share-row{display:flex;gap:7px;margin-top:7px;flex-wrap:wrap}
+.sbtn{background:rgba(232,146,74,.12);border:1px solid rgba(232,146,74,.28);
+  color:var(--amber2);padding:8px 14px;border-radius:5px;font-family:'DM Sans',sans-serif;
+  font-size:11px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;
+  transition:background .2s,transform .15s;white-space:nowrap;letter-spacing:.3px}
+.sbtn:active{transform:scale(.95);background:rgba(232,146,74,.25)}
+.sbtn.psp{background:rgba(123,108,176,.15);border-color:rgba(123,108,176,.35);color:#C0B4E8}
+
+/* ── LETTER OVERLAY ── */
+.letter-ov{position:absolute;inset:0;z-index:40;display:flex;align-items:center;
+  justify-content:center;background:rgba(10,8,18,.88);backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);padding:28px 22px;opacity:0;pointer-events:none;
+  transition:opacity .7s ease}
+.letter-ov.show{opacity:1;pointer-events:all}
+.letter-card{max-width:330px;width:100%;background:linear-gradient(135deg,#1A1030,#0E0820);
+  border:1px solid rgba(232,146,74,.2);border-radius:20px;padding:26px 24px;text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.letter-from{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+.letter-body{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;
+  line-height:1.75;color:var(--sand);margin-bottom:20px;min-height:80px}
+.letter-close{background:transparent;border:1px solid rgba(240,235,224,.15);color:var(--mist);
+  padding:10px 24px;border-radius:100px;font-size:13px;cursor:pointer;margin-top:4px}
+
+/* ── POSTCARD SCREEN ── */
+#spc{background:var(--ink);justify-content:flex-start;
+  padding:max(56px,calc(var(--st)+28px)) 22px max(22px,calc(var(--sb)+12px));overflow-y:auto}
+.pc-ey{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+.pc-ttl{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--sand);
+  line-height:1.1;margin-bottom:6px}
+.pc-sub{font-size:13px;color:var(--mist);margin-bottom:22px;line-height:1.6}
+.pc-lbl{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--mist);
+  margin-bottom:7px;display:block}
+.pc-in{width:100%;background:var(--ink2);border:1px solid rgba(240,235,224,.1);border-radius:10px;
+  padding:13px 15px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--sand);
+  outline:none;transition:border-color .3s;margin-bottom:14px}
+.pc-in:focus{border-color:rgba(232,146,74,.45)}
+.pc-in::placeholder{color:rgba(154,136,120,.4)}
+.pc-ta{width:100%;background:var(--ink2);border:1px solid rgba(240,235,224,.1);border-radius:10px;
+  padding:13px 15px;font-family:'Cormorant Garamond',serif;font-size:17px;line-height:1.7;
+  color:var(--sand);resize:none;height:110px;outline:none;transition:border-color .3s;margin-bottom:14px}
+.pc-ta:focus{border-color:rgba(232,146,74,.45)}
+.pc-ta::placeholder{color:rgba(154,136,120,.4);font-style:italic}
+.pc-think{display:none;flex-direction:column;align-items:center;gap:14px;padding:24px 0}
+.pc-think.show{display:flex}
+.pc-think-txt{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;
+  color:var(--mist);animation:lp 2s ease-in-out infinite;text-align:center}
+.pc-prev{display:none;flex-direction:column;gap:14px}
+.pc-prev.show{display:flex}
+.pc-card{background:linear-gradient(135deg,#1A1030,#0E0820);border:1px solid rgba(232,146,74,.2);
+  border-radius:14px;overflow:hidden}
+.pc-card-top{height:120px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#1A1030,#2A1840)}
+.pc-em{font-size:44px}
+.pc-card-body{padding:16px 18px}
+.pc-card-cat{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
+.pc-card-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;
+  color:var(--sand);margin-bottom:8px}
+.pc-card-msg{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;
+  color:rgba(242,235,224,.75);line-height:1.7;margin-bottom:8px}
+.pc-card-from{font-size:11px;color:var(--amber);letter-spacing:.5px}
+
+/* ── PASSPORT SCREEN ── */
+#spsp{background:var(--ink);justify-content:flex-start;
+  padding:max(52px,calc(var(--st)+24px)) 20px max(20px,calc(var(--sb)+12px));
+  overflow-y:auto;-webkit-overflow-scrolling:touch}
+.psp-ey{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:#C0B4E8;
+  margin-bottom:8px;text-align:center}
+.psp-ttl{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;
+  color:var(--sand);text-align:center;margin-bottom:5px}
+.psp-sub{font-size:13px;color:var(--mist);text-align:center;margin-bottom:20px;
+  max-width:280px;margin-left:auto;margin-right:auto;line-height:1.6}
+.psp-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px}
+.psp-stat{background:var(--ink2);border:1px solid rgba(240,235,224,.07);border-radius:12px;
+  padding:14px;text-align:center}
+.psp-sn{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--amber)}
+.psp-sl{font-size:10px;color:var(--mist);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+.psp-cvs-wrap{display:flex;justify-content:center;margin-bottom:18px}
+#psp-cvs{border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.6);max-width:100%}
+.psp-acts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+.psp-list{display:flex;flex-direction:column;gap:8px}
+.psp-row{background:var(--ink2);border:1px solid rgba(240,235,224,.07);border-radius:10px;
+  padding:11px 14px;display:flex;align-items:center;gap:12px}
+.psp-em{font-size:20px}
+.psp-info{flex:1;min-width:0}
+.psp-pname{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--sand);
+  font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.psp-pco{font-size:11px;color:var(--mist)}
+.psp-pfeel{font-size:10px;color:var(--amber);font-style:italic;margin-top:2px}
+
+@media(min-width:600px){
+  .l-ctas,.ai-inp-wrap{flex-direction:row;max-width:400px}
+  .bp,.bw{width:auto;padding:16px 28px}
+  .cat-grid{grid-template-columns:repeat(4,1fr)}
+  .vs{flex:0 0 82%}
+}
+</style>
+</head>
+<body>
+
+<!-- ── LANDING ── -->
+<div class="sc on" id="sl">
+  <div class="l-badge"><div class="l-dot"></div>455 Destinations</div>
+  <div class="l-title"><span class="l-t1">Soul</span><span class="l-t2">Scape</span></div>
+  <p class="l-sub">A place in this world speaks to exactly how you feel right now.</p>
+  <div class="l-ctas">
+    <button class="bp" onclick="goto('st');initAI()">How Am I Feeling?</button>
+    <button class="bw" onclick="goto('sg');initGlobe()">Explore the Globe 🌍</button>
+  </div>
+</div>
+
+<!-- ── GLOBE ── -->
+<div class="sc" id="sg">
+  <canvas id="gc"></canvas>
+  <div class="g-top">
+    <span class="g-logo">🧭 SoulScape</span>
+    <button class="g-back" onclick="goto('sl')">← Back</button>
+  </div>
+  <div class="g-tip" id="g-tip"><p>Drag to explore the world</p><span>Tap any destination to visit</span></div>
+  <div class="g-hov" id="g-hov">
+    <div class="gh-cat" id="gh-cat"></div>
+    <div class="gh-name" id="gh-name"></div>
+    <div class="gh-co" id="gh-co"></div>
+    <div class="gh-cta">Tap to visit →</div>
+  </div>
+  <div class="g-count" id="g-count"></div>
+  <div class="g-cats" id="g-cats"></div>
+</div>
+
+<!-- ── TALK / AI ── -->
+<div class="sc" id="st">
+  <button class="ai-back-btn" onclick="goto('sl')">← Back</button>
+  <div class="ai-wrap">
+    <div class="ai-intro" id="ai-intro">
+      <div class="ai-logo">🌿</div>
+      <h2 class="ai-head">Tell me what's going on.</h2>
+      <p class="ai-sub">I'll find the place in the world that speaks to exactly how you feel right now.</p>
+      <div class="ai-inp-wrap">
+        <textarea class="ai-ta" id="ai-ta" maxlength="800"
+          placeholder="Just write whatever comes. No right answer. This is only for you."></textarea>
+        <button class="ai-send" id="ai-send" onclick="sendToAI()" disabled>→</button>
+      </div>
+    </div>
+    <div class="think-wrap" id="think-wrap">
+      <div class="think-dots"><span></span><span></span><span></span></div>
+      <p class="think-txt" id="think-txt">Reading between your words…</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── LOADING ── -->
+<div class="sc" id="slo">
+  <div class="lc">🧭</div>
+  <p class="lm" id="lmsg">Charting your course…</p>
+  <p class="ls">searching 455 destinations</p>
+</div>
+
+<!-- ── BROWSE ── -->
+<div class="sc" id="sbr">
+  <p class="br-hd">Where does your soul want to go?</p>
+  <p class="br-sd">Pick a feeling and wander freely.</p>
+  <div class="cat-grid" id="cat-grid"></div>
+  <div style="display:flex;justify-content:center;margin-top:16px">
+    <button class="bw" style="width:auto;padding:12px 26px;font-size:13px" onclick="goto('sl')">← Back</button>
+  </div>
+</div>
+
+<!-- ── DESTINATION ── -->
+<div class="sc" id="sd">
+  <div class="vs" id="vs">
+    <div class="vbg" id="vbg"></div>
+    <div class="vl" id="vl"><div class="vring"></div><div class="vtxt">Finding the scene…</div></div>
+    <video class="ve" id="va" autoplay muted loop playsinline></video>
+    <video class="ve" id="vb" autoplay muted loop playsinline></video>
+    <div class="vtop">
+      <div class="vlogo">SoulScape</div>
+      <div class="vctr" id="vctr">1/8</div>
+    </div>
+    <div class="vcp-row">
+      <div class="vcp" id="vcp0"><div class="vcp-f" id="vcpf0"></div></div>
+      <div class="vcp" id="vcp1"><div class="vcp-f" id="vcpf1"></div></div>
+      <div class="vcp" id="vcp2"><div class="vcp-f" id="vcpf2"></div></div>
+    </div>
+    <button class="varr vp" onclick="nav(-1)">‹</button>
+    <button class="varr vn" onclick="nav(1)">›</button>
+    <div class="vdots" id="vdots"></div>
+    <div class="vcat" id="vcat"></div>
+    <div class="vai" id="vai"><p class="vai-txt" id="vai-txt"></p></div>
+    <!-- Letter overlay lives here inside vs -->
+    <div class="letter-ov" id="letter-ov">
+      <div class="letter-card">
+        <div class="letter-from">A letter from <span id="ltr-place">this place</span></div>
+        <p class="letter-body" id="ltr-body">Writing something just for you…</p>
+        <button class="letter-close" onclick="closeLetter()">Close ✕</button>
+      </div>
+    </div>
+  </div>
+  <div class="cp">
+    <div class="cp-cr">
+      <span class="cp-co" id="dco"></span>
+      <span class="cp-sep">·</span>
+      <span class="cp-ct" id="dct"></span>
+    </div>
+    <div class="cp-nm" id="dnm">Crystal Lagoon</div>
+    <div class="cp-ds" id="dds">A place that was always waiting for you.</div>
+    <div class="cp-acts">
+      <button class="ca" id="sbt" onclick="toggleSnd()"><span id="sic">♪</span><span id="slb"> Ambient</span></button>
+      <div class="vrow" id="vrow" style="display:none">
+        <span style="color:var(--mist);font-size:10px">🔈</span>
+        <input type="range" class="vsl" id="vsl" min="0" max="100" value="60" oninput="setVol(this.value)">
+        <span style="color:var(--mist);font-size:10px">🔊</span>
+      </div>
+      <button class="ca" onclick="nav(1)">Next →</button>
+      <button class="ca" onclick="goHome()">Home</button>
+    </div>
+    <div class="share-row">
+      <button class="sbtn" onclick="openPostcard()">✉ Send this place</button>
+      <button class="sbtn" onclick="openLetter()">📖 Letter from here</button>
+      <button class="sbtn psp" onclick="openPassport()">🗺 My Passport</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── POSTCARD SCREEN ── -->
+<div class="sc" id="spc">
+  <div style="max-width:500px;width:100%;padding-top:16px">
+
+    <!-- Mode selector -->
+    <div id="pc-mode-sel">
+      <div class="pc-ey">✉ Postcard</div>
+      <h2 class="pc-ttl">Send a place</h2>
+      <p class="pc-sub">Two ways to send someone somewhere beautiful.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+        <button class="bp" onclick="pcMode('share')" style="padding:16px;text-align:left;border-radius:12px;text-transform:none;letter-spacing:0;font-size:15px">
+          <div style="font-weight:700;margin-bottom:4px">📍 Share this place</div>
+          <div style="font-size:12px;opacity:.7;font-weight:400">Write a line and send where you are right now</div>
+        </button>
+        <button class="bw" onclick="pcMode('find')" style="padding:16px;text-align:left;border-radius:12px;text-transform:none;letter-spacing:0;font-size:15px">
+          <div style="font-weight:600;margin-bottom:4px">🔍 Find their place</div>
+          <div style="font-size:12px;opacity:.6;font-weight:400">Tell us about them — AI picks their perfect destination</div>
+        </button>
+        <button class="bw" onclick="goto('sd')" style="padding:13px;font-size:13px">← Back</button>
+      </div>
+    </div>
+
+    <!-- Mode A: Share current place -->
+    <div id="pc-share-form" style="display:none">
+      <div class="pc-ey">📍 Share this place</div>
+      <h2 class="pc-ttl" id="pc-share-title">Sending from here</h2>
+      <p class="pc-sub">Write something personal — AI will design the postcard.</p>
+      <label class="pc-lbl">To</label>
+      <input class="pc-in" id="pcs-to" placeholder="Their name…" maxlength="40">
+      <label class="pc-lbl">Your message</label>
+      <textarea class="pc-ta" id="pcs-msg" placeholder="Thinking of you. Found this place and it reminded me of you…" maxlength="200"></textarea>
+      <label class="pc-lbl">From (optional)</label>
+      <input class="pc-in" id="pcs-from" placeholder="Your name…" maxlength="40">
+      <div style="display:flex;gap:10px">
+        <button class="bp" onclick="makeSharePostcard()" style="flex:1;padding:15px">Create postcard →</button>
+        <button class="bw" onclick="pcMode(null)" style="width:auto;padding:15px 18px">← Back</button>
+      </div>
+    </div>
+
+    <!-- Mode B: Find their place -->
+    <div id="pc-find-form" style="display:none">
+      <div class="pc-ey">🔍 Find their place</div>
+      <h2 class="pc-ttl">Tell us about them</h2>
+      <p class="pc-sub">AI finds their perfect place and writes the message.</p>
+      <label class="pc-lbl">Who are you sending to?</label>
+      <input class="pc-in" id="pcf-to" placeholder="Their name…" maxlength="40">
+      <label class="pc-lbl">What's going on with them?</label>
+      <textarea class="pc-ta" id="pcf-about" placeholder="They've been really stressed lately, or just had something wonderful happen…"></textarea>
+      <label class="pc-lbl">From (optional)</label>
+      <input class="pc-in" id="pcf-from" placeholder="Your name…" maxlength="40">
+      <div style="display:flex;gap:10px">
+        <button class="bp" onclick="createPostcard()" style="flex:1;padding:15px">Find their place →</button>
+        <button class="bw" onclick="pcMode(null)" style="width:auto;padding:15px 18px">← Back</button>
+      </div>
+    </div>
+
+    <!-- Thinking -->
+    <div class="pc-think" id="pc-think">
+      <div class="think-dots"><span></span><span></span><span></span></div>
+      <p class="pc-think-txt" id="pc-think-txt">Creating your postcard…</p>
+    </div>
+
+    <!-- Postcard canvas preview -->
+    <div id="pc-prev" style="display:none">
+      <div style="display:flex;justify-content:center;margin-bottom:14px">
+        <canvas id="pc-canvas" width="340" height="220" style="border-radius:4px;box-shadow:0 12px 40px rgba(0,0,0,.6);max-width:100%"></canvas>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="bp" onclick="sharePostcard()" style="flex:1;padding:14px">Share postcard →</button>
+        <button class="sbtn" onclick="copyLink()" id="copy-btn" style="padding:14px 18px">📋 Copy link</button>
+      </div>
+      <button class="bw" onclick="resetPC()" style="width:100%;padding:12px;margin-top:10px">← Make another</button>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ── PASSPORT SCREEN ── -->
+<div class="sc" id="spsp">
+  <div style="max-width:480px;width:100%">
+    <div class="psp-ey">✈ SoulScape</div>
+    <h2 class="psp-ttl">Your Passport</h2>
+    <p class="psp-sub">Every destination you've visited, stamped and recorded.</p>
+    <div class="psp-stats">
+      <div class="psp-stat"><div class="psp-sn" id="psp-n">0</div><div class="psp-sl">Places</div></div>
+      <div class="psp-stat"><div class="psp-sn" id="psp-w">0</div><div class="psp-sl">Worlds</div></div>
+      <div class="psp-stat"><div class="psp-sn" id="psp-s">0</div><div class="psp-sl">Sessions</div></div>
+    </div>
+    <div class="psp-cvs-wrap"><canvas id="psp-cvs" width="320" height="460"></canvas></div>
+    <div class="psp-acts">
+      <button class="bp" onclick="dlPassport()" style="padding:13px 24px">⬇ Download</button>
+      <button class="sbtn" onclick="sharePassport()">Share 🔗</button>
+    </div>
+    <div class="psp-list" id="psp-list"></div>
+    <div style="display:flex;justify-content:center;margin-top:16px">
+      <button class="bw" onclick="goto('sd')" style="width:auto;padding:12px 26px;font-size:13px">← Back</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════
+   KEYS
+════════════════════════════════════════════════ */
+const PK  = 'qRBV1Y9krZw3JkLQyqG6A5fOhW39aWebf49HrIS4psfZy6Fx68qec3cK';
+const GK  = 'AIzaSyBc-xWpkHQV88rskxOYZzY5kX_EryAnDfw';
+const VC  = {};
+
+/* ════════════════════════════════════════════════
+   CATEGORIES
+════════════════════════════════════════════════ */
+const CATS = {
+  waters:   {name:'Peaceful Waters',  emoji:'🌊', color:'#5BC8FF', glow:'#0A2030', fb:'ocean beach waves aerial drone timelapse cinematic'},
+  forest:   {name:'Ancient Forests',  emoji:'🌲', color:'#58E87A', glow:'#0A1A0A', fb:'forest trees aerial drone sunlight timelapse cinematic'},
+  mountain: {name:'Mountain Heights', emoji:'⛰️', color:'#A8B8FF', glow:'#141828', fb:'mountain peaks aerial drone snow timelapse cinematic'},
+  desert:   {name:'Desert Silence',   emoji:'🏜️', color:'#FFB840', glow:'#201408', fb:'desert sand dunes aerial drone sunset timelapse cinematic'},
+  garden:   {name:'Garden & Bloom',   emoji:'🌸', color:'#FF85C0', glow:'#200810', fb:'flowers blooming aerial drone garden timelapse cinematic'},
+  waterfall:{name:'Wild Waterfalls',  emoji:'💧', color:'#60E8FF', glow:'#081820', fb:'waterfall aerial drone mist dramatic timelapse cinematic'},
+  city:     {name:'Living Cities',    emoji:'🌆', color:'#FFD060', glow:'#181408', fb:'city skyline aerial drone night timelapse cinematic'},
+  arctic:   {name:'Arctic & Aurora',  emoji:'❄️', color:'#B0D8FF', glow:'#060810', fb:'aurora borealis aerial drone sky timelapse cinematic 4k'},
+};
+
+/* Category default profiles [scale,complexity,humans,age,energy,tone] */
+const CAT_P = {
+  waters:[3,2,1,4,2,4], forest:[2,3,1,4,2,2], mountain:[4,2,1,4,3,2],
+  desert:[4,1,1,5,1,4], garden:[2,3,2,2,2,4], waterfall:[3,2,1,3,5,3],
+  city:[2,4,5,2,4,4],   arctic:[4,1,1,5,3,1],
+};
+
+/* Destination overrides */
+const DEST_P = {
+  'Maldives Atoll':[3,2,2,4,2,5],'Whitehaven Beach':[3,1,1,4,2,5],
+  'Amazon River':[4,5,1,5,3,4],'Crater Lake':[3,1,1,5,1,3],
+  'Salar de Uyuni':[5,1,1,5,1,3],'Lake Baikal':[4,1,1,5,1,2],
+  'Yakushima Cedar':[2,3,1,5,1,2],'Hoh Rainforest':[2,4,1,5,2,2],
+  'Białowieża':[2,3,1,5,1,2],'Grand Canyon':[5,1,2,5,2,4],
+  'Everest Region':[5,1,1,5,2,1],'Zhangjiajie':[4,3,2,4,3,3],
+  'Trolltunga':[5,1,1,4,3,2],'Sahara Dunes':[5,1,1,5,1,5],
+  'White Sands':[4,1,1,4,1,4],'Cappadocia':[4,2,2,5,3,4],
+  'Aurora Borealis':[5,2,1,5,5,1],'Diamond Beach':[4,1,1,5,4,1],
+  'Antarctica Peninsula':[5,1,1,5,2,1],'Iguazu Falls':[4,3,2,3,5,4],
+  'Victoria Falls':[4,2,1,3,5,3],'Angel Falls':[5,2,1,4,5,4],
+  'Djemaa el-Fna':[2,5,5,3,5,5],'Varanasi Ghats':[2,5,5,5,4,5],
+  'Shinjuku at Night':[2,5,5,2,5,4],'Petra':[4,2,2,5,2,4],
+  'Ryoanji':[1,2,2,4,1,3],'Monet\'s Garden':[2,3,2,2,2,4],
+};
+
+function getP(dest){ return DEST_P[dest.name] || CAT_P[dest.cat]; }
+
+const W = [1.2,1.0,1.5,0.8,1.3,1.0]; // dimension weights
+
+function matchDest(need) {
+  const scored = DESTS.map(d => {
+    const p = getP(d);
+    let dist = 0;
+    for (let i=0;i<6;i++) dist += W[i]*Math.pow(p[i]-need[i],2);
+    return {d, dist: Math.sqrt(dist)};
+  }).sort((a,b)=>a.dist-b.dist);
+  // Weighted random from top 5
+  const top = scored.slice(0,5);
+  const ws = top.map(x=>1/(x.dist+0.1));
+  const tw = ws.reduce((a,b)=>a+b,0);
+  let r = Math.random()*tw;
+  for(let i=0;i<top.length;i++){r-=ws[i];if(r<=0)return top[i].d;}
+  return top[0].d;
+}
+
+/* ════════════════════════════════════════════════
+   DESTINATIONS — compact format
+   D(cat,name,country,lat,lng,sound,desc,q1,q2)
+════════════════════════════════════════════════ */
+const D=(c,n,co,la,lo,s,d,q1,q2)=>({cat:c,name:n,country:co,lat:la,lng:lo,sound:s,desc:d,q1,q2});
+const DESTS=[
+/* WATERS */
+D('waters','Maldives Atoll','Maldives',4.2,73.5,'ocean','Turquoise lagoons to infinity. Every wave takes something heavy from you.','maldives turquoise lagoon aerial drone cinematic','tropical beach paradise aerial timelapse'),
+D('waters','Lake Bled','Slovenia',46.4,14.1,'forest','A mirror lake in mountains. Still water, still mind.','lake bled reflection mountain aerial drone cinematic','alpine lake reflection timelapse scenic'),
+D('waters','Amalfi Coast','Italy',40.6,14.6,'ocean','Clifftop villages in a glittering sea. Life at the pace of sunlight.','amalfi coast aerial drone cliffs sea cinematic','mediterranean coast aerial timelapse'),
+D('waters','Santorini','Greece',36.4,25.5,'ocean','White walls blazing in afternoon sun. The Aegean like a dream remembered.','santorini oia aerial drone sunset cinematic','greek island aerial sunset timelapse'),
+D('waters','Bora Bora','French Polynesia',-16.5,-151.7,'ocean','The most beautiful lagoon on earth. Ringed by coral, filled with deep quiet.','bora bora aerial drone lagoon cinematic','tropical lagoon aerial timelapse paradise'),
+D('waters','Lake Como','Italy',46.0,9.3,'forest','Mountains meeting water, villas in gardens. Timeless and still.','lake como aerial drone italy cinematic','alpine lake aerial timelapse scenic'),
+D('waters','Whitehaven Beach','Australia',-20.3,149.1,'ocean','Silica sand so fine it never gets hot. White ribbon between two blues.','whitehaven beach aerial drone cinematic','pristine beach aerial timelapse white sand'),
+D('waters','Halong Bay','Vietnam',20.9,107.2,'ocean','Limestone towers from emerald water. Ancient and unhurried.','halong bay aerial drone limestone cinematic','karst islands aerial timelapse mist'),
+D('waters','Raja Ampat','Indonesia',-0.2,130.5,'ocean','The most biodiverse waters on earth.','raja ampat aerial drone coral reef cinematic','tropical reef aerial timelapse island'),
+D('waters','Phi Phi Islands','Thailand',7.7,98.8,'ocean','Limestone cliffs plunging into emerald. Paradise has an address here.','phi phi island aerial drone cinematic','limestone cliff beach aerial timelapse'),
+D('waters','Palawan','Philippines',9.8,118.7,'ocean','Underground rivers, hidden lagoons, the world\'s most extraordinary coast.','palawan aerial drone lagoon cinematic','hidden lagoon aerial timelapse philippines'),
+D('waters','Cinque Terre','Italy',44.1,9.7,'ocean','Five pastel villages clinging to Ligurian cliffs.','cinque terre aerial drone sea cinematic','colorful village cliff aerial timelapse'),
+D('waters','Dubrovnik','Croatia',42.7,18.1,'ocean','The pearl of the Adriatic. Medieval walls at a crystal sea.','dubrovnik aerial drone old town cinematic','adriatic coast aerial timelapse scenic'),
+D('waters','Lake Tahoe','USA',39.1,-120.0,'forest','The clearest lake in North America, ringed by pine and granite.','lake tahoe aerial drone mountain cinematic','mountain lake aerial timelapse scenic'),
+D('waters','Zanzibar','Tanzania',-6.2,39.2,'ocean','Spice-scented breezes and luminous Indian Ocean turquoise.','zanzibar beach aerial drone cinematic','indian ocean beach aerial timelapse'),
+D('waters','Seychelles','Seychelles',-4.6,55.5,'ocean','Granite boulders, impossibly clear water.','seychelles aerial drone beach granite cinematic','tropical beach aerial timelapse granite'),
+D('waters','Nusa Penida','Indonesia',-8.7,115.5,'ocean','Dramatic cliffs, an ocean so blue it looks painted.','nusa penida aerial drone cliff cinematic','dramatic cliff aerial timelapse ocean'),
+D('waters','Azores','Portugal',37.7,-25.7,'ocean','Mid-Atlantic volcanic craters turned turquoise lakes.','azores aerial drone volcanic lake cinematic','volcanic island aerial timelapse scenic'),
+D('waters','Lake Atitlán','Guatemala',14.7,-91.2,'forest','Three volcanoes, extraordinary blue water, villages predating history.','lake atitlan aerial drone volcano cinematic','volcanic lake aerial timelapse mountains'),
+D('waters','Bay of Kotor','Montenegro',42.4,18.8,'ocean','A winding fjord-like bay with medieval walls. Europe\'s secret coast.','kotor bay aerial drone cinematic','adriatic bay aerial timelapse mountains'),
+D('waters','Balos Lagoon','Crete, Greece',35.6,23.6,'ocean','Pink sand lagoon where three seas meet.','crete balos lagoon aerial drone cinematic','lagoon aerial timelapse pink sand scenic'),
+D('waters','Turks and Caicos','Caribbean',21.7,-71.7,'ocean','The most crystalline water in the Western Hemisphere.','turks caicos aerial drone beach cinematic','caribbean beach aerial timelapse crystal'),
+D('waters','Krabi','Thailand',8.1,98.9,'ocean','Cathedral limestone towers from shallow emerald water.','krabi thailand aerial drone limestone cinematic','limestone sea aerial timelapse thailand'),
+D('waters','Lake Baikal','Russia',53.5,108.2,'forest','The world\'s deepest lake. In winter, blue ice formations of extraordinary beauty.','lake baikal aerial drone winter cinematic','deepest lake aerial timelapse ice'),
+D('waters','Amazon River','Brazil',-3.5,-60.0,'forest','The great river winding through the lung of the earth.','amazon river aerial drone rainforest cinematic','tropical river aerial timelapse vast'),
+D('waters','Plitvice Lakes','Croatia',44.9,15.6,'forest','Sixteen terraced lakes of impossible turquoise.','plitvice lakes aerial drone turquoise cinematic','cascade lake aerial timelapse scenic'),
+D('waters','Lake Louise','Canada',51.4,-116.2,'forest','Iconic glacial lake, turquoise as paint, beneath snow-capped peaks.','lake louise aerial drone glacier cinematic','glacial lake aerial timelapse canada'),
+D('waters','Jiuzhaigou','China',33.2,103.9,'forest','Multicoloured lakes cascading through valley forest.','jiuzhaigou aerial drone colorful lake cinematic','colored lake aerial timelapse autumn'),
+D('waters','Great Barrier Reef','Australia',-18.3,147.7,'ocean','The world\'s largest coral system.','great barrier reef aerial drone cinematic','reef aerial timelapse australia scenic'),
+D('waters','Li River','China',25.0,110.4,'forest','Karst mountains rising from river mist. The most painted landscape in China.','li river guilin aerial drone cinematic','karst river aerial timelapse mist'),
+D('waters','Caño Cristales','Colombia',2.3,-73.8,'forest','The river of five colours. Aquatic plants turn it red, yellow, green, blue.','cano cristales aerial drone colombia cinematic','colorful river aerial timelapse scenic'),
+D('waters','Crater Lake','USA',42.9,-122.1,'forest','The deepest lake in the USA, inside a volcano, impossibly blue.','crater lake aerial drone volcano cinematic','volcano lake aerial timelapse scenic'),
+/* FORESTS */
+D('forest','Arashiyama Bamboo','Kyoto, Japan',35.0,135.7,'forest','A cathedral of green. Bamboo sways, the world quiets.','bamboo forest kyoto aerial drone cinematic','bamboo grove aerial timelapse green light'),
+D('forest','Coastal Redwoods','California, USA',41.2,-124.0,'forest','Trees ancient when history began. Nothing feels urgent standing here.','redwood forest aerial drone giant cinematic','tall ancient forest aerial timelapse'),
+D('forest','Black Forest','Germany',47.9,8.2,'forest','Ancient pines and fairy-tale silence.','black forest aerial drone pine mist cinematic','pine forest aerial timelapse mist'),
+D('forest','Plitvice Forest','Croatia',44.9,15.6,'forest','Sixteen terraced lakes through dense forest.','plitvice forest aerial drone turquoise cinematic','waterfall forest aerial timelapse'),
+D('forest','Cloud Forest','Monteverde, Costa Rica',10.3,-84.8,'forest','Mist-wrapped trees, howling wildlife.','cloud forest aerial drone mist cinematic','tropical misty forest aerial timelapse'),
+D('forest','Hoh Rainforest','Washington, USA',47.9,-123.9,'forest','Moss on every surface, quiet everywhere.','hoh rainforest aerial drone moss cinematic','temperate rainforest aerial timelapse'),
+D('forest','Daintree Rainforest','Queensland, Australia',-16.2,145.4,'forest','180 million years old and still breathing.','daintree rainforest aerial drone ancient cinematic','tropical rainforest aerial timelapse'),
+D('forest','Amazon Rainforest','Brazil',-3.5,-60.0,'forest','The lungs of the earth. Older and more alive than anything else.','amazon rainforest aerial drone vast cinematic','tropical rainforest aerial timelapse vast'),
+D('forest','Yakushima Cedar','Japan',30.3,130.5,'forest','Thousand-year-old cedars wrapped in moss.','yakushima cedar moss aerial drone cinematic','ancient cedar forest aerial timelapse'),
+D('forest','Białowieża','Poland / Belarus',52.7,23.9,'forest','The last primeval forest in Europe. Unchanged for ten thousand years.','primeval ancient forest aerial drone cinematic','ancient european forest aerial timelapse'),
+D('forest','Olympic Rainforest','Washington, USA',47.8,-123.6,'forest','Multiple ecosystems in one park. Moss cathedral.','olympic park rainforest aerial drone cinematic','temperate rainforest aerial timelapse moss'),
+D('forest','Tongass National','Alaska, USA',57.1,-133.6,'forest','Largest national forest on earth. Glaciers and old growth.','alaska forest aerial drone misty cinematic','alaska forest mountain aerial timelapse'),
+D('forest','Bohemian Switzerland','Czech Republic',50.9,14.3,'forest','Sandstone pillars rising through pine forest.','bohemian sandstone aerial drone forest cinematic','rock pillars aerial timelapse forest mist'),
+D('forest','Kinabalu Park','Borneo',6.1,116.6,'forest','UNESCO site with cloud forest and pitcher plants on Borneo.','borneo cloud forest aerial drone cinematic','cloud forest aerial timelapse borneo'),
+D('forest','Valdivian Rainforest','Chile',-39.0,-72.0,'forest','The southern hemisphere\'s unique temperate rainforest.','valdivian rainforest aerial drone chile cinematic','southern rainforest aerial timelapse'),
+D('forest','Congo Rainforest','Congo',-0.5,24.0,'forest','The second largest rainforest on earth.','congo rainforest aerial drone vast cinematic','tropical rainforest aerial timelapse africa'),
+D('forest','Andes Cloud Forest','Ecuador',-0.2,-78.3,'forest','Where Andean cloud forest meets Amazon.','andes cloud forest aerial drone cinematic','cloud forest aerial timelapse andes'),
+D('forest','Nyungwe Forest','Rwanda',-2.5,29.2,'forest','Ancient rainforest with chimpanzees and endless canopy.','rwanda rainforest aerial drone cinematic','african rainforest aerial timelapse'),
+D('forest','Giant Sequoia Grove','California, USA',36.7,-118.8,'forest','The most massive living things on earth.','sequoia grove aerial drone giant cinematic','giant tree grove aerial timelapse'),
+D('forest','Munnar Tea Forest','Kerala, India',10.1,77.1,'forest','Tea plantations on steep slopes wrapped in cloud.','munnar tea hills aerial drone cinematic','tea plantation hill aerial timelapse'),
+/* MOUNTAINS */
+D('mountain','Swiss Alps','Switzerland',46.6,8.0,'wind','Your problems return to their actual size here.','swiss alps aerial drone snow cinematic','alpine mountain aerial timelapse dramatic'),
+D('mountain','Dolomites','South Tyrol, Italy',46.5,11.8,'wind','Pink-lit towers rising from meadows. The earth showing off.','dolomites aerial drone peaks sunset cinematic','rocky mountain spires aerial timelapse'),
+D('mountain','Torres del Paine','Patagonia, Chile',-50.9,-73.4,'wind','Granite towers at the bottom of the earth.','patagonia aerial drone granite cinematic','granite mountain aerial timelapse wind'),
+D('mountain','Geirangerfjord','Norway',62.1,7.2,'forest','Water like glass. Waterfalls threading down from a thousand metres.','geirangerfjord aerial drone fjord cinematic','fjord aerial timelapse norway scenic'),
+D('mountain','Milford Sound','New Zealand',-44.7,167.9,'forest','Sheer cliffs, silver water, a stillness that reaches into your chest.','milford sound aerial drone fiord cinematic','fiord aerial timelapse cliffs scenic'),
+D('mountain','Banff National Park','Canada',51.5,-116.1,'wind','Turquoise glacial lakes beneath snow-capped peaks.','banff aerial drone lake mountain cinematic','glacial lake aerial timelapse canada'),
+D('mountain','Lofoten Islands','Norway',68.2,13.6,'forest','Red cabins against arctic peaks and still black water.','lofoten aerial drone arctic cinematic','arctic village aerial timelapse fjord'),
+D('mountain','Hallstatt','Austria',47.6,13.7,'forest','Mirror lake, salt mountain, a village time forgot.','hallstatt aerial drone lake cinematic','alpine village aerial timelapse lake'),
+D('mountain','Everest Region','Nepal',27.9,86.9,'wind','Roof of the world. Prayer flags. Silence so complete it changes you.','himalayas aerial drone snowcapped cinematic','himalayan peaks aerial timelapse dramatic'),
+D('mountain','Machu Picchu','Peru',-13.2,-72.5,'forest','Inca city floating above the clouds.','machu picchu aerial drone ruins cinematic','ancient ruins aerial timelapse mist'),
+D('mountain','Grand Canyon','Arizona, USA',36.1,-112.1,'wind','A mile deep and two billion years old. Time itself made visible.','grand canyon aerial drone dramatic cinematic','canyon aerial timelapse sunrise layers'),
+D('mountain','Mount Fuji','Japan',35.4,138.7,'wind','Japan\'s sacred mountain reflected in still lakes.','mount fuji aerial drone reflection cinematic','fuji mountain aerial timelapse sunrise'),
+D('mountain','Kilimanjaro','Tanzania',-3.1,37.4,'wind','Africa\'s highest peak. Snow on the equator.','kilimanjaro aerial drone summit cinematic','africa mountain aerial timelapse cloud'),
+D('mountain','Mont Blanc','France / Italy',45.8,6.9,'wind','Western Europe\'s highest peak. Ice and granite.','mont blanc aerial drone glacier cinematic','alpine glacier aerial timelapse snow'),
+D('mountain','Scottish Highlands','Scotland',57.5,-4.5,'forest','Heather moor, ancient lochs, skies different every minute.','scottish highlands aerial drone loch cinematic','scotland aerial timelapse mist heather'),
+D('mountain','Zhangjiajie','Hunan, China',29.3,110.4,'forest','Pillar mountains through cloud. The landscape that inspired Pandora.','zhangjiajie aerial drone pillar cinematic','floating mountain aerial timelapse mist'),
+D('mountain','Trolltunga','Norway',60.1,6.7,'wind','A jutting rock 700m above a fjord lake.','trolltunga aerial drone cliff fjord cinematic','cliff ledge aerial timelapse fjord'),
+D('mountain','Bryce Canyon','Utah, USA',37.6,-112.2,'wind','Thousands of hoodoos glowing orange at sunrise.','bryce canyon aerial drone hoodoos cinematic','hoodoos aerial timelapse sunrise orange'),
+D('mountain','Zion National Park','Utah, USA',37.3,-113.0,'wind','Sandstone walls in red, pink, cream. Ancient and immovable.','zion national park aerial drone canyon cinematic','red canyon aerial timelapse sandstone'),
+D('mountain','Table Mountain','Cape Town, SA',-34.0,18.4,'wind','Flat-topped mountain above a great city.','table mountain aerial drone cape town cinematic','flat mountain aerial timelapse ocean'),
+D('mountain','Wulingyuan','Hunan, China',29.3,110.5,'forest','Thousands of sandstone pillars in forest landscape.','wulingyuan aerial drone sandstone cinematic','sandstone pillar aerial timelapse forest'),
+D('mountain','Yosemite Valley','California, USA',37.7,-119.6,'forest','Granite walls, waterfalls, valley meadows.','yosemite aerial drone granite cinematic','yosemite valley aerial timelapse granite'),
+D('mountain','Drakensberg','South Africa',-29.6,29.4,'wind','Dragon Mountains. Basalt buttresses and thunderstorms.','drakensberg aerial drone mountain cinematic','south africa mountain aerial timelapse'),
+D('mountain','Rocky Mountains','Colorado, USA',39.5,-105.8,'wind','Colorado Rockies at altitude. Aspen trees and impossible blue sky.','rocky mountains aerial drone colorado cinematic','rocky mountain aerial timelapse aspen'),
+D('mountain','Meteora','Greece',39.7,21.6,'wind','Monasteries perched atop towering rock pillars.','meteora aerial drone monastery cinematic','rock pillar monastery aerial timelapse'),
+D('mountain','Fagaras Carpathians','Romania',45.6,24.7,'forest','Wild Carpathian peaks. Wolves, glacial lakes, beech forest.','carpathian mountain aerial drone cinematic','mountain forest aerial timelapse europe'),
+D('mountain','Kamchatka','Russia',55.7,160.4,'wind','A peninsula of wild volcanoes and bears.','kamchatka volcano aerial drone cinematic','volcano aerial timelapse russia'),
+D('mountain','Cotopaxi','Ecuador',-0.7,-78.4,'wind','One of the world\'s highest active volcanoes. A perfect snow cone.','cotopaxi volcano aerial drone cinematic','andes volcano aerial timelapse snow'),
+D('mountain','Patagonia Fitz Roy','Argentina',-49.3,-73.1,'wind','The jagged spire of Mount Fitz Roy above glacial lakes.','fitz roy aerial drone patagonia cinematic','patagonia spire aerial timelapse glacial'),
+D('mountain','Huangshan','Anhui, China',30.1,118.2,'forest','Yellow Mountains in mist. The most painted mountains in Chinese art.','huangshan mountains aerial drone mist cinematic','chinese mountain mist aerial timelapse'),
+/* DESERT */
+D('desert','Sahara Dunes','Morocco',31.1,-4.0,'wind','In the quiet of sand and sky, your mind finally has room to breathe.','sahara desert aerial drone dunes cinematic','sand dunes aerial timelapse sunset'),
+D('desert','Wadi Rum','Jordan',29.6,35.4,'wind','The Valley of the Moon. The sandstone keeps time differently.','wadi rum aerial drone red rock cinematic','red desert aerial timelapse canyon'),
+D('desert','Monument Valley','Utah–Arizona, USA',37.0,-110.1,'wind','Red buttes carved over 50 million years.','monument valley aerial drone buttes cinematic','desert buttes aerial timelapse sunrise'),
+D('desert','Sossusvlei','Namib, Namibia',-24.7,15.3,'wind','Red dunes 300m high. Dead tree. Ancient salt pan.','sossusvlei aerial drone red dunes cinematic','namibia dunes aerial timelapse'),
+D('desert','Cappadocia','Nevşehir, Turkey',38.7,34.8,'wind','Fairy chimneys and balloons at first light.','cappadocia aerial drone balloon sunrise cinematic','balloon sunrise aerial timelapse turkey'),
+D('desert','Uluru','Northern Territory, Australia',-25.3,131.0,'wind','Six hundred million years old, blood-red at dusk.','uluru aerial drone sunset outback cinematic','red monolith aerial timelapse dusk'),
+D('desert','White Sands','New Mexico, USA',32.8,-106.3,'wind','Gypsum dunes white as snow, warm to the touch.','white sands aerial drone gypsum cinematic','white dunes aerial timelapse minimal'),
+D('desert','Atacama Desert','Chile',-22.9,-68.2,'wind','The driest desert. Night sky holds the most stars imaginable.','atacama aerial drone volcanic cinematic','atacama desert aerial timelapse night'),
+D('desert','Death Valley','California, USA',36.5,-117.1,'wind','The hottest place on earth. Cracked salt and impossible colour.','death valley aerial drone salt flat cinematic','salt flat desert aerial timelapse'),
+D('desert','Salar de Uyuni','Bolivia',-20.1,-67.5,'wind','The world\'s largest salt flat. The sky reflects perfectly below.','salar uyuni aerial drone salt flat cinematic','salt flat aerial timelapse sky reflection'),
+D('desert','Rub al-Khali','Saudi Arabia',22.0,48.0,'wind','The Empty Quarter. Largest sand desert on earth.','empty quarter aerial drone dunes cinematic','arabian desert aerial timelapse dunes'),
+D('desert','Gobi Desert','Mongolia',43.0,105.0,'wind','Ancient trading routes, dinosaur fossils, older silence.','gobi desert aerial drone steppe cinematic','mongolian desert aerial timelapse'),
+D('desert','Lençóis Maranhenses','Brazil',-2.5,-43.1,'ocean','White dunes filled with blue rainwater lagoons.','lencos maranhenses aerial drone lagoon cinematic','white dunes aerial timelapse brazil'),
+D('desert','Wahiba Sands','Oman',22.0,59.0,'wind','Arabian desert at its most cinematic. Dunes like gold waves at dusk.','wahiba sands aerial drone oman cinematic','arabian dunes aerial timelapse gold'),
+D('desert','Painted Desert','Arizona, USA',35.1,-110.3,'wind','Badlands in purple, red and orange. Earth as art.','painted desert aerial drone arizona cinematic','colorful badlands aerial timelapse'),
+D('desert','Zhangye Danxia','Gansu, China',38.9,100.1,'wind','Rainbow mountains of extraordinary colour.','zhangye danxia aerial drone rainbow cinematic','rainbow mountain aerial timelapse china'),
+D('desert','Canyonlands','Utah, USA',38.3,-109.9,'wind','Canyons carved by the Colorado River.','canyonlands aerial drone utah cinematic','canyon aerial timelapse layers red'),
+D('desert','Arches National Park','Utah, USA',38.7,-109.6,'wind','Thousands of stone arches in red desert.','arches national park aerial drone cinematic','red arches aerial timelapse utah'),
+D('desert','Tibetan Plateau','Tibet',32.0,91.0,'wind','The Roof of the World. Salt lakes, yaks, and a sky impossibly close.','tibet plateau aerial drone cinematic','tibetan plateau aerial timelapse sky'),
+D('desert','Thar Desert','Rajasthan, India',26.9,70.9,'wind','Camels, fortresses, a sky so full of stars.','thar desert aerial drone india cinematic','india desert aerial timelapse sunset'),
+/* GARDEN */
+D('garden','Keukenhof Gardens','Netherlands',52.3,4.6,'forest','Seven million flowers blooming because that is what they do.','keukenhof aerial drone tulips cinematic','tulip field aerial timelapse colorful'),
+D('garden','Lavender Fields','Provence, France',43.9,5.4,'forest','Purple calm, row upon row, lit gold at the edges.','lavender field aerial drone provence cinematic','lavender aerial timelapse purple sunset'),
+D('garden','Cherry Blossoms','Kyoto, Japan',35.0,135.8,'forest','Pink petals falling for two brief weeks. Japan as a dream.','cherry blossom aerial drone sakura cinematic','sakura aerial timelapse pink spring'),
+D('garden','Hitachi Seaside','Ibaraki, Japan',36.4,140.6,'forest','4.5 million blue nemophila flowers over rolling hills.','hitachi nemophila aerial drone cinematic','blue flowers aerial timelapse rolling hills'),
+D('garden','Butchart Gardens','BC, Canada',48.6,-123.5,'forest','A quarry transformed into one of the world\'s great gardens.','butchart gardens aerial drone colorful cinematic','garden flowers aerial timelapse colorful'),
+D('garden','Monet\'s Garden','Giverny, France',49.1,1.5,'forest','The garden that inspired the Water Lilies.','monet garden aerial drone lily pond cinematic','waterlily garden aerial timelapse'),
+D('garden','Dutch Tulip Fields','Netherlands',52.5,4.7,'forest','Stripe after stripe of red, yellow, pink and purple.','tulip fields aerial drone netherlands cinematic','tulip rows aerial timelapse spring'),
+D('garden','Versailles Gardens','France',48.8,2.1,'forest','Symmetry and ambition made into landscape.','versailles aerial drone garden fountain cinematic','formal garden aerial timelapse france'),
+D('garden','Majorelle Garden','Marrakech, Morocco',31.6,-8.0,'forest','Vivid cobalt blue in the heart of Marrakech.','majorelle garden aerial drone blue cinematic','blue garden aerial timelapse morocco'),
+D('garden','Alhambra Gardens','Granada, Spain',37.2,-3.6,'forest','Moorish water gardens, courtyards, fountains.','alhambra garden aerial drone courtyard cinematic','moorish garden aerial timelapse'),
+D('garden','Stourhead','Wiltshire, England',51.1,-2.4,'forest','An 18th-century landscape garden around a lake.','stourhead landscape aerial drone cinematic','landscape garden aerial timelapse lake'),
+D('garden','Ryoanji','Kyoto, Japan',35.0,135.7,'forest','The world\'s most famous Zen rock garden. Fifteen stones, raked gravel, silence.','ryoanji zen garden aerial drone cinematic','zen garden aerial timelapse kyoto'),
+D('garden','Val d\'Orcia','Tuscany, Italy',43.1,11.6,'forest','Cypress-lined lanes and rolling Tuscan landscape.','tuscany val dorcia aerial drone cinematic','tuscan landscape aerial timelapse rolling'),
+D('garden','Highland Heather','Scotland',57.0,-4.8,'forest','Scottish moorland ablaze with purple heather.','scotland heather aerial drone cinematic','highland heather aerial timelapse purple'),
+D('garden','Sissinghurst Castle','Kent, England',51.1,0.6,'forest','Vita Sackville-West\'s garden rooms. The White Garden.','sissinghurst garden aerial drone cinematic','english garden room aerial timelapse'),
+D('garden','Suzhou Gardens','Jiangsu, China',31.3,120.6,'forest','Classical Chinese gardens. Water, rock and plant in harmony.','suzhou garden aerial drone china cinematic','chinese garden aerial timelapse water'),
+D('garden','Kenrokuen Garden','Kanazawa, Japan',36.6,136.7,'forest','One of Japan\'s three great gardens. Snow-covered pines and lanterns.','kenrokuen aerial drone japan cinematic','japanese garden aerial timelapse snow pine'),
+D('garden','Singapore Botanic','Singapore',1.3,103.8,'forest','A tropical botanic garden in the heart of a city.','singapore botanic aerial drone tropical cinematic','tropical garden aerial timelapse lush'),
+/* WATERFALLS */
+D('waterfall','Iguazu Falls','Argentina & Brazil',-25.7,-54.4,'rain','275 waterfalls across three kilometres. The most powerful release on earth.','iguazu falls aerial drone mist cinematic','massive waterfall aerial timelapse rainbow'),
+D('waterfall','Victoria Falls','Zambia & Zimbabwe',-17.9,25.9,'rain','Mosi-oa-Tunya — The Smoke That Thunders.','victoria falls aerial drone mist cinematic','africa waterfall aerial timelapse mist'),
+D('waterfall','Skógafoss','South Iceland',63.5,-19.5,'rain','Sixty metres of mist and rainbows.','skogafoss aerial drone waterfall cinematic','iceland waterfall aerial timelapse rainbow'),
+D('waterfall','Horseshoe Falls','Ontario, Canada',43.1,-79.1,'rain','Three million litres per second. You feel mercifully small.','niagara aerial drone waterfall cinematic','niagara aerial timelapse power mist'),
+D('waterfall','Plitvice Falls','Croatia',44.9,15.6,'rain','Terraced lakes and hundreds of small falls through forest.','plitvice waterfalls aerial drone cinematic','terrace waterfall aerial timelapse turquoise'),
+D('waterfall','Yosemite Falls','California, USA',37.8,-119.6,'rain','North America\'s tallest waterfall threading down granite.','yosemite falls aerial drone granite cinematic','tall waterfall aerial timelapse granite'),
+D('waterfall','Seljalandsfoss','South Iceland',63.6,-20.0,'rain','One of the only waterfalls you can walk completely behind.','seljalandsfoss aerial drone cinematic','iceland waterfall aerial timelapse cave'),
+D('waterfall','Angel Falls','Canaima, Venezuela',5.9,-62.5,'rain','979 metres of free fall. One of the most breathtaking things on earth.','angel falls aerial drone venezuela cinematic','highest waterfall aerial timelapse jungle'),
+D('waterfall','Havasu Falls','Arizona, USA',36.2,-112.7,'rain','Vivid blue-green water against red canyon walls.','havasu falls aerial drone blue cinematic','blue waterfall aerial timelapse canyon red'),
+D('waterfall','Multnomah Falls','Oregon, USA',45.6,-122.1,'rain','A two-tiered waterfall in old-growth forest.','multnomah falls aerial drone forest cinematic','forest waterfall aerial timelapse bridge'),
+D('waterfall','Rhine Falls','Switzerland',47.7,8.6,'rain','Central Europe\'s most powerful waterfall.','rhine falls aerial drone switzerland cinematic','european waterfall aerial timelapse'),
+D('waterfall','Gullfoss','Iceland',64.3,-20.1,'rain','The Golden Falls plunging into a gorge.','gullfoss aerial drone iceland cinematic','iceland golden falls aerial timelapse'),
+D('waterfall','Dettifoss','Iceland',65.8,-16.4,'rain','The most powerful waterfall in Europe.','dettifoss aerial drone iceland cinematic','powerful waterfall aerial timelapse europe'),
+D('waterfall','Nohkalikai Falls','Meghalaya, India',25.3,91.6,'rain','India\'s tallest plunge waterfall into a vivid green pool.','nohkalikai aerial drone india cinematic','tall waterfall aerial timelapse india'),
+D('waterfall','Kaieteur Falls','Guyana',5.2,-59.5,'rain','One of the most powerful falls, deep in untouched jungle.','kaieteur falls aerial drone cinematic','powerful waterfall aerial timelapse jungle'),
+D('waterfall','Ban Gioc','Vietnam',22.9,106.7,'rain','Tiered waterfalls on the China-Vietnam border.','ban gioc aerial drone vietnam cinematic','asian waterfall aerial timelapse tiered'),
+D('waterfall','Svartifoss','Iceland',64.0,-17.0,'rain','A waterfall of basalt columns. Iceland\'s cathedral fall.','svartifoss aerial drone basalt cinematic','basalt column waterfall aerial timelapse'),
+D('waterfall','Wailua Falls','Kauai, Hawaii, USA',22.0,-159.4,'rain','A twin waterfall on the garden island of Kauai.','wailua falls aerial drone hawaii cinematic','hawaii waterfall aerial timelapse tropical'),
+/* CITIES */
+D('city','Shinjuku at Night','Tokyo, Japan',35.7,139.7,'forest','A city that never stops. Neon rivers, machine light, ten million lives.','tokyo shinjuku night aerial drone cinematic','city night lights aerial timelapse neon'),
+D('city','Montmartre','Paris, France',48.9,2.3,'forest','Cobblestones, cafés, the Eiffel Tower winking. It is always Paris.','paris aerial drone eiffel tower cinematic','paris aerial timelapse golden romantic'),
+D('city','Sultanahmet','Istanbul, Turkey',41.0,29.0,'forest','Two continents meeting. The call to prayer at dusk.','istanbul aerial drone mosque sunset cinematic','istanbul aerial timelapse bosphorus'),
+D('city','Gothic Quarter','Barcelona, Spain',41.4,2.2,'forest','Gaudí around every corner. Beauty as a daily choice.','barcelona aerial drone gaudi cinematic','barcelona aerial timelapse architecture'),
+D('city','Alfama, Lisbon','Portugal',38.7,-9.1,'forest','Fado from windows. Yellow trams on cobbled hills. The most soulful city.','lisbon aerial drone tram hills cinematic','lisbon aerial timelapse cobblestone'),
+D('city','Djemaa el-Fna','Marrakech, Morocco',31.6,-8.0,'forest','Smoke, spice, music, storytellers at dusk.','marrakech aerial drone medina cinematic','marrakech aerial timelapse rooftop'),
+D('city','Victoria Harbour','Hong Kong',22.3,114.2,'forest','The most dramatic skyline on earth.','hong kong aerial drone skyline cinematic','hong kong aerial timelapse harbour'),
+D('city','Prague Old Town','Czech Republic',50.1,14.4,'forest','Baroque spires, cobbled squares, a river of a thousand years.','prague aerial drone old town cinematic','prague aerial timelapse river bridge'),
+D('city','Vienna','Austria',48.2,16.4,'forest','Music, architecture, coffee houses. The most refined city.','vienna aerial drone opera house cinematic','vienna aerial timelapse golden'),
+D('city','New York at Dusk','New York, USA',40.7,-74.0,'forest','Eight million lives on one island. The city that never needed an excuse.','new york aerial drone skyline cinematic','manhattan aerial timelapse brooklyn bridge'),
+D('city','Sydney Harbour','NSW, Australia',-33.9,151.2,'ocean','Opera House, Harbour Bridge, a bay that catches every sunset.','sydney aerial drone opera house cinematic','sydney aerial timelapse harbour sunset'),
+D('city','Singapore','Singapore',1.3,103.9,'forest','A future city in a garden. Gardens by the Bay under jewelled sky.','singapore aerial drone marina bay cinematic','singapore aerial timelapse gardens night'),
+D('city','Florence Arno','Tuscany, Italy',43.8,11.3,'forest','Renaissance art and Arno sunsets. Beauty as a profession.','florence aerial drone arno bridge cinematic','florence aerial timelapse renaissance'),
+D('city','Amsterdam Canals','Netherlands',52.4,4.9,'forest','Bicycle bells, reflected lights, houses at impossible angles.','amsterdam aerial drone canal night cinematic','amsterdam aerial timelapse canal lights'),
+D('city','Copenhagen Nyhavn','Denmark',55.7,12.6,'forest','Colourful merchants\' houses along a harbour canal.','copenhagen aerial drone nyhavn cinematic','copenhagen aerial timelapse canal'),
+D('city','Havana','Cuba',23.1,-82.4,'forest','Vintage cars, crumbling grandeur, salsa rhythms.','havana aerial drone colorful cinematic','havana aerial timelapse vintage city'),
+D('city','Cape Town','South Africa',-33.9,18.4,'ocean','Table Mountain, Waterfront, meeting of two oceans.','cape town aerial drone mountain cinematic','cape town aerial timelapse waterfront'),
+D('city','Chefchaouen','Morocco',35.2,-5.3,'forest','The Blue City. Every surface painted in shades of blue.','chefchaouen aerial drone blue cinematic','blue city aerial timelapse morocco'),
+D('city','Edinburgh','Scotland',55.9,-3.2,'forest','A castle on volcanic rock, old town stacked below.','edinburgh aerial drone castle cinematic','edinburgh aerial timelapse castle rock'),
+D('city','Kyoto Gion','Kyoto, Japan',35.0,135.8,'forest','Lantern-lit alleys, a city that chose culture over convenience.','kyoto aerial drone gion night cinematic','kyoto aerial timelapse traditional'),
+D('city','Varanasi Ghats','India',25.3,83.0,'forest','The oldest living city. Dawn prayers on the Ganges. Sacred.','varanasi aerial drone ganges cinematic','india ghats aerial timelapse sacred'),
+D('city','Petra','Jordan',30.3,35.4,'wind','The Rose-Red City carved into sandstone. 2,000 years old.','petra aerial drone ancient city cinematic','petra aerial timelapse sandstone'),
+D('city','Budapest','Hungary',47.5,19.1,'forest','The most beautiful city on the Danube. Parliament and light.','budapest aerial drone danube cinematic','budapest aerial timelapse parliament night'),
+D('city','Reykjavik','Iceland',64.2,-21.9,'forest','The world\'s northernmost capital. Colourful houses and aurora.','reykjavik aerial drone aurora cinematic','iceland city aerial timelapse aurora'),
+D('city','Samarkand','Uzbekistan',39.7,67.0,'forest','Silk Road city of extraordinary tilework. Tamerlane\'s capital.','samarkand aerial drone silk road cinematic','uzbekistan tile city aerial timelapse'),
+D('city','Luang Prabang','Laos',19.9,102.1,'forest','Buddhist temples, saffron monks, and French colonial charm.','luang prabang aerial drone temple cinematic','laos temple aerial timelapse monks'),
+D('city','Cartagena','Colombia',10.4,-75.5,'forest','Colonial city of colour, music, and warmth by the Caribbean.','cartagena aerial drone colonial cinematic','colombia colonial aerial timelapse'),
+D('city','Valletta','Malta',35.9,14.5,'ocean','The world\'s smallest capital. Baroque grandeur on a Mediterranean peninsula.','valletta aerial drone malta cinematic','malta aerial timelapse baroque sea'),
+/* ARCTIC */
+D('arctic','Aurora Borealis','Tromsø, Norway',69.7,19.0,'wind','The sky dancing in green and violet. A moment you forget everything else.','aurora borealis aerial drone cinematic 4k','northern lights aerial timelapse sky 4k'),
+D('arctic','Jökulsárlón Lagoon','Vatnajökull, Iceland',64.1,-16.2,'wind','Aurora reflected in a glacial lagoon with blue icebergs.','jokulsarlon aerial drone aurora iceberg cinematic','glacier lagoon aerial timelapse aurora'),
+D('arctic','Finnish Lapland','Lappi, Finland',68.9,27.1,'wind','Reindeer, frozen forests, glass-roofed cabins under the wheeling stars.','lapland aerial drone aurora snow cinematic','aurora snow aerial timelapse finland'),
+D('arctic','Lofoten Winter','Nordland, Norway',68.2,13.6,'wind','Frozen fjords, white peaks, aurora-lit water.','lofoten aerial drone winter aurora cinematic','arctic fjord aerial timelapse aurora snow'),
+D('arctic','Ilulissat Icefjord','Greenland',69.2,-51.1,'wind','This ice fell as snow 100,000 years ago.','ilulissat aerial drone iceberg glacier cinematic','arctic iceberg aerial timelapse fjord'),
+D('arctic','Diamond Beach','Iceland',63.9,-17.7,'wind','Icebergs on a black sand beach. Ice and fire.','diamond beach aerial drone iceland cinematic','iceland black beach iceberg aerial timelapse'),
+D('arctic','Abisko Aurora','Swedish Lapland',68.4,18.8,'wind','The clearest skies in Scandinavia for aurora viewing.','abisko aurora aerial drone cinematic 4k','aurora dark sky aerial timelapse 4k'),
+D('arctic','Yukon Northern Lights','Yukon, Canada',63.1,-139.4,'wind','Canada\'s vast wilderness under aurora displays.','yukon aurora aerial drone cinematic','canada wilderness aurora aerial timelapse'),
+D('arctic','Alaska Denali','Alaska, USA',63.3,-150.5,'wind','North America\'s highest peak. Bears, moose, and sky bigger than everything.','alaska denali aerial drone mountain cinematic','alaska mountain aerial timelapse'),
+D('arctic','Tromsø Bridge','Norway',69.7,19.0,'wind','The Aurora Cathedral city. The bridge lit green at midnight.','tromso bridge aurora aerial drone cinematic','norway aurora city aerial timelapse'),
+D('arctic','Svalbard','Norway',78.2,15.7,'wind','Polar bears, midnight sun, a silence so deep it changes you.','svalbard aerial drone polar wilderness cinematic','arctic wilderness aerial timelapse polar'),
+D('arctic','Greenland Ice Sheet','Greenland',68.0,-44.0,'wind','An ocean of white from horizon to horizon.','greenland ice sheet aerial drone cinematic','greenland aerial timelapse ice vast'),
+D('arctic','Longyearbyen','Svalbard, Norway',78.2,15.6,'wind','The world\'s northernmost city. Polar night and absolute stillness.','longyearbyen aerial drone svalbard cinematic','arctic town aerial timelapse snow polar'),
+D('arctic','Antarctic Peninsula','Antarctica',-64.3,-57.8,'wind','The final frontier. Penguins, ice shelves, a sky with no light pollution.','antarctica aerial drone ice cinematic','antarctica aerial timelapse penguin ice'),
+D('arctic','Churchill Polar Bears','Manitoba, Canada',58.8,-94.2,'wind','Polar bear capital of the world. Tundra encounters at Hudson Bay.','churchill aerial drone polar bear tundra cinematic','polar bear arctic tundra aerial timelapse'),
+D('arctic','Faroe Islands','Kingdom of Denmark',62.0,-6.8,'wind','Grass-roofed villages on dramatic Atlantic cliffs.','faroe islands aerial drone cliffs cinematic','atlantic cliff aerial timelapse faroe'),
+D('arctic','Finnish Lapland Snow','Finland',68.9,27.0,'wind','Snow-laden trees and a total silence more restorative than sleep.','finland snow forest aerial drone cinematic','snowy forest aerial timelapse finland'),
+D('arctic','Midnight Sun Lofoten','Norway',67.5,15.5,'wind','The sun that never sets. Gilded landscapes at midnight.','norway midnight sun aerial drone cinematic','midnight sun aerial timelapse norway'),
+];
+
+/* ════════════════════════════════════════════════
+   VIDEO FETCHING — reliable 4-tier fallback
+════════════════════════════════════════════════ */
+async function fetchVid(dest, idx) {
+  const fallbackQ = {
+    waters:'ocean beach waves nature scenic',forest:'forest trees nature green sunlight',
+    mountain:'mountain landscape nature dramatic',desert:'desert sand nature landscape',
+    garden:'flowers garden nature spring colorful',waterfall:'waterfall nature water mist',
+    city:'city skyline night timelapse',arctic:'aurora northern lights night sky'
+  };
+  const qs = [dest.q1, dest.q2, CATS[dest.cat].fb, fallbackQ[dest.cat]];
+  // Hash dest name for consistent but unique page/pick per destination
+  const nameHash = dest.name.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  const page = (nameHash % 4) + 1;   // pages 1-4
+  const pick = (nameHash + idx) % 10; // picks 0-9
+  for (const q of qs) {
+    const k = dest.name+'|'+q+'|'+page;
+    if (VC[k]) return VC[k];
+    try {
+      const r = await fetch(
+        'https://api.pexels.com/videos/search?query='+encodeURIComponent(q)+'&per_page=10&page='+page+'&min_duration=5',
+        {headers:{Authorization:PK}}
+      );
+      if (!r.ok) continue;
+      const d = await r.json();
+      if (!d.videos?.length) continue;
+      const real = d.videos.filter(v=>(v.video_files||[]).some(f=>f.link&&f.link.includes('.mp4')&&(f.width||0)>=640));
+      if (!real.length) continue;
+      const v = real[pick % real.length];
+      const files = (v.video_files||[]).filter(f=>f.link&&f.link.includes('.mp4')&&(f.width||0)>=640).sort((a,b)=>(b.width||0)-(a.width||0));
+      const f = files.find(f=>f.width>=1280&&f.width<=1920)||files.find(f=>f.width>=960)||files[0];
+      if (!f) continue;
+      const res = {url:f.link, thumb:v.image};
+      VC[k] = res; return res;
+    } catch(e) { continue; }
+  }
+  return null;
+}
+
+async function fetchThreeClips(dest, idx) {
+  const clips = await Promise.all([0,1,2].map(i => fetchVid(dest, idx + i*19)));
+  const first = clips.find(c=>c!==null);
+  if (!first) return [null,null,null];
+  return clips.map(c => c||first);
+}
+
+/* ════════════════════════════════════════════════
+   GLOBE — REAL EARTH
+════════════════════════════════════════════════ */
+const LANDS=[
+[[-168,72],[-140,70],[-120,72],[-100,73],[-88,71],[-82,63],[-63,47],[-67,44],[-70,42],[-76,34],[-80,25],[-88,16],[-92,16],[-85,10],[-78,8],[-83,8],[-90,20],[-97,22],[-106,24],[-110,29],[-117,32],[-120,34],[-124,46],[-130,55],[-145,60],[-153,58],[-166,60],[-168,64],[-168,72]],
+[[-45,85],[-25,83],[-18,77],[-20,70],[-24,65],[-37,63],[-46,62],[-57,63],[-60,67],[-55,71],[-52,76],[-45,80],[-45,85]],
+[[-24,66],[-14,63],[-13,64],[-20,66],[-24,66]],
+[[-75,12],[-62,11],[-50,0],[-34,-6],[-35,-11],[-39,-16],[-38,-23],[-45,-30],[-53,-33],[-58,-36],[-63,-38],[-66,-42],[-68,-47],[-75,-52],[-68,-55],[-65,-55],[-66,-46],[-70,-43],[-70,-35],[-68,-29],[-70,-20],[-75,-14],[-78,-8],[-80,0],[-77,5],[-75,12]],
+[[-5,50],[-3,50],[0,51],[0,53],[-2,55],[-3,57],[-5,58],[-3,58],[-3,55],[-2,52],[-5,50]],
+[[-9,37],[-9,43],[-4,44],[3,43],[7,44],[12,44],[14,40],[16,37],[13,38],[10,44],[14,47],[17,48],[20,49],[23,55],[24,58],[20,60],[15,58],[9,58],[5,58],[8,64],[14,65],[18,70],[28,71],[30,68],[28,60],[28,57],[23,55],[18,55],[10,55],[8,55],[2,51],[-5,48],[-5,43],[-9,39],[-9,37]],
+[[5,57],[8,58],[14,58],[18,58],[24,65],[28,71],[30,70],[27,65],[24,60],[18,57],[14,56],[10,55],[5,57]],
+[[-17,15],[-15,11],[-15,5],[-8,5],[-2,5],[9,4],[10,2],[9,-1],[13,-5],[12,-17],[12,-25],[17,-29],[19,-35],[25,-34],[32,-30],[36,-25],[40,-11],[42,-13],[44,-11],[45,-1],[43,12],[43,16],[38,22],[37,28],[32,31],[25,32],[13,32],[10,37],[5,37],[-2,35],[-8,35],[-13,30],[-17,20],[-17,15]],
+[[44,-12],[48,-15],[50,-20],[48,-25],[44,-25],[43,-20],[44,-12]],
+[[32,30],[44,29],[50,24],[56,22],[56,14],[43,12],[43,16],[38,22],[36,22],[38,20],[44,20],[50,18],[54,18],[56,20],[56,24],[52,26],[50,24],[46,24],[44,28],[38,29],[32,30]],
+[[26,70],[30,68],[35,65],[42,68],[52,70],[62,74],[76,73],[100,70],[120,68],[135,60],[140,50],[143,46],[135,40],[130,35],[126,34],[122,30],[114,25],[104,22],[100,20],[100,10],[103,1],[105,-6],[110,-8],[115,-8],[120,0],[125,2],[120,10],[115,15],[110,18],[104,18],[98,22],[94,26],[88,28],[80,25],[72,22],[68,25],[60,25],[56,22],[50,24],[44,28],[38,29],[36,36],[36,40],[38,44],[44,43],[46,42],[52,45],[58,50],[62,52],[68,55],[76,58],[86,58],[92,60],[96,60],[102,65],[112,70],[122,68],[130,68]],
+[[66,23],[68,24],[72,22],[80,8],[80,12],[78,10],[76,8],[80,8],[84,8],[80,8],[77,8],[80,9],[88,22],[92,24],[92,27],[88,28],[80,28],[72,24],[66,23]],
+[[131,31],[132,33],[133,34],[135,35],[138,37],[140,40],[142,44],[143,44],[141,40],[139,38],[137,37],[135,34],[133,34],[131,31]],
+[[120,22],[121,25],[122,25],[121,22],[120,22]],
+[[118,20],[122,18],[126,9],[124,8],[120,8],[118,10],[118,20]],
+[[95,5],[100,2],[104,1],[108,-7],[116,-8],[118,-8],[115,-8],[108,-8],[104,-2],[100,0],[95,4],[95,5]],
+[[114,-22],[118,-21],[124,-17],[130,-12],[136,-12],[140,-17],[142,-18],[148,-20],[150,-22],[153,-28],[152,-33],[151,-35],[149,-38],[146,-38],[140,-36],[134,-36],[130,-32],[126,-34],[114,-34],[113,-29],[114,-22]],
+[[172,-41],[175,-40],[178,-38],[175,-37],[172,-38],[172,-41]],
+[[166,-46],[170,-46],[172,-44],[171,-43],[168,-44],[166,-46]],
+[[80,10],[81,9],[81,8],[80,7],[80,9],[80,10]],
+[[-85,22],[-80,23],[-75,20],[-74,20],[-75,22],[-80,23],[-85,22]],
+];
+
+let gLat=15,gLon=25,gDrag=false,gLx=0,gLy=0,gAuto=true,gAutoTm;
+let gHov=null,gFilter=null,gStars=[],gRaf;
+let gCvs,gCtx,gCx,gCy,gR,gW,gH;
+const CAT_COL=Object.fromEntries(Object.entries(CATS).map(([k,v])=>[k,v.color]));
+
+function initGlobe(){
+  gCvs=document.getElementById('gc');
+  const resize=()=>{gW=gCvs.width=innerWidth;gH=gCvs.height=innerHeight;gCx=gW/2;gCy=gH/2;gR=Math.min(gW,gH)*0.40;if(!gStars.length)genStars();};
+  resize();window.addEventListener('resize',resize);
+  gCvs.addEventListener('mousedown',e=>{gDrag=true;gLx=e.clientX;gLy=e.clientY;gAuto=false;clearTimeout(gAutoTm);document.getElementById('g-tip').style.opacity='0';});
+  window.addEventListener('mousemove',e=>{if(gDrag){gLon+=(e.clientX-gLx)*0.4;gLat=Math.max(-80,Math.min(80,gLat-(e.clientY-gLy)*0.4));gLx=e.clientX;gLy=e.clientY;}doHov(e.clientX,e.clientY);});
+  window.addEventListener('mouseup',()=>{gDrag=false;gAutoTm=setTimeout(()=>gAuto=true,4000);});
+  gCvs.addEventListener('click',e=>{doHov(e.clientX,e.clientY);if(gHov)openDestFromGlobe(gHov);});
+  let pt0=null;
+  gCvs.addEventListener('touchstart',e=>{gDrag=true;gLx=e.touches[0].clientX;gLy=e.touches[0].clientY;gAuto=false;clearTimeout(gAutoTm);document.getElementById('g-tip').style.opacity='0';pt0={x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};},{passive:true});
+  gCvs.addEventListener('touchmove',e=>{if(gDrag&&e.touches.length===1){gLon+=(e.touches[0].clientX-gLx)*0.4;gLat=Math.max(-80,Math.min(80,gLat-(e.touches[0].clientY-gLy)*0.4));gLx=e.touches[0].clientX;gLy=e.touches[0].clientY;}},{passive:true});
+  gCvs.addEventListener('touchend',e=>{gDrag=false;gAutoTm=setTimeout(()=>gAuto=true,4000);if(pt0){const dx=e.changedTouches[0].clientX-pt0.x,dy=e.changedTouches[0].clientY-pt0.y;if(Math.sqrt(dx*dx+dy*dy)<18){doHov(e.changedTouches[0].clientX,e.changedTouches[0].clientY);if(gHov)openDestFromGlobe(gHov);}}});
+  buildCatFilter();if(gRaf)cancelAnimationFrame(gRaf);drawLoop();updateCount();
+}
+function genStars(){gStars=Array.from({length:280},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.2+0.2,a:Math.random()*0.6+0.1}));}
+function buildCatFilter(){
+  const w=document.getElementById('g-cats');w.innerHTML='';
+  const all=document.createElement('button');all.className='gcat a';all.textContent='🌍 All';
+  all.onclick=()=>{gFilter=null;w.querySelectorAll('.gcat').forEach(b=>b.classList.remove('a'));all.classList.add('a');updateCount();};w.appendChild(all);
+  Object.entries(CATS).forEach(([k,c])=>{const b=document.createElement('button');b.className='gcat';b.textContent=c.emoji+' '+c.name;b.onclick=()=>{gFilter=k;w.querySelectorAll('.gcat').forEach(b=>b.classList.remove('a'));b.classList.add('a');updateCount();};w.appendChild(b);});
+}
+function updateCount(){const n=gFilter?DESTS.filter(d=>d.cat===gFilter).length:DESTS.length;document.getElementById('g-count').textContent=n+' destinations';}
+function proj(lat,lon){const la=lat*Math.PI/180,lo=lon*Math.PI/180,cla=gLat*Math.PI/180,clo=gLon*Math.PI/180;const x=gR*(Math.cos(la)*Math.sin(lo-clo));const y=gR*(Math.sin(la)*Math.cos(cla)-Math.cos(la)*Math.cos(lo-clo)*Math.sin(cla));const z=Math.sin(la)*Math.sin(cla)+Math.cos(la)*Math.cos(lo-clo)*Math.cos(cla);return{x:gCx+x,y:gCy-y,z};}
+function drawPoly(poly,ctx,fs){ctx.fillStyle=fs;ctx.beginPath();let st=false;for(let i=0;i<poly.length;i++){const p=proj(poly[i][1],poly[i][0]);if(p.z>0){if(!st){ctx.moveTo(p.x,p.y);st=true;}else ctx.lineTo(p.x,p.y);}else{if(st){ctx.closePath();ctx.fill();ctx.beginPath();st=false;}}}if(st){ctx.closePath();ctx.fill();}}
+function doHov(mx,my){const shown=gFilter?DESTS.filter(d=>d.cat===gFilter):DESTS;let best=null,bd=999;for(const d of shown){const p=proj(d.lat,d.lng);if(p.z<0.05)continue;const dx=p.x-mx,dy=p.y-my,dist=Math.sqrt(dx*dx+dy*dy);if(dist<32&&dist<bd){bd=dist;best=d;}}gHov=best;const hov=document.getElementById('g-hov');if(best){const p=proj(best.lat,best.lng);document.getElementById('gh-cat').textContent=CATS[best.cat].name.toUpperCase();document.getElementById('gh-name').textContent=best.name;document.getElementById('gh-co').textContent=best.country;hov.style.left=p.x+'px';hov.style.top=p.y+'px';hov.classList.add('show');gCvs.style.cursor='pointer';}else{hov.classList.remove('show');gCvs.style.cursor=gDrag?'grabbing':'grab';}}
+function drawLoop(){
+  gRaf=requestAnimationFrame(drawLoop);if(gAuto&&!gDrag)gLon+=0.10;
+  const ctx=gCtx=gCvs.getContext('2d');ctx.clearRect(0,0,gW,gH);
+  ctx.fillStyle='#060810';ctx.fillRect(0,0,gW,gH);
+  gStars.forEach(s=>{ctx.beginPath();ctx.arc(s.x*gW,s.y*gH,s.r,0,Math.PI*2);ctx.fillStyle='rgba(220,230,255,'+s.a+')';ctx.fill();});
+  const og=ctx.createRadialGradient(gCx-gR*.3,gCy-gR*.3,0,gCx,gCy,gR);og.addColorStop(0,'#1E3A6E');og.addColorStop(.5,'#0E1F42');og.addColorStop(1,'#050A1A');ctx.beginPath();ctx.arc(gCx,gCy,gR,0,Math.PI*2);ctx.fillStyle=og;ctx.fill();
+  ctx.save();ctx.beginPath();ctx.arc(gCx,gCy,gR,0,Math.PI*2);ctx.clip();
+  const lg=ctx.createRadialGradient(gCx-gR*.2,gCy-gR*.2,0,gCx,gCy,gR);lg.addColorStop(0,'#4A7A42');lg.addColorStop(.5,'#3A6030');lg.addColorStop(1,'#2A4020');
+  LANDS.forEach(poly=>drawPoly(poly,ctx,lg));
+  LANDS.forEach(poly=>{ctx.strokeStyle='rgba(60,90,50,0.45)';ctx.lineWidth=.7;ctx.beginPath();let st=false;for(let i=0;i<poly.length;i++){const p=proj(poly[i][1],poly[i][0]);if(p.z>0.02){if(!st){ctx.moveTo(p.x,p.y);st=true;}else ctx.lineTo(p.x,p.y);}else if(st){ctx.stroke();ctx.beginPath();st=false;}}if(st)ctx.stroke();});
+  ctx.strokeStyle='rgba(255,255,255,0.035)';ctx.lineWidth=.5;
+  [-60,-30,0,30,60].forEach(lat=>{ctx.beginPath();let f=true;for(let lo=-180;lo<=180;lo+=3){const p=proj(lat,lo);if(p.z>0){if(f){ctx.moveTo(p.x,p.y);f=false;}else ctx.lineTo(p.x,p.y);}else f=true;}ctx.stroke();});
+  for(let lo=-180;lo<180;lo+=30){ctx.beginPath();let f=true;for(let lat=-85;lat<=85;lat+=3){const p=proj(lat,lo);if(p.z>0){if(f){ctx.moveTo(p.x,p.y);f=false;}else ctx.lineTo(p.x,p.y);}else f=true;}ctx.stroke();}
+  ctx.restore();
+  const atm=ctx.createRadialGradient(gCx,gCy,gR*.95,gCx,gCy,gR*1.18);atm.addColorStop(0,'rgba(80,160,255,.22)');atm.addColorStop(1,'rgba(80,160,255,0)');ctx.beginPath();ctx.arc(gCx,gCy,gR*1.18,0,Math.PI*2);ctx.fillStyle=atm;ctx.fill();
+  const spec=ctx.createRadialGradient(gCx-gR*.38,gCy-gR*.38,0,gCx-gR*.2,gCy-gR*.2,gR*.6);spec.addColorStop(0,'rgba(200,230,255,.1)');spec.addColorStop(1,'rgba(200,230,255,0)');ctx.beginPath();ctx.arc(gCx,gCy,gR,0,Math.PI*2);ctx.fillStyle=spec;ctx.fill();
+  ctx.beginPath();ctx.arc(gCx,gCy,gR,0,Math.PI*2);ctx.strokeStyle='rgba(80,160,255,.2)';ctx.lineWidth=1.5;ctx.stroke();
+  const shown=gFilter?DESTS.filter(d=>d.cat===gFilter):DESTS;
+  const pts=shown.map(d=>({d,p:proj(d.lat,d.lng)})).filter(x=>x.p.z>0.02).sort((a,b)=>a.p.z-b.p.z);
+  for(const {d,p} of pts){const isH=gHov===d,col=CAT_COL[d.cat],sz=isH?9:4;
+    if(isH){const gl=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,18);gl.addColorStop(0,col+'44');gl.addColorStop(1,col+'00');ctx.beginPath();ctx.arc(p.x,p.y,18,0,Math.PI*2);ctx.fillStyle=gl;ctx.fill();ctx.beginPath();ctx.arc(p.x,p.y,10,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1;ctx.stroke();}
+    ctx.beginPath();ctx.arc(p.x,p.y,sz,0,Math.PI*2);const a=.45+p.z*.55;ctx.fillStyle=isH?col:col+Math.floor(a*255).toString(16).padStart(2,'0');ctx.fill();}
+}
+function openDestFromGlobe(d){if(gRaf){cancelAnimationFrame(gRaf);gRaf=null;}const cd=shuffle(DESTS.filter(x=>x.cat===d.cat));const ci=cd.findIndex(x=>x.name===d.name);activeDests=cd;curIdx=ci>=0?ci:0;showDest('');}
+
+/* ════════════════════════════════════════════════
+   SCREEN NAV
+════════════════════════════════════════════════ */
+function goto(id){document.querySelectorAll('.sc').forEach(s=>{if(s.classList.contains('on')){s.classList.add('out');s.classList.remove('on');setTimeout(()=>s.classList.remove('out'),600);}});setTimeout(()=>document.getElementById(id).classList.add('on'),180);}
+
+/* ════════════════════════════════════════════════
+   AI CONVERSATION — GEMINI DIMENSIONAL MATCHING
+════════════════════════════════════════════════ */
+const THINK_MSGS=['Reading between your words…','Feeling what you wrote…','Searching the whole world for you…','A place is calling your name…'];
+let lastEmotion='';
+
+// Build the prompt as a string (NOT a template literal to avoid nesting issues)
+const GPROMPT = 'You are SoulScape\'s emotional and geographic reader. You have two jobs:\n'
++ '1. Understand what the person wrote — their emotional state AND any explicit geographic preferences\n'
++ '2. Extract a need vector that will match them to the perfect place\n\n'
++ 'CRITICAL: If they mention a SPECIFIC PLACE TYPE (mountain, beach, forest, desert, waterfall, city, garden, ocean, snow, jungle, lake, etc.) — HONOUR THAT. Explicit requests override emotional inference.\n\n'
++ 'NEED VECTOR — 6 numbers each 1-5:\n'
++ '1. scale: vastness (1=cosy/intimate, 3=human-scale, 5=overwhelming/vast)\n'
++ '2. complexity: visual richness (1=completely bare, 3=moderate, 5=layered/rich)\n'
++ '3. humans: presence (1=total solitude, 3=some traces, 5=bustling/alive)\n'
++ '4. age: geological time (1=new/seasonal, 3=historic, 5=primordial/geological)\n'
++ '5. energy: movement (1=perfectly still, 3=gentle rhythm, 5=dramatic/powerful)\n'
++ '6. tone: temperature (1=cool/crisp/raw, 3=neutral, 5=warm/golden/soft)\n\n'
++ 'EXPLICIT PLACE MAPPINGS:\n'
++ 'mountain/alps/peak/summit/everest → [5,2,1,5,3,2]\n'
++ 'beach/ocean/sea/coast/waves/maldives/tropical → [3,2,1,4,3,5]\n'
++ 'forest/woods/trees/jungle/bamboo → [2,3,1,5,2,3]\n'
++ 'desert/sand/dunes/sahara → [5,1,1,5,1,5]\n'
++ 'waterfall/falls/cascade → [3,2,1,3,5,3]\n'
++ 'city/cities/urban/town/street → [2,4,5,2,4,4]\n'
++ 'garden/flowers/bloom/park/lavender → [2,3,3,2,2,4]\n'
++ 'aurora/arctic/snow/iceland/norway/northern lights → [4,1,1,5,3,1]\n'
++ 'lake/river/lagoon → [3,2,1,4,2,4]\n\n'
++ 'EMOTIONAL MAPPINGS (when no explicit place):\n'
++ 'stressed/overwhelmed/pressure → [4,1,1,5,1,4]\n'
++ 'anxious/worried/panic → [2,3,1,4,2,2]\n'
++ 'sad/grief/loss → [2,3,4,2,3,4]\n'
++ 'lonely/alone → [2,4,5,2,3,5]\n'
++ 'angry/frustrated → [4,1,1,4,5,2]\n'
++ 'tired/exhausted/burnout → [3,1,1,5,1,4]\n'
++ 'happy/excited/joyful → [4,3,2,4,4,5]\n'
++ 'numb/disconnected/empty → [2,5,5,2,4,5]\n\n'
++ 'Return ONLY valid JSON, no explanation:\n'
++ '{"need":[n1,n2,n3,n4,n5,n6],"sentence":"1-2 sentences: warm, personal, specific to what they wrote. If they named a place type, gently confirm you heard them. Do NOT name the specific destination.","emotion":"one word"}';
+
+function initAI(){
+  const ta=document.getElementById('ai-ta'),btn=document.getElementById('ai-send');
+  ta.value='';btn.disabled=true;
+  ta.oninput=()=>{
+    btn.disabled=ta.value.trim().split(/\s+/).filter(w=>w.length>0).length<3;
+    ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,260)+'px';
+  };
+  ta.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey&&!btn.disabled){e.preventDefault();sendToAI();}};
+}
+
+function sendToAI(){
+  const input = document.getElementById('ai-ta').value.trim();
+  if(!input) return;
+
+  // Instant local match — no API call, no waiting
+  const dest = fallbackMatch(input);
+  const cd = shuffle(DESTS.filter(d => d.cat === dest.cat));
+  const ci = cd.findIndex(d => d.name === dest.name);
+  activeDests = cd;
+  curIdx = ci >= 0 ? ci : 0;
+  lastEmotion = 'exploring';
+
+  // Reset input
+  document.getElementById('ai-ta').value = '';
+  document.getElementById('ai-ta').style.height = 'auto';
+  document.getElementById('ai-send').disabled = true;
+
+  // Go straight to destination
+  showDest('');
+
+  // Fire Gemini in background AFTER navigation — just to get a personal sentence
+  getAISentence(input, dest);
+}
+
+async function getAISentence(input, dest){
+  // Called after user is already at destination
+  // Just fetches a personal sentence and fades it in if successful
+  try{
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 6000);
+    const r = await fetch(
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GK,
+      {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        signal: ctrl.signal,
+        body: JSON.stringify({
+          contents:[{parts:[{text: GPROMPT + '\n\nPerson wrote:\n"' + input + '"'}]}],
+          generationConfig:{temperature:0.65, maxOutputTokens:200}
+        })
+      }
+    );
+    clearTimeout(tid);
+    if(!r.ok) return;
+    const data = await r.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    const jm = text.match(/\{[\s\S]*\}/);
+    if(!jm) return;
+    const parsed = JSON.parse(jm[0]);
+    lastEmotion = parsed.emotion || 'exploring';
+    // Fade in the sentence if user is still on the same destination
+    if(parsed.sentence){
+      const o = document.getElementById('vai');
+      const t = document.getElementById('vai-txt');
+      if(o && t && document.getElementById('sd').classList.contains('on')){
+        t.textContent = parsed.sentence;
+        o.classList.add('show');
+        setTimeout(() => o.classList.remove('show'), 7000);
+      }
+    }
+  } catch(e){ /* silent fail — user already has their destination */ }
+}
+
+
+function fallbackMatch(text){
+  const t=text.toLowerCase();
+  if(t.match(/mountain|mountains|alps|peak|summit|everest|himalay/)) return matchDest([5,2,1,5,3,2]);
+  if(t.match(/beach|ocean|sea|coast|waves|maldives|tropical/))       return matchDest([3,2,1,4,3,5]);
+  if(t.match(/forest|jungle|woods|tree|bamboo|rainforest/))          return matchDest([2,3,1,5,2,3]);
+  if(t.match(/desert|sand|dune|sahara|arid/))                        return matchDest([5,1,1,5,1,5]);
+  if(t.match(/waterfall|falls|cascade/))                             return matchDest([3,2,1,3,5,3]);
+  if(t.match(/city|urban|town|street|market/))                       return matchDest([2,4,5,2,4,4]);
+  if(t.match(/garden|flower|bloom|park|lavender/))                   return matchDest([2,3,3,2,2,4]);
+  if(t.match(/aurora|arctic|snow|ice|iceland|norway/))               return matchDest([4,1,1,5,3,1]);
+  if(t.match(/lake|river|lagoon|fjord/))                             return matchDest([3,2,1,4,2,4]);
+  if(t.match(/stress|overwhelm|pressure|hectic/))                    return matchDest([4,1,1,5,1,4]);
+  if(t.match(/anxi|panic|worry|nervous/))                            return matchDest([2,3,1,4,2,2]);
+  if(t.match(/sad|grief|lost|hopeless|empty/))                       return matchDest([2,3,4,2,3,4]);
+  if(t.match(/angry|rage|frustrat|furious/))                         return matchDest([4,1,1,4,5,2]);
+  if(t.match(/tired|exhaust|drain|burnout/))                         return matchDest([3,1,1,5,1,4]);
+  if(t.match(/lonely|alone|miss/))                                   return matchDest([2,4,5,2,3,5]);
+  if(t.match(/happy|joy|excited|great/))                             return matchDest([4,3,2,4,4,5]);
+  return matchDest([3,2,1,4,2,3]);
+}
+
+/* ════════════════════════════════════════════════
+   BROWSE
+════════════════════════════════════════════════ */
+function buildBrowse(){
+  const grid=document.getElementById('cat-grid');grid.innerHTML='';
+  Object.entries(CATS).forEach(([k,c])=>{
+    const n=DESTS.filter(d=>d.cat===k).length;
+    const t=document.createElement('div');t.className='ctile';
+    t.innerHTML='<div class="ct-em">'+c.emoji+'</div><div class="ct-nm">'+c.name+'</div><div class="ct-ct">'+n+' places</div>';
+    t.onclick=()=>{launchCat(k);};
+    grid.appendChild(t);
+  });
+}
+
+/* ════════════════════════════════════════════════
+   DESTINATION — 3-CLIP CYCLING
+════════════════════════════════════════════════ */
+let activeDests=[],curIdx=0,activeVid='a';
+let currentClips=[null,null,null],clipIdx=0,clipTimer=null;
+const CLIP_DUR=[15000,10000,5000];
+
+function launchCat(k){activeDests=shuffle(DESTS.filter(d=>d.cat===k));curIdx=0;showDest('');}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function nav(dir){curIdx=(curIdx+dir+activeDests.length)%activeDests.length;showDest('');}
+
+function renderDots(){
+  const w=document.getElementById('vds');w.innerHTML='';
+  const n=activeDests.length,max=Math.min(n,9),start=Math.max(0,Math.min(curIdx-4,n-max));
+  for(let i=start;i<start+max;i++){const d=document.createElement('div');d.className='vd'+(i===curIdx?' cur':Math.abs(i-curIdx)===1?' nb':'');w.appendChild(d);}
+}
+
+function stopClips(){if(clipTimer){clearTimeout(clipTimer);clipTimer=null;}}
+
+function playClip(ci,sentence){
+  clipIdx=ci;const url=currentClips[ci];
+  for(let i=0;i<3;i++){
+    const f=document.getElementById('vcpf'+i),p=f?.parentElement;if(!p)continue;
+    if(i<ci){p.className='vcp done';f.style.transition='none';f.style.width='100%';}
+    else if(i===ci){p.className='vcp';f.style.transition='none';f.style.width='0%';}
+    else{p.className='vcp';f.style.transition='none';f.style.width='0%';}
+  }
+  if(url){
+    xfade(url,()=>{
+      const f=document.getElementById('vcpf'+ci);
+      if(f){requestAnimationFrame(()=>{f.style.transition='width '+CLIP_DUR[ci]+'ms linear';f.style.width='100%';});}
+    });
+  }
+  if(ci===0&&sentence){
+    const o=document.getElementById('vai'),t=document.getElementById('vai-txt');
+    if(o&&t){t.textContent=sentence;o.classList.add('show');setTimeout(()=>o.classList.remove('show'),6000);}
+  }
+  clipTimer=setTimeout(()=>playClip((ci+1)%3,''),CLIP_DUR[ci]);
+}
+
+function showDest(sentence){
+  const D=activeDests[curIdx];
+  const gi=DESTS.indexOf(D);
+
+  // Update all text immediately
+  document.getElementById('dco').textContent=D.country.toUpperCase();
+  document.getElementById('dct').textContent=CATS[D.cat].name.toUpperCase();
+  document.getElementById('dnm').textContent=D.name;
+  document.getElementById('dds').textContent=D.desc;
+  document.getElementById('vctr').textContent=(curIdx+1)+'/'+activeDests.length;
+  document.getElementById('vcat').textContent=CATS[D.cat].name.toUpperCase();
+  curSnd=D.sound;resetSnd();try{renderDots();}catch(e){}try{stampPassport(D,lastEmotion);}catch(e){}
+
+  // Mood glow shows immediately — looks beautiful on its own
+  document.getElementById('vbg').style.background=
+    'radial-gradient(ellipse at center,'+CATS[D.cat].glow+' 0%,'+CATS[D.cat].glow+' 60%,#060810 100%)';
+
+  // Go straight to destination — no loading screen
+  goto('sd');
+  stopClips();
+  document.getElementById('vl').classList.remove('done');
+
+  // Show AI sentence over the glow immediately if we have it
+  if(sentence){
+    setTimeout(()=>{
+      const o=document.getElementById('vai'),t=document.getElementById('vai-txt');
+      if(o&&t){t.textContent=sentence;o.classList.add('show');setTimeout(()=>o.classList.remove('show'),7000);}
+    },400);
+  }
+
+  // Load video completely in the background — don't block anything
+  loadVideoBackground(D, gi, sentence);
+
+  // Preload next destination quietly
+  if(activeDests.length>1){
+    const ni=(curIdx+1)%activeDests.length;
+    setTimeout(()=>fetchVid(activeDests[ni],DESTS.indexOf(activeDests[ni])),3000);
+  }
+}
+
+async function loadVideoBackground(D, gi, sentence){
+  try{
+    const res = await fetchVid(D, gi);
+    document.getElementById('vl').classList.add('done');
+    if(res){
+      currentClips=[res.url, res.url, res.url];
+      playClip(0,''); // sentence already shown above
+      // Load a second clip quietly and swap in
+      // Pass a modified dest so cache key differs for clip 2
+    const destClip2 = Object.assign({}, D, {name: D.name + '_c2'});
+    fetchVid(destClip2, gi+19).then(r2=>{if(r2)currentClips[1]=r2.url;});
+    }
+  }catch(e){
+    document.getElementById('vl').classList.add('done');
+  }
+}
+
+function xfade(url,onReady){
+  const va=document.getElementById('va'),vb=document.getElementById('vb');
+  const inc=activeVid==='a'?vb:va,out=activeVid==='a'?va:vb;
+  inc.src=url;inc.load();
+  inc.oncanplay=()=>{inc.play().catch(()=>{});inc.classList.add('on');setTimeout(()=>{out.classList.remove('on');setTimeout(()=>{out.src='';},1200);},80);activeVid=activeVid==='a'?'b':'a';if(onReady)onReady();};
+}
+
+// Touch swipe on video stage
+let tsx=0,tsy=0;
+document.getElementById('vs').addEventListener('touchstart',e=>{tsx=e.touches[0].clientX;tsy=e.touches[0].clientY;},{passive:true});
+document.getElementById('vs').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tsx,dy=e.changedTouches[0].clientY-tsy;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>44)nav(dx<0?1:-1);},{passive:true});
+
+/* ════════════════════════════════════════════════
+   LOADING
+════════════════════════════════════════════════ */
+const LM=['Charting your course…','Searching 455 destinations…','Tuning into your frequency…','A place is calling your name…','Something extraordinary is waiting…'];
+let ltm;
+function startLoad(){let i=0;document.getElementById('lmsg').textContent=LM[0];ltm=setInterval(()=>{i=(i+1)%LM.length;document.getElementById('lmsg').textContent=LM[i];},820);}
+function stopLoad(){clearInterval(ltm);}
+
+/* ════════════════════════════════════════════════
+   AMBIENT AUDIO — PINK NOISE
+════════════════════════════════════════════════ */
+let ac=null,mg=null,an=[],sp=false,curSnd='ocean';
+function initAC(){if(ac)return;ac=new(window.AudioContext||window.webkitAudioContext)();mg=ac.createGain();mg.gain.value=.6;mg.connect(ac.destination);}
+function pink(s=6){const l=ac.sampleRate*s,buf=ac.createBuffer(2,l,ac.sampleRate);for(let c=0;c<2;c++){const d=buf.getChannelData(c);let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;for(let i=0;i<l;i++){const w=Math.random()*2-1;b0=.99886*b0+w*.0555179;b1=.99332*b1+w*.0750759;b2=.969*b2+w*.153852;b3=.8665*b3+w*.3104856;b4=.55*b4+w*.5329522;b5=-.7616*b5-w*.016898;d[i]=(b0+b1+b2+b3+b4+b5+b6+w*.5362)*.11;b6=w*.115926;}}const n=ac.createBufferSource();n.buffer=buf;n.loop=true;return n;}
+function ft(t,f,q){const b=ac.createBiquadFilter();b.type=t;b.frequency.value=f;if(q!=null)b.Q.value=q;return b;}
+function gn(v){const g=ac.createGain();g.gain.value=v;return g;}
+function os(f){const o=ac.createOscillator();o.frequency.value=f;return o;}
+function playOcean(){const s1=pink(6),lp=ft('lowpass',700),wg=gn(.5),wL=os(.07),wG=gn(.22);wL.connect(wG);wG.connect(wg.gain);const w2=os(.18),w2G=gn(.1);w2.connect(w2G);w2G.connect(wg.gain);s1.connect(lp);lp.connect(wg);wg.connect(mg);const s2=pink(4),bl=ft('lowpass',90),bG=gn(.3);s2.connect(bl);bl.connect(bG);bG.connect(mg);const s3=pink(3),sf=ft('highpass',3800),sfG=gn(.1);s3.connect(sf);sf.connect(sfG);sfG.connect(mg);s1.start();s2.start();s3.start();wL.start();w2.start();an=[s1,s2,s3,wL,w2];}
+function playRain(){const s1=pink(4),bp=ft('bandpass',2600,.65),g1=gn(.48);s1.connect(bp);bp.connect(g1);g1.connect(mg);const s2=pink(3),hp=ft('highpass',4800),g2=gn(.28);s2.connect(hp);hp.connect(g2);g2.connect(mg);const s3=pink(5),bp2=ft('bandpass',750,.45),g3=gn(.32);s3.connect(bp2);bp2.connect(g3);g3.connect(mg);const vL=os(.035),vG=gn(.07);vL.connect(vG);vG.connect(g1.gain);s1.start();s2.start();s3.start();vL.start();an=[s1,s2,s3,vL];}
+function playForest(){const s1=pink(5),lp=ft('lowpass',580),g1=gn(.32);s1.connect(lp);lp.connect(g1);g1.connect(mg);const s2=pink(4),bp=ft('bandpass',1100,.55),g2=gn(.18);s2.connect(bp);bp.connect(g2);g2.connect(mg);const s3=pink(6),bf=ft('bandpass',380,1.3),bg=gn(.22),bL=os(.055),bM=gn(180);bL.connect(bM);bM.connect(bf.frequency);s3.connect(bf);bf.connect(bg);bg.connect(mg);const sL=os(.028),sG=gn(.09);sL.connect(sG);sG.connect(g1.gain);s1.start();s2.start();s3.start();bL.start();sL.start();an=[s1,s2,s3,bL,sL];}
+function playWind(){const s1=pink(5),wf=ft('bandpass',480,1.1),g1=gn(.38),gL=os(.045),gM=gn(320);gL.connect(gM);gM.connect(wf.frequency);s1.connect(wf);wf.connect(g1);g1.connect(mg);const s2=pink(4),hf=ft('bandpass',170,2.2),g2=gn(.25);s2.connect(hf);hf.connect(g2);g2.connect(mg);const sL=os(.038),sG=gn(.16);sL.connect(sG);sG.connect(g1.gain);s1.start();s2.start();gL.start();sL.start();an=[s1,s2,gL,sL];}
+const SND={ocean:playOcean,rain:playRain,forest:playForest,wind:playWind};
+function stopSnd(){an.forEach(n=>{try{n.stop();}catch(e){}});an=[];}
+function resetSnd(){stopSnd();sp=false;document.getElementById('sic').textContent='♪';document.getElementById('slb').textContent=' Ambient';document.getElementById('sbt').classList.remove('on');document.getElementById('vrow').style.display='none';}
+function toggleSnd(){initAC();if(ac.state==='suspended')ac.resume();if(sp){stopSnd();sp=false;document.getElementById('sic').textContent='♪';document.getElementById('slb').textContent=' Ambient';document.getElementById('sbt').classList.remove('on');document.getElementById('vrow').style.display='none';}else{(SND[curSnd]||playForest)();sp=true;document.getElementById('sic').textContent='🔊';document.getElementById('slb').textContent=' Playing';document.getElementById('sbt').classList.add('on');document.getElementById('vrow').style.display='flex';}}
+function setVol(v){if(mg)mg.gain.value=v/100;}
+
+/* ════════════════════════════════════════════════
+   LETTER FROM THE PLACE
+════════════════════════════════════════════════ */
+async function openLetter(){
+  const D=activeDests[curIdx];if(!D)return;
+  document.getElementById('ltr-place').textContent=D.name;
+  document.getElementById('ltr-body').textContent='Writing something just for you…';
+  document.getElementById('letter-ov').classList.add('show');
+  const emotion=lastEmotion||'searching for something';
+  try{
+    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+GK,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({contents:[{parts:[{text:'You are '+D.name+' in '+D.country+'. Write a short letter (3-4 sentences) to a person who is visiting you right now. They came because they were feeling: '+emotion+'. Write in first person as the place itself — ancient, calm, wise. Acknowledge what they brought. Tell them what you have held over thousands of years. Make them feel small in the best way, and safe. Write ONLY the letter body, no greeting, no sign-off.'}]}],generationConfig:{temperature:0.8,maxOutputTokens:200}})
+    });
+    const data=await r.json();
+    const text=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    const body=document.getElementById('ltr-body');body.textContent='';
+    let i=0;const iv=setInterval(()=>{if(i<text.length){body.textContent+=text[i];i++;}else clearInterval(iv);},18);
+  }catch(e){
+    document.getElementById('ltr-body').textContent='You came carrying something. I have been here long enough to know that everything passes — the grief, the pressure, the noise. I have held heavier things than what you brought today. Stay as long as you need.';
+  }
+}
+function closeLetter(){document.getElementById('letter-ov').classList.remove('show');}
+
+/* ════════════════════════════════════════════════
+   POSTCARD
+════════════════════════════════════════════════ */
+let pcDest=null,pcMsg='',pcToName='',pcFromName='';
+
+/* ── POSTCARD MODE SWITCHER ── */
+function pcMode(mode){
+  ['pc-mode-sel','pc-share-form','pc-find-form'].forEach(id=>{
+    document.getElementById(id).style.display='none';
+  });
+  if(!mode){
+    document.getElementById('pc-mode-sel').style.display='block';
+    return;
+  }
+  if(mode==='share'){
+    // Pre-fill with current destination
+    const D=activeDests[curIdx];
+    if(D){
+      document.getElementById('pc-share-title').textContent='From '+D.name;
+      pcDest=D;
+    }
+    document.getElementById('pc-share-form').style.display='block';
+  }
+  if(mode==='find'){
+    document.getElementById('pc-find-form').style.display='block';
+  }
+}
+
+function openPostcard(){
+  goto('spc');
+  resetPC();
+}
+
+function resetPC(){
+  ['pc-mode-sel','pc-share-form','pc-find-form','pc-think','pc-prev'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.display='none';
+  });
+  document.getElementById('pc-think').classList.remove('show');
+  document.getElementById('pc-prev').style.display='none';
+  document.getElementById('pc-mode-sel').style.display='block';
+  ['pcs-to','pcs-msg','pcs-from','pcf-to','pcf-about','pcf-from'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  pcDest=null;pcMsg='';pcToName='';pcFromName='';
+}
+
+/* ── MODE A: Share current place ── */
+function makeSharePostcard(){
+  const D=activeDests[curIdx];if(!D)return;
+  const msg=document.getElementById('pcs-msg').value.trim();
+  const toName=document.getElementById('pcs-to').value.trim();
+  const fromName=document.getElementById('pcs-from').value.trim();
+  if(!msg){alert('Write a message first.');return;}
+  pcDest=D;
+  pcMsg=msg;
+  pcToName=toName;
+  pcFromName=fromName;
+  document.getElementById('pc-share-form').style.display='none';
+  drawPostcardCanvas(D,msg,toName,fromName);
+  document.getElementById('pc-prev').style.display='block';
+}
+
+/* ── MODE B: Find their place with AI ── */
+const PC_MSGS=['Finding their perfect place…','Reading what you shared…','Choosing their world…','Writing something personal…'];
+
+async function createPostcard(){
+  const about=document.getElementById('pcf-about').value.trim();
+  const toName=document.getElementById('pcf-to').value.trim();
+  const fromName=document.getElementById('pcf-from').value.trim();
+  if(!about||about.length<10){alert('Tell us a little more about them first.');return;}
+  document.getElementById('pc-find-form').style.display='none';
+  const th=document.getElementById('pc-think');th.classList.add('show');th.style.display='flex';
+  const ttxt=document.getElementById('pc-think-txt');ttxt.textContent=PC_MSGS[0];
+  let mi=0;const tmr=setInterval(()=>{mi=(mi+1)%PC_MSGS.length;ttxt.textContent=PC_MSGS[mi];},900);
+
+  // 5-second timeout fallback
+  const timeout=setTimeout(()=>{
+    clearInterval(tmr);
+    pcDest=fallbackMatch(about);
+    pcMsg='Found a place I think you need right now. Thinking of you.';
+    pcToName=toName;pcFromName=fromName;
+    th.classList.remove('show');th.style.display='none';
+    drawPostcardCanvas(pcDest,pcMsg,toName,fromName);
+    document.getElementById('pc-prev').style.display='block';
+  },5000);
+
+  try{
+    const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+GK,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({contents:[{parts:[{text:GPROMPT+'
+
+Choose a place for someone ELSE.
+Friend shared: "'+about+'"
+Write a postcard message from '+(fromName||'a friend')+' to '+(toName||'them')+' — warm, specific, 2-3 sentences.
+Return JSON: {"need":[n1,n2,n3,n4,n5,n6],"sentence":"postcard message","emotion":"one word"}'}]}],generationConfig:{temperature:0.75,maxOutputTokens:300}})
+    });
+    clearTimeout(timeout);clearInterval(tmr);
+    const data=await r.json();
+    const text=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    const jm=text.match(/\{[\s\S]*\}/);
+    if(!jm)throw new Error('no json');
+    const parsed=JSON.parse(jm[0]);
+    pcDest=matchDest(parsed.need);
+    pcMsg=parsed.sentence||'Found a place I think you need right now.';
+  }catch(e){
+    clearTimeout(timeout);clearInterval(tmr);
+    pcDest=fallbackMatch(about);
+    pcMsg='Found a place I think you need right now. Thinking of you.';
+  }
+  pcToName=toName;pcFromName=fromName;
+  th.classList.remove('show');th.style.display='none';
+  if(pcDest){
+    drawPostcardCanvas(pcDest,pcMsg,toName,fromName);
+    document.getElementById('pc-prev').style.display='block';
+  }
+}
+
+/* ── CANVAS POSTCARD — looks like the reference image ── */
+function drawPostcardCanvas(dest, msg, toName, fromName){
+  const cvs=document.getElementById('pc-canvas');if(!cvs)return;
+  const ctx=cvs.getContext('2d');
+  const W=340,H=220;
+  cvs.width=W;cvs.height=H;
+
+  // ── BACKGROUND — aged cream paper ──
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#F5F0E8');
+  bg.addColorStop(0.5,'#EDE8DC');
+  bg.addColorStop(1,'#E8E0D0');
+  ctx.fillStyle=bg;
+  ctx.fillRect(0,0,W,H);
+
+  // Paper grain texture
+  for(let i=0;i<1200;i++){
+    const x=Math.random()*W,y=Math.random()*H;
+    ctx.fillStyle='rgba(0,0,0,'+(Math.random()*0.03)+')';
+    ctx.fillRect(x,y,1,1);
+  }
+
+  // Slightly aged edges
+  const vignette=ctx.createRadialGradient(W/2,H/2,W*0.3,W/2,H/2,W*0.8);
+  vignette.addColorStop(0,'rgba(0,0,0,0)');
+  vignette.addColorStop(1,'rgba(0,0,0,0.08)');
+  ctx.fillStyle=vignette;ctx.fillRect(0,0,W,H);
+
+  // ── SERRATED BORDER ──
+  ctx.strokeStyle='rgba(0,0,0,0.15)';ctx.lineWidth=1;ctx.setLineDash([4,3]);
+  ctx.strokeRect(6,6,W-12,H-12);
+  ctx.setLineDash([]);
+
+  // ── LEFT SIDE — correspondence area ──
+  const mid=W*0.52;
+
+  // "POSTCARD" header
+  ctx.fillStyle='rgba(30,20,10,0.85)';
+  ctx.font='700 22px Playfair Display, Cormorant Garamond, serif';
+  ctx.textAlign='left';
+  ctx.fillText('POSTCARD',18,36);
+
+  // Italic subtitle — destination name
+  ctx.fillStyle='rgba(30,20,10,0.5)';
+  ctx.font='italic 600 12px Cormorant Garamond, serif';
+  ctx.fillText('from '+dest.name,18,50);
+
+  // TO line
+  ctx.fillStyle='rgba(30,20,10,0.6)';
+  ctx.font='italic 11px Cormorant Garamond, serif';
+  ctx.fillText('To:',18,78);
+  ctx.strokeStyle='rgba(0,0,0,0.2)';ctx.lineWidth=0.5;
+  ctx.beginPath();ctx.moveTo(38,79);ctx.lineTo(mid-14,79);ctx.stroke();
+  if(toName){
+    ctx.fillStyle='rgba(30,20,10,0.75)';
+    ctx.font='500 11px DM Sans, sans-serif';
+    ctx.fillText(toName,40,77);
+  }
+
+  // Message lines
+  ctx.fillStyle='rgba(30,20,10,0.6)';
+  ctx.font='italic 11px Cormorant Garamond, serif';
+  ctx.fillText('Message:',18,100);
+  // Word-wrap the message
+  const words=msg.split(' ');
+  let line='';const lines=[];const maxW=mid-28;
+  ctx.font='italic 10px Cormorant Garamond, serif';
+  words.forEach(w=>{
+    const test=line+(line?' ':'')+w;
+    if(ctx.measureText(test).width>maxW&&line){lines.push(line);line=w;}
+    else line=test;
+  });
+  if(line)lines.push(line);
+  ctx.fillStyle='rgba(30,20,10,0.8)';
+  ctx.font='italic 11px Cormorant Garamond, serif';
+  lines.slice(0,4).forEach((l,i)=>{
+    if(i<3||lines.length<=4) ctx.fillText(l,18,115+i*14);
+    else ctx.fillText(l+'…',18,115+i*14);
+  });
+
+  // FROM
+  if(fromName){
+    ctx.fillStyle='rgba(30,20,10,0.65)';
+    ctx.font='italic 11px Cormorant Garamond, serif';
+    ctx.fillText('— '+fromName,18,H-20);
+  }
+
+  // DATE
+  ctx.fillStyle='rgba(30,20,10,0.4)';
+  ctx.font='10px DM Sans, sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText(new Date().toLocaleDateString('en',{day:'numeric',month:'long',year:'numeric'}),18,H-8);
+
+  // ── VERTICAL DIVIDER ──
+  ctx.strokeStyle='rgba(0,0,0,0.12)';ctx.lineWidth=0.5;ctx.setLineDash([]);
+  ctx.beginPath();ctx.moveTo(mid,14);ctx.lineTo(mid,H-14);ctx.stroke();
+
+  // ── RIGHT SIDE — stamp + photo area ──
+  const rx=mid+10;
+  const rw=W-mid-18;
+
+  // ── POSTAGE STAMP ──
+  const sx=W-60,sy=12,sw=44,sh=36;
+  // Stamp border — serrated effect
+  ctx.fillStyle='white';
+  ctx.fillRect(sx-2,sy-2,sw+4,sh+4);
+  ctx.fillStyle='rgba(0,0,0,0.1)';
+  ctx.fillRect(sx-2,sy-2,sw+4,sh+4);
+  // Stamp serration
+  ctx.fillStyle='#EDE8DC';
+  for(let x=sx-2;x<sx+sw+2;x+=4){
+    ctx.beginPath();ctx.arc(x+2,sy-2,2,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(x+2,sy+sh+2,2,0,Math.PI*2);ctx.fill();
+  }
+  for(let y=sy;y<sy+sh;y+=4){
+    ctx.beginPath();ctx.arc(sx-2,y+2,2,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(sx+sw+2,y+2,2,0,Math.PI*2);ctx.fill();
+  }
+  // Stamp fill
+  ctx.fillStyle=CATS[dest.cat].color+'33';
+  ctx.fillRect(sx,sy,sw,sh);
+  // Stamp emoji
+  ctx.font='18px serif';ctx.textAlign='center';
+  ctx.fillText(CATS[dest.cat].emoji,sx+sw/2,sy+sh/2+6);
+  // Stamp value
+  ctx.fillStyle='rgba(30,20,10,0.5)';
+  ctx.font='500 6px DM Sans, sans-serif';
+  ctx.fillText('SOULSCAPE',sx+sw/2,sy+sh-4);
+
+  // ── POSTMARK ──
+  const pmx=W-92,pmy=24;
+  ctx.strokeStyle='rgba(30,20,10,0.2)';ctx.lineWidth=0.8;
+  ctx.beginPath();ctx.arc(pmx,pmy,18,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.arc(pmx,pmy,12,0,Math.PI*2);ctx.stroke();
+  // Wavy postmark lines
+  for(let i=0;i<3;i++){
+    ctx.beginPath();
+    ctx.moveTo(pmx-26,pmy-8+i*8);
+    ctx.bezierCurveTo(pmx-20,pmy-12+i*8,pmx-14,pmy-4+i*8,pmx-8,pmy-8+i*8);
+    ctx.strokeStyle='rgba(30,20,10,0.15)';ctx.lineWidth=0.7;ctx.stroke();
+  }
+  ctx.fillStyle='rgba(30,20,10,0.25)';
+  ctx.font='700 7px DM Sans, sans-serif';ctx.textAlign='center';
+  ctx.fillText('ARRIVAL',pmx,pmy-3);
+  ctx.font='500 6px DM Sans, sans-serif';
+  ctx.fillText(new Date().getFullYear(),pmx,pmy+7);
+
+  // ── PLACE INFO ──
+  ctx.fillStyle='rgba(30,20,10,0.45)';
+  ctx.font='500 7px DM Sans, sans-serif';ctx.textAlign='left';
+  ctx.fillText(CATS[dest.cat].name.toUpperCase(),rx,76);
+
+  ctx.fillStyle='rgba(30,20,10,0.85)';
+  ctx.font='700 14px Cormorant Garamond, serif';
+  const nm=dest.name.length>18?dest.name.slice(0,16)+'…':dest.name;
+  ctx.fillText(nm,rx,92);
+
+  ctx.fillStyle='rgba(30,20,10,0.5)';
+  ctx.font='400 10px DM Sans, sans-serif';
+  ctx.fillText(dest.country,rx,104);
+
+  // ── SOULSCAPE FOOTER ──
+  ctx.fillStyle='rgba(30,20,10,0.3)';
+  ctx.font='italic 8px Cormorant Garamond, serif';
+  ctx.textAlign='right';
+  ctx.fillText('soulscape.app',W-14,H-8);
+}
+
+function buildPCURL(){
+  if(!pcDest)return location.href;
+  return location.origin+location.pathname+'?dest='+encodeURIComponent(pcDest.name)+'&cat='+pcDest.cat+'&msg='+btoa(unescape(encodeURIComponent(pcMsg)));
+}
+function sharePostcard(){
+  const url=buildPCURL();
+  if(navigator.share){navigator.share({title:'A place for you — SoulScape',text:pcMsg,url});}
+  else copyLink();
+}
+function copyLink(){
+  const url=buildPCURL();const btn=document.getElementById('copy-btn');
+  navigator.clipboard?.writeText(url).then(()=>{if(btn){btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent='📋 Copy link',2000);}});
+}
+
+
+function checkIncomingPostcard(){
+  const p=new URLSearchParams(location.search);
+  const dn=p.get('dest'),cat=p.get('cat'),msgB=p.get('msg');
+  if(!dn||!cat)return;
+  let msg='';try{msg=decodeURIComponent(escape(atob(msgB||'')));}catch(e){}
+  const found=DESTS.find(d=>d.name===dn&&d.cat===cat);if(!found)return;
+  const cd=shuffle(DESTS.filter(d=>d.cat===cat));const ci=cd.findIndex(d=>d.name===dn);
+  activeDests=cd;curIdx=ci>=0?ci:0;
+  showDest(msg);window.history.replaceState({},'',location.pathname);
+}
+
+/* ════════════════════════════════════════════════
+   EMOTIONAL PASSPORT
+════════════════════════════════════════════════ */
+const PSP_KEY='ss_psp_v2';
+function getPassport(){try{return JSON.parse(localStorage.getItem(PSP_KEY)||'[]');}catch(e){return[];}}
+function stampPassport(dest,emotion){
+  try{
+    const p=getPassport();
+    p.push({name:dest.name,country:dest.country,cat:dest.cat,emotion:emotion||'exploring',ts:Date.now(),emoji:CATS[dest.cat].emoji});
+    if(p.length>60)p.splice(0,p.length-60);
+    localStorage.setItem(PSP_KEY,JSON.stringify(p));
+  }catch(e){}
+}
+
+function openPassport(){
+  const p=getPassport();
+  document.getElementById('psp-n').textContent=p.length;
+  document.getElementById('psp-w').textContent=new Set(p.map(x=>x.cat)).size;
+  document.getElementById('psp-s').textContent=Math.max(1,Math.round(p.length/3));
+  const list=document.getElementById('psp-list');list.innerHTML='';
+  [...p].reverse().slice(0,15).forEach(item=>{
+    const row=document.createElement('div');row.className='psp-row';
+    const d=new Date(item.ts);const ds=d.toLocaleDateString('en',{month:'short',day:'numeric'});
+    row.innerHTML='<div class="psp-em">'+item.emoji+'</div><div class="psp-info"><div class="psp-pname">'+item.name+'</div><div class="psp-pco">'+item.country+'</div><div class="psp-pfeel">'+item.emotion+' · '+ds+'</div></div>';
+    list.appendChild(row);
+  });
+  drawPSP(p);goto('spsp');
+}
+
+function drawPSP(places){
+  const cvs=document.getElementById('psp-cvs');if(!cvs)return;
+  const ctx=cvs.getContext('2d'),W=320,H=460;
+  cvs.width=W;cvs.height=H;
+
+  // ── PASSPORT COVER ──
+  // Dark forest green — classic passport colour
+  const coverGrad=ctx.createLinearGradient(0,0,W,H);
+  coverGrad.addColorStop(0,'#1B3A2D');
+  coverGrad.addColorStop(0.5,'#14291F');
+  coverGrad.addColorStop(1,'#0E1F17');
+  ctx.fillStyle=coverGrad;
+  ctx.fillRect(0,0,W,H);
+
+  // Leather texture — subtle noise pattern
+  for(let i=0;i<800;i++){
+    const x=Math.random()*W,y=Math.random()*H;
+    ctx.fillStyle='rgba(255,255,255,'+(Math.random()*0.025)+')';
+    ctx.fillRect(x,y,1,1);
+  }
+
+  // Gold border — outer
+  ctx.strokeStyle='rgba(212,175,55,0.6)';ctx.lineWidth=2;
+  ctx.strokeRect(8,8,W-16,H-16);
+  // Gold border — inner
+  ctx.strokeStyle='rgba(212,175,55,0.25)';ctx.lineWidth=0.5;
+  ctx.strokeRect(12,12,W-24,H-24);
+
+  // Corner ornaments
+  const corners=[[16,16],[W-16,16],[16,H-16],[W-16,H-16]];
+  corners.forEach(([cx,cy])=>{
+    ctx.strokeStyle='rgba(212,175,55,0.6)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);ctx.stroke();
+    ctx.beginPath();ctx.arc(cx,cy,2,0,Math.PI*2);
+    ctx.fillStyle='rgba(212,175,55,0.7)';ctx.fill();
+  });
+
+  // ── EMBLEM (globe circle) ──
+  const ex=W/2,ey=110,er=38;
+  // Globe circle
+  ctx.beginPath();ctx.arc(ex,ey,er,0,Math.PI*2);
+  ctx.strokeStyle='rgba(212,175,55,0.55)';ctx.lineWidth=1.5;ctx.stroke();
+  // Globe inner lines
+  ctx.strokeStyle='rgba(212,175,55,0.2)';ctx.lineWidth=0.7;
+  // Latitude lines
+  [-18,0,18].forEach(offset=>{
+    ctx.beginPath();ctx.arc(ex,ey+offset,Math.sqrt(er*er-offset*offset),0,Math.PI*2);
+    ctx.stroke();
+  });
+  // Vertical line through globe
+  ctx.beginPath();ctx.moveTo(ex,ey-er);ctx.lineTo(ex,ey+er);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(ex-er,ey);ctx.lineTo(ex+er,ey);ctx.stroke();
+
+  // ── COUNTRY / APP NAME ──
+  ctx.fillStyle='rgba(212,175,55,0.5)';
+  ctx.font='500 8px DM Sans, sans-serif';
+  ctx.letterSpacing='4px';
+  ctx.textAlign='center';
+  ctx.fillText('SOULSCAPE',W/2,164);
+
+  // ── MAIN TITLE ──
+  ctx.fillStyle='rgba(240,235,215,0.92)';
+  ctx.font='600 22px Cormorant Garamond, serif';
+  ctx.fillText('TRAVEL PASSPORT',W/2,192);
+
+  // Thin gold line separator
+  ctx.beginPath();ctx.moveTo(W/2-60,202);ctx.lineTo(W/2+60,202);
+  ctx.strokeStyle='rgba(212,175,55,0.35)';ctx.lineWidth=0.7;ctx.stroke();
+
+  // ── STATS — like passport data page ──
+  const total=places.length;
+  const cats=new Set(places.map(x=>x.cat)).size;
+  const sessions=Math.max(1,Math.round(total/3));
+
+  // Field labels
+  ctx.fillStyle='rgba(212,175,55,0.55)';
+  ctx.font='500 7px DM Sans, sans-serif';
+  ctx.textAlign='left';
+  [[24,228,'DESTINATIONS VISITED'],[122,228,'WORLDS EXPLORED'],[220,228,'JOURNEYS']].forEach(([x,y,lbl])=>{
+    ctx.fillText(lbl,x,y);
+  });
+
+  // Field values
+  ctx.fillStyle='rgba(240,235,215,0.9)';
+  ctx.font='600 20px Cormorant Garamond, serif';
+  [[24,248,total],[122,248,cats],[220,248,sessions]].forEach(([x,y,val])=>{
+    ctx.textAlign='left';
+    ctx.fillText(val,x,y);
+  });
+
+  // Divider
+  ctx.beginPath();ctx.moveTo(24,255);ctx.lineTo(W-24,255);
+  ctx.strokeStyle='rgba(212,175,55,0.15)';ctx.lineWidth=0.5;ctx.stroke();
+
+  // ── WORLD STAMPS — category exploration ──
+  ctx.fillStyle='rgba(212,175,55,0.5)';
+  ctx.font='500 7px DM Sans, sans-serif';
+  ctx.textAlign='left';
+  ctx.fillText('WORLDS EXPLORED',24,272);
+
+  const catCts={};
+  places.forEach(p=>{catCts[p.cat]=(catCts[p.cat]||0)+1;});
+  const sortedC=Object.entries(catCts).sort((a,b)=>b[1]-a[1]).slice(0,4);
+
+  sortedC.forEach(([cat,count],i)=>{
+    const row=Math.floor(i/2),col=i%2;
+    const x=24+col*148,y=290+row*28;
+    // Stamp circle
+    ctx.beginPath();ctx.arc(x+10,y-5,10,0,Math.PI*2);
+    ctx.strokeStyle='rgba(212,175,55,0.35)';ctx.lineWidth=1;ctx.stroke();
+    ctx.font='12px serif';ctx.textAlign='center';
+    ctx.fillStyle='rgba(240,235,215,0.8)';
+    ctx.fillText(CATS[cat].emoji,x+10,y-1);
+    // Name
+    ctx.font='500 9px DM Sans, sans-serif';ctx.textAlign='left';
+    ctx.fillStyle='rgba(240,235,215,0.65)';
+    ctx.fillText(CATS[cat].name,x+24,y-6);
+    ctx.fillStyle='rgba(212,175,55,0.7)';
+    ctx.font='500 8px DM Sans, sans-serif';
+    ctx.fillText(count+' visited',x+24,y+4);
+  });
+
+  // Divider
+  ctx.beginPath();ctx.moveTo(24,350);ctx.lineTo(W-24,350);
+  ctx.strokeStyle='rgba(212,175,55,0.15)';ctx.lineWidth=0.5;ctx.stroke();
+
+  // ── RECENT STAMPS — last 4 places ──
+  ctx.fillStyle='rgba(212,175,55,0.5)';
+  ctx.font='500 7px DM Sans, sans-serif';ctx.textAlign='left';
+  ctx.fillText('RECENT DESTINATIONS',24,366);
+
+  const recent=[...places].reverse().slice(0,4);
+  recent.forEach((item,i)=>{
+    const y=384+i*16;
+    const nm=item.name.length>22?item.name.slice(0,20)+'…':item.name;
+    ctx.fillStyle='rgba(240,235,215,0.72)';
+    ctx.font='400 11px Cormorant Garamond, serif';
+    ctx.textAlign='left';
+    ctx.fillText(item.emoji+' '+nm,24,y);
+    ctx.fillStyle='rgba(212,175,55,0.5)';
+    ctx.font='400 8px DM Sans, sans-serif';
+    ctx.textAlign='right';
+    ctx.fillText(new Date(item.ts).toLocaleDateString('en',{month:'short',day:'numeric'}),W-24,y);
+  });
+
+  // ── BOTTOM STRIP — machine readable zone ──
+  ctx.fillStyle='rgba(0,0,0,0.4)';
+  ctx.fillRect(0,H-34,W,34);
+  ctx.fillStyle='rgba(212,175,55,0.3)';
+  ctx.font='500 7px Courier New, monospace';
+  ctx.textAlign='center';
+  const mrz='P<SCL<<'+('EXPLORER').padEnd(20,'<')+'<<<<<<<<';
+  ctx.fillText(mrz,W/2,H-20);
+  ctx.fillText('SOULSCAPE<<'+total.toString().padStart(3,'0')+'<<'+cats.toString().padStart(2,'0')+'<<'+sessions,W/2,H-9);
+}
+
+
+function dlPassport(){const cvs=document.getElementById('psp-cvs');if(!cvs)return;const a=document.createElement('a');a.download='soulscape-passport.png';a.href=cvs.toDataURL('image/png');a.click();}
+function sharePassport(){if(navigator.share){navigator.share({title:'My SoulScape Travel Passport',text:'I\'ve explored '+getPassport().length+' places on SoulScape.',url:location.href});}else{navigator.clipboard?.writeText(location.href);alert('Link copied!');}}
+
+/* ════════════════════════════════════════════════
+   HOME
+════════════════════════════════════════════════ */
+function goHome(){
+  stopSnd();stopClips();
+  if(gRaf)cancelAnimationFrame(gRaf);
+  ['va','vb'].forEach(id=>{const v=document.getElementById(id);v.pause();v.src='';v.classList.remove('on');});
+  activeVid='a';
+  document.getElementById('letter-ov').classList.remove('show');
+  goto('sl');
+}
+
+// Init on load
+window.addEventListener('load',checkIncomingPostcard);
+</script>
+</body>
+</html>
