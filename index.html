@@ -251,43 +251,6 @@ input[type=range].vsl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;h
 
 
 
-/* ── POSTCARD SCREEN ── */
-#spc{background:var(--ink);justify-content:flex-start;
-  padding:max(56px,calc(var(--st)+28px)) 22px max(22px,calc(var(--sb)+12px));overflow-y:auto}
-.pc-ey{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
-.pc-ttl{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--sand);
-  line-height:1.1;margin-bottom:6px}
-.pc-sub{font-size:13px;color:var(--mist);margin-bottom:22px;line-height:1.6}
-.pc-lbl{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--mist);
-  margin-bottom:7px;display:block}
-.pc-in{width:100%;background:var(--ink2);border:1px solid rgba(240,235,224,.1);border-radius:10px;
-  padding:13px 15px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--sand);
-  outline:none;transition:border-color .3s;margin-bottom:14px}
-.pc-in:focus{border-color:rgba(232,146,74,.45)}
-.pc-in::placeholder{color:rgba(154,136,120,.4)}
-.pc-ta{width:100%;background:var(--ink2);border:1px solid rgba(240,235,224,.1);border-radius:10px;
-  padding:13px 15px;font-family:'Cormorant Garamond',serif;font-size:17px;line-height:1.7;
-  color:var(--sand);resize:none;height:110px;outline:none;transition:border-color .3s;margin-bottom:14px}
-.pc-ta:focus{border-color:rgba(232,146,74,.45)}
-.pc-ta::placeholder{color:rgba(154,136,120,.4);font-style:italic}
-.pc-think{display:none;flex-direction:column;align-items:center;gap:14px;padding:24px 0}
-.pc-think.show{display:flex}
-.pc-think-txt{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;
-  color:var(--mist);animation:lp 2s ease-in-out infinite;text-align:center}
-.pc-prev{display:none;flex-direction:column;gap:14px}
-.pc-prev.show{display:flex}
-.pc-card{background:linear-gradient(135deg,#1A1030,#0E0820);border:1px solid rgba(232,146,74,.2);
-  border-radius:14px;overflow:hidden}
-.pc-card-top{height:120px;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,#1A1030,#2A1840)}
-.pc-em{font-size:44px}
-.pc-card-body{padding:16px 18px}
-.pc-card-cat{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
-.pc-card-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;
-  color:var(--sand);margin-bottom:8px}
-.pc-card-msg{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;
-  color:rgba(242,235,224,.75);line-height:1.7;margin-bottom:8px}
-.pc-card-from{font-size:11px;color:var(--amber);letter-spacing:.5px}
 
 /* ── PASSPORT SCREEN ── */
 #spsp{background:var(--ink);justify-content:flex-start;
@@ -323,6 +286,200 @@ input[type=range].vsl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;h
   .cat-grid{grid-template-columns:repeat(4,1fr)}
   .vs{flex:0 0 75%}
 }
+/* ── GLOBE ── */
+#sg{background:#030810;display:flex;flex-direction:column;padding:0}
+.g-top{position:absolute;top:max(14px,calc(var(--st)+8px));left:18px;right:18px;
+  z-index:30;display:flex;justify-content:space-between;align-items:center}
+.g-logo{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:17px;
+  color:rgba(240,232,214,.9)}
+.g-back{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+  color:rgba(240,232,214,.7);padding:7px 16px;border-radius:100px;font-size:13px;cursor:pointer}
+.g-count{font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(240,232,214,.35);white-space:nowrap}
+
+/* Split layout */
+.g-layout{position:absolute;inset:0;top:max(52px,calc(var(--st)+36px));
+  display:flex;align-items:stretch;gap:0}
+
+/* LEFT + RIGHT PANELS */
+.g-panel{width:140px;flex-shrink:0;display:flex;flex-direction:column;
+  padding:16px 10px;z-index:20;overflow-y:auto;scrollbar-width:none}
+.g-panel::-webkit-scrollbar{display:none}
+.g-panel-l{background:linear-gradient(to right,rgba(3,8,16,.92),rgba(3,8,16,.6));
+  border-right:1px solid rgba(255,255,255,.06)}
+.g-panel-r{background:linear-gradient(to left,rgba(3,8,16,.92),rgba(3,8,16,.6));
+  border-left:1px solid rgba(255,255,255,.06)}
+.g-panel-title{font-size:8px;font-weight:600;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(232,146,74,.7);margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1px solid rgba(232,146,74,.15)}
+.g-filter-list{display:flex;flex-direction:column;gap:4px}
+.g-filter-btn{background:transparent;border:1px solid rgba(255,255,255,.08);
+  color:rgba(240,232,214,.5);padding:8px 10px;border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;
+  cursor:pointer;display:flex;align-items:center;gap:7px;
+  transition:all .2s;text-align:left;width:100%}
+.g-filter-btn:hover{border-color:rgba(232,146,74,.35);color:rgba(240,232,214,.8)}
+.g-filter-btn.active{background:rgba(232,146,74,.18);border-color:var(--amber);
+  color:var(--amber)}
+.g-filter-em{font-size:14px;flex-shrink:0}
+.g-filter-nm{font-size:10px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g-filter-ct{font-size:9px;color:rgba(240,232,214,.3);margin-top:1px}
+
+/* GLOBE CENTER */
+.g-center{flex:1;position:relative;overflow:hidden}
+#gc{position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:none}
+#gc:active{cursor:grabbing}
+.g-tip{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:5;text-align:center;pointer-events:none;transition:opacity .6s}
+.g-tip p{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;
+  color:rgba(240,232,214,.35);margin-bottom:4px}
+.g-tip span{font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(240,232,214,.18)}
+.g-hov{position:absolute;z-index:25;background:rgba(8,12,24,.96);
+  border:1px solid rgba(232,146,74,.3);border-radius:14px;
+  padding:12px 16px;pointer-events:none;min-width:160px;max-width:220px;
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  opacity:0;transition:opacity .2s;transform:translate(-50%,-110%)}
+.g-hov.show{opacity:1}
+.gh-cat{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+.gh-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;
+  color:var(--sand);line-height:1.2;margin-bottom:3px}
+.gh-co{font-size:11px;color:var(--mist);margin-bottom:6px}
+.gh-cta{font-size:9px;color:var(--amber);letter-spacing:1px;text-transform:uppercase}
+
+/* Mobile: collapse panels to bottom bar */
+@media(max-width:600px){
+  .g-layout{flex-direction:column}
+  .g-panel{width:100%;flex-direction:row;padding:8px 12px;
+    height:auto;flex-shrink:0;order:2;overflow-x:auto}
+  .g-panel-l{border-right:none;border-top:1px solid rgba(255,255,255,.06);
+    background:rgba(3,8,16,.95);order:3}
+  .g-panel-r{border-left:none;border-top:1px solid rgba(255,255,255,.06);
+    background:rgba(3,8,16,.95);order:4}
+  .g-filter-list{flex-direction:row;gap:6px}
+  .g-panel-title{display:none}
+  .g-filter-btn{padding:6px 10px;flex-shrink:0;white-space:nowrap}
+  .g-center{order:1;flex:1}
+}
+
+
+/* ── DAILY DROP ── */
+.daily-drop{margin-top:16px;border:1px solid rgba(232,146,74,.25);border-radius:14px;
+  padding:14px 16px;background:rgba(232,146,74,.06);cursor:pointer;
+  transition:border-color .2s;max-width:300px;width:100%;text-align:left}
+.daily-drop:hover{border-color:rgba(232,146,74,.5)}
+.dd-eyebrow{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--amber);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.dd-dot{width:6px;height:6px;border-radius:50%;background:var(--amber);animation:blink 2s infinite}
+.dd-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--sand);margin-bottom:2px}
+.dd-sub{font-size:11px;color:var(--mist)}
+
+/* ── CUISINE OVERLAY ── */
+.cuisine-ov{position:absolute;inset:0;z-index:40;background:rgba(8,6,16,.96);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;opacity:0;pointer-events:none;
+  transition:opacity .6s ease;overflow-y:auto}
+.cuisine-ov.show{opacity:1;pointer-events:all}
+.cuisine-header{padding:max(50px,calc(var(--st)+24px)) 22px 16px;
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.cuisine-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--sand)}
+.cuisine-close{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+  color:var(--mist);padding:8px 16px;border-radius:100px;font-size:13px;cursor:pointer}
+.cuisine-body{padding:0 22px 32px;flex:1}
+.cuisine-hero{font-size:64px;text-align:center;margin-bottom:8px}
+.cuisine-dish-name{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;
+  color:var(--amber);text-align:center;margin-bottom:8px}
+.cuisine-desc{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;
+  color:rgba(240,232,214,.65);text-align:center;line-height:1.7;margin-bottom:24px}
+.cuisine-section{margin-bottom:20px}
+.cuisine-sec-title{font-size:9px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--amber);margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1px solid rgba(232,146,74,.15)}
+.cuisine-ingredients{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.cuisine-ing{background:var(--ink2);border:1px solid rgba(240,232,214,.1);
+  border-radius:100px;padding:6px 14px;font-size:12px;color:rgba(240,232,214,.7)}
+.cuisine-steps{display:flex;flex-direction:column;gap:10px}
+.cuisine-step{display:flex;gap:12px;align-items:flex-start}
+.cuisine-step-n{width:24px;height:24px;border-radius:50%;background:rgba(232,146,74,.2);
+  border:1px solid rgba(232,146,74,.4);color:var(--amber);font-size:11px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.cuisine-step-txt{font-size:14px;color:rgba(240,232,214,.75);line-height:1.6;flex:1}
+.cuisine-more{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.cuisine-tag{background:var(--ink2);border:1px solid rgba(240,232,214,.1);
+  border-radius:8px;padding:10px 14px;font-size:12px;color:rgba(240,232,214,.6);
+  display:flex;align-items:center;gap:6px}
+
+/* ── SCAPEDEX ── */
+#ssdex{background:var(--ink);justify-content:flex-start;overflow-y:auto;
+  padding:max(52px,calc(var(--st)+24px)) 16px max(20px,calc(var(--sb)+12px))}
+.dex-header{text-align:center;margin-bottom:20px}
+.dex-eyebrow{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.dex-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--sand);margin-bottom:4px}
+.dex-progress{font-size:13px;color:var(--mist)}
+.dex-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;max-width:500px;margin:0 auto 20px}
+.dex-card{background:var(--ink2);border:1px solid rgba(240,232,214,.07);border-radius:10px;
+  padding:10px 6px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.dex-card.unlocked{border-color:rgba(232,146,74,.25)}
+.dex-card.unlocked:hover{border-color:var(--amber);transform:scale(1.04)}
+.dex-card.locked{opacity:.35;cursor:default}
+.dex-card-em{font-size:22px;margin-bottom:4px}
+.dex-card-name{font-size:9px;color:rgba(240,232,214,.6);line-height:1.3;overflow:hidden;
+  text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.dex-card-num{position:absolute;top:5px;right:6px;font-size:8px;color:rgba(240,232,214,.25)}
+.dex-card.unlocked .dex-card-name{color:var(--sand)}
+/* Dex detail modal */
+.dex-modal{position:fixed;inset:0;z-index:50;background:rgba(8,6,16,.96);
+  backdrop-filter:blur(12px);display:flex;align-items:flex-end;
+  opacity:0;pointer-events:none;transition:opacity .3s}
+.dex-modal.show{opacity:1;pointer-events:all}
+.dex-modal-card{background:linear-gradient(135deg,#1A1030,#0E1428);
+  border:1px solid rgba(232,146,74,.2);border-radius:20px 20px 0 0;
+  padding:24px 22px max(28px,calc(var(--sb)+20px));width:100%;max-height:80vh;overflow-y:auto}
+.dex-modal-close{float:right;background:transparent;border:none;color:var(--mist);font-size:22px;cursor:pointer;line-height:1}
+.dex-modal-em{font-size:52px;text-align:center;margin-bottom:8px;display:block}
+.dex-modal-name{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;
+  color:var(--sand);text-align:center;margin-bottom:4px}
+.dex-modal-co{font-size:12px;color:var(--mist);text-align:center;margin-bottom:16px}
+.dex-fact-row{background:var(--ink2);border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.dex-fact-label{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--amber);margin-bottom:5px}
+.dex-fact-val{font-size:14px;color:rgba(240,232,214,.8);line-height:1.6}
+
+/* ── PASSPORT GAMIFIED ── */
+#spsp{background:var(--ink);justify-content:flex-start;overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:max(52px,calc(var(--st)+24px)) 20px max(20px,calc(var(--sb)+12px))}
+.psp-tier-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px;max-width:480px}
+.psp-tier{background:var(--ink2);border:1px solid rgba(240,235,224,.08);
+  border-radius:14px;padding:14px 10px;text-align:center;position:relative;
+  transition:transform .2s,border-color .2s}
+.psp-tier.unlocked{border-color:rgba(212,175,55,.4);cursor:pointer}
+.psp-tier.unlocked:hover{transform:scale(1.04);border-color:rgba(212,175,55,.7)}
+.psp-tier.current{border-color:var(--amber);box-shadow:0 0 20px rgba(232,146,74,.25)}
+.psp-tier.locked{opacity:.4}
+.psp-tier-icon{font-size:28px;margin-bottom:6px}
+.psp-tier-name{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:700;
+  color:var(--sand);margin-bottom:3px}
+.psp-tier-req{font-size:9px;color:var(--mist)}
+.psp-tier-badge{position:absolute;top:-6px;right:-6px;background:var(--amber);
+  color:var(--ink);font-size:9px;font-weight:700;padding:3px 7px;border-radius:100px}
+.psp-current-card{background:linear-gradient(135deg,#1C2951,#0E1428);
+  border:2px solid rgba(212,175,55,.5);border-radius:16px;padding:20px;
+  margin-bottom:20px;text-align:center;max-width:480px}
+.psp-current-label{font-size:8px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(212,175,55,.6);margin-bottom:6px}
+.psp-current-icon{font-size:48px;margin-bottom:8px;display:block}
+.psp-current-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;
+  color:rgba(240,235,215,.95);margin-bottom:6px}
+.psp-current-desc{font-size:13px;color:rgba(240,235,215,.55);line-height:1.6;margin-bottom:12px}
+.psp-progress-bar{height:4px;background:rgba(255,255,255,.1);border-radius:100px;overflow:hidden;margin-bottom:6px}
+.psp-progress-fill{height:100%;background:linear-gradient(to right,rgba(212,175,55,.8),var(--amber));border-radius:100px;transition:width .8s ease}
+.psp-progress-txt{font-size:11px;color:var(--mist)}
+
+/* ── AI SCREEN: location ── */
+.ai-location-row{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap;justify-content:center}
+.ai-loc-btn{background:var(--ink2);border:1px solid rgba(240,232,214,.12);color:rgba(240,232,214,.55);
+  padding:8px 16px;border-radius:100px;font-size:12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.ai-loc-btn.active{border-color:var(--amber);color:var(--amber);background:rgba(232,146,74,.1)}
+.ai-loc-detected{font-size:11px;color:var(--mist);text-align:center;margin-top:6px}
 </style>
 </head>
 <body>
@@ -336,25 +493,58 @@ input[type=range].vsl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;h
     <button class="bp" onclick="goto('st');initAI()">How Am I Feeling?</button>
     <button class="bw" onclick="goto('sg');initGlobe()">Explore the Globe 🌍</button>
   </div>
+  <div class="daily-drop" onclick="openDailyDrop()" id="daily-drop-btn">
+    <div class="dd-eyebrow"><div class="dd-dot"></div>3 Minute Vacation · Daily Drop</div>
+    <div class="dd-name" id="dd-name">Loading…</div>
+    <div class="dd-sub" id="dd-sub">Today's destination</div>
+  </div>
 </div>
 
 <!-- ── GLOBE ── -->
 <div class="sc" id="sg">
-  <canvas id="gc"></canvas>
+  <!-- Top bar -->
   <div class="g-top">
     <span class="g-logo">🧭 SoulScape</span>
-    <button class="g-back" onclick="goto('sl')">← Back</button>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="g-count" id="g-count" style="position:static;transform:none"></span>
+      <button class="g-back" onclick="goto('sl')">← Back</button>
+    </div>
   </div>
-  <div class="g-tip" id="g-tip"><p>Drag to explore the world</p><span>Tap any destination to visit</span></div>
-  <div class="g-hov" id="g-hov">
-    <div class="gh-cat" id="gh-cat"></div>
-    <div class="gh-name" id="gh-name"></div>
-    <div class="gh-co" id="gh-co"></div>
-    <div class="gh-cta">Tap to visit →</div>
+
+  <!-- Main layout: Left filters | Globe | Right filters -->
+  <div class="g-layout">
+
+    <!-- LEFT: World type filters -->
+    <div class="g-panel g-panel-l" id="g-panel-l">
+      <div class="g-panel-title">World Type</div>
+      <div class="g-filter-list" id="g-cats"></div>
+    </div>
+
+    <!-- GLOBE CENTER -->
+    <div class="g-center">
+      <canvas id="gc"></canvas>
+      <div class="g-tip" id="g-tip">
+        <p>Drag to explore</p>
+        <span>Tap any dot to visit</span>
+      </div>
+      <div class="g-hov" id="g-hov">
+        <div class="gh-cat" id="gh-cat"></div>
+        <div class="gh-name" id="gh-name"></div>
+        <div class="gh-co" id="gh-co"></div>
+        <div class="gh-cta">Tap to visit →</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Vibe filters -->
+    <div class="g-panel g-panel-r" id="g-panel-r">
+      <div class="g-panel-title">Vibe</div>
+      <div class="g-filter-list" id="g-vibes"></div>
+    </div>
+
   </div>
-  <div class="g-count" id="g-count"></div>
-  <div class="g-cats" id="g-cats"></div>
 </div>
+
+
 
 <!-- ── TALK / AI ── -->
 <div class="sc" id="st">
@@ -363,8 +553,14 @@ input[type=range].vsl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;h
     <div class="ai-intro" id="ai-intro">
       <div class="ai-logo">🌿</div>
       <h2 class="ai-head">Tell me what's going on.</h2>
-      <p class="ai-sub">I'll find the place in the world that speaks to exactly how you feel right now.</p>
-      <div class="ai-inp-wrap">
+      <p class="ai-sub">I'll find the place that speaks to exactly how you feel right now.</p>
+      <div class="ai-location-row">
+        <button class="ai-loc-btn" id="loc-btn" onclick="detectLocation()">📍 Detect my location</button>
+        <button class="ai-loc-btn active" id="range-any" onclick="setRange('any')">🌍 Anywhere</button>
+        <button class="ai-loc-btn" id="range-near" onclick="setRange('near')">📡 Nearby only</button>
+      </div>
+      <div class="ai-loc-detected" id="loc-detected"></div>
+      <div class="ai-inp-wrap" style="margin-top:14px">
         <textarea class="ai-ta" id="ai-ta" maxlength="800"
           placeholder="Just write whatever comes. No right answer. This is only for you."></textarea>
         <button class="ai-send" id="ai-send" onclick="sendToAI()" disabled>→</button>
@@ -416,6 +612,27 @@ input[type=range].vsl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;h
     <div class="vcat" id="vcat"></div>
     <div class="vai" id="vai"><p class="vai-txt" id="vai-txt"></p></div>
 
+  <!-- Cuisine overlay inside vs -->
+  <div class="cuisine-ov" id="cuisine-ov">
+    <div class="cuisine-header">
+      <div class="cuisine-title">🍽 Special Cuisine</div>
+      <button class="cuisine-close" onclick="closeCuisine()">Close ✕</button>
+    </div>
+    <div class="cuisine-body">
+      <div class="cuisine-hero" id="cuis-em">🍜</div>
+      <div class="cuisine-dish-name" id="cuis-name">Loading…</div>
+      <div class="cuisine-desc" id="cuis-desc"></div>
+      <div class="cuisine-section">
+        <div class="cuisine-sec-title">Ingredients</div>
+        <div class="cuisine-ingredients" id="cuis-ings"></div>
+      </div>
+      <div class="cuisine-section">
+        <div class="cuisine-sec-title">How to Make It</div>
+        <div class="cuisine-steps" id="cuis-steps"></div>
+      </div>
+      <div class="cuisine-more" id="cuis-more"></div>
+    </div>
+  </div>
   </div>
   <div class="cp">
     <div class="cp-cr">
@@ -436,70 +653,60 @@ input[type=range].vsl::-webkit-slider-thumb{-webkit-appearance:none;width:12px;h
       <button class="ca" onclick="goHome()">Home</button>
     </div>
     <div class="share-row">
-      <button class="sbtn" onclick="openPostcard()">✉ Postcard</button>
-      <button class="sbtn psp" onclick="openPassport()">🗺 Passport</button>
+      <button class="sbtn" onclick="openCuisine()">🍽 Cuisine</button>
+      <button class="sbtn" onclick="openScapedex()">📖 ScapeDex</button>
+      <button class="sbtn psp" onclick="openPassport()">🛂 Passport</button>
     </div>
-  </div>
-</div>
-
-<!-- ── POSTCARD SCREEN ── -->
-<div class="sc" id="spc">
-  <div style="max-width:500px;width:100%;padding-top:16px">
-    
-    <!-- Form -->
-    <div id="pc-form">
-      <div class="pc-ey">✉ Postcard</div>
-      <h2 class="pc-ttl">Send a postcard</h2>
-      <p class="pc-sub">Write a message — we'll create a postcard with the place and a shareable link.</p>
-      <label class="pc-lbl">To</label>
-      <input class="pc-in" id="pc-to" placeholder="Their name…" maxlength="40">
-      <label class="pc-lbl">Your message</label>
-      <textarea class="pc-ta" id="pc-msg" placeholder="Thinking of you. Found this place and thought of you…" maxlength="200"></textarea>
-      <label class="pc-lbl">From (optional)</label>
-      <input class="pc-in" id="pc-from" placeholder="Your name…" maxlength="40">
-      <div style="display:flex;gap:10px;margin-top:4px">
-        <button class="bp" onclick="makePostcard()" style="flex:1;padding:15px">Create Postcard →</button>
-        <button class="bw" onclick="goto('sd')" style="width:auto;padding:15px 18px">← Back</button>
-      </div>
-    </div>
-
-    <!-- Preview -->
-    <div id="pc-prev" style="display:none">
-      <div style="display:flex;justify-content:center;margin-bottom:14px">
-        <canvas id="pc-canvas" width="360" height="240" style="max-width:100%;border-radius:4px;box-shadow:0 12px 40px rgba(0,0,0,.6)"></canvas>
-      </div>
-      <button class="bp" onclick="sharePostcard()" style="width:100%;padding:14px;margin-bottom:10px">Share Postcard →</button>
-      <div style="display:flex;gap:10px">
-        <button class="sbtn" onclick="copyPCLink()" id="copy-btn" style="flex:1;justify-content:center;padding:12px">📋 Copy link</button>
-        <button class="bw" onclick="resetPC()" style="flex:1;padding:12px">← New postcard</button>
-      </div>
-    </div>
-
   </div>
 </div>
 
 <!-- ── PASSPORT SCREEN ── -->
 <div class="sc" id="spsp">
-  <div style="max-width:480px;width:100%">
-    <div class="psp-ey">✈ SoulScape</div>
-    <h2 class="psp-ttl">Your Passport</h2>
-    <p class="psp-sub">Every destination you've visited, stamped and recorded.</p>
-    <div class="psp-stats">
-      <div class="psp-stat"><div class="psp-sn" id="psp-n">0</div><div class="psp-sl">Places</div></div>
-      <div class="psp-stat"><div class="psp-sn" id="psp-w">0</div><div class="psp-sl">Worlds</div></div>
-      <div class="psp-stat"><div class="psp-sn" id="psp-s">0</div><div class="psp-sl">Sessions</div></div>
+  <div style="max-width:480px;width:100%;padding-top:max(52px,calc(var(--st)+24px))">
+    
+    <!-- Header stats -->
+    <div style="text-align:center;margin-bottom:18px">
+      <div class="psp-ey">✈ SoulScape</div>
+      <h2 class="psp-ttl">Your Passport</h2>
+      <div style="display:flex;justify-content:center;gap:24px;margin-top:12px">
+        <div style="text-align:center">
+          <div class="psp-sn" id="psp-n">0</div>
+          <div class="psp-sl">Places</div>
+        </div>
+        <div style="text-align:center">
+          <div class="psp-sn" id="psp-w">0</div>
+          <div class="psp-sl">Worlds</div>
+        </div>
+        <div style="text-align:center">
+          <div class="psp-sn" id="psp-tier-rank">1/15</div>
+          <div class="psp-sl">Tier</div>
+        </div>
+      </div>
     </div>
-    <div class="psp-cvs-wrap"><canvas id="psp-cvs" width="320" height="460"></canvas></div>
-    <div class="psp-acts">
+
+    <!-- Current passport tier card -->
+    <div class="psp-current-card" id="psp-current-card">
+      <div class="psp-current-label">Current Rank</div>
+      <span class="psp-current-icon" id="psp-ci">🌱</span>
+      <div class="psp-current-name" id="psp-cn">Dreamer</div>
+      <div class="psp-current-desc" id="psp-cd">Your journey begins.</div>
+      <div class="psp-progress-bar"><div class="psp-progress-fill" id="psp-pf" style="width:0%"></div></div>
+      <div class="psp-progress-txt" id="psp-pt">0 / 1 to unlock next rank</div>
+    </div>
+
+    <!-- All 15 tiers -->
+    <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(232,146,74,.6);margin-bottom:12px;text-align:center">All Passport Ranks</div>
+    <div class="psp-tier-grid" id="psp-tier-grid"></div>
+
+    <div style="display:flex;justify-content:center;margin-top:16px;gap:10px">
       <button class="bp" onclick="dlPassport()" style="padding:13px 24px">⬇ Download</button>
-      <button class="sbtn" onclick="sharePassport()">Share 🔗</button>
+      <button class="bw" onclick="goto('sd')" style="width:auto;padding:12px 24px;font-size:13px">← Back</button>
     </div>
-    <div class="psp-list" id="psp-list"></div>
-    <div style="display:flex;justify-content:center;margin-top:16px">
-      <button class="bw" onclick="goto('sd')" style="width:auto;padding:12px 26px;font-size:13px">← Back</button>
-    </div>
+    <!-- Canvas for download -->
+    <canvas id="psp-cvs" width="320" height="460" style="display:none"></canvas>
   </div>
 </div>
+
 
 <script>
 /* ════════════════════════════════════════════════
@@ -858,7 +1065,7 @@ function initGlobe(){
   gCvs.addEventListener('touchstart',e=>{gDrag=true;gLx=e.touches[0].clientX;gLy=e.touches[0].clientY;gAuto=false;clearTimeout(gAutoTm);document.getElementById('g-tip').style.opacity='0';pt0={x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};},{passive:true});
   gCvs.addEventListener('touchmove',e=>{if(gDrag&&e.touches.length===1){gLon+=(e.touches[0].clientX-gLx)*0.4;gLat=Math.max(-80,Math.min(80,gLat-(e.touches[0].clientY-gLy)*0.4));gLx=e.touches[0].clientX;gLy=e.touches[0].clientY;}},{passive:true});
   gCvs.addEventListener('touchend',e=>{gDrag=false;gAutoTm=setTimeout(()=>gAuto=true,4000);if(pt0){const dx=e.changedTouches[0].clientX-pt0.x,dy=e.changedTouches[0].clientY-pt0.y;if(Math.sqrt(dx*dx+dy*dy)<18){doHov(e.changedTouches[0].clientX,e.changedTouches[0].clientY);if(gHov)openDestFromGlobe(gHov);}}});
-  buildCatFilter();if(gRaf)cancelAnimationFrame(gRaf);drawLoop();updateCount();
+  buildCatFilter();buildVibeFilters();if(gRaf)cancelAnimationFrame(gRaf);drawLoop();updateCount();
 }
 function genStars(){gStars=Array.from({length:280},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.2+0.2,a:Math.random()*0.6+0.1}));}
 function buildCatFilter(){
@@ -1262,7 +1469,7 @@ function showDest(sentence){
   document.getElementById('dds').textContent=D.desc;
   document.getElementById('vctr').textContent=(curIdx+1)+'/'+activeDests.length;
   document.getElementById('vcat').textContent=CATS[D.cat].name.toUpperCase();
-  curSnd=D.sound;resetSnd();try{renderDots();}catch(e){}try{stampPassport(D,lastEmotion);}catch(e){}
+  curSnd=D.sound;resetSnd();try{renderDots();}catch(e){}try{stampPassport(D,lastEmotion);}catch(e){}try{dexStamp(D.name);}catch(e){}
 
   // Mood glow shows immediately — looks beautiful on its own
   document.getElementById('vbg').style.background=
@@ -1741,14 +1948,427 @@ function drawPSP(places){
 }
 
 
-function dlPassport(){const cvs=document.getElementById('psp-cvs');if(!cvs)return;const a=document.createElement('a');a.download='soulscape-passport.png';a.href=cvs.toDataURL('image/png');a.click();}
+function dlPassport(){
+  const p=getPassport();
+  drawPSP(p);
+  const cvs=document.getElementById('psp-cvs');if(!cvs)return;
+  const a=document.createElement('a');a.download='soulscape-passport.png';a.href=cvs.toDataURL('image/png');a.click();
+}
 function sharePassport(){if(navigator.share){navigator.share({title:'My SoulScape Travel Passport',text:'I\'ve explored '+getPassport().length+' places on SoulScape.',url:location.href});}else{navigator.clipboard?.writeText(location.href);alert('Link copied!');}}
 
 /* ════════════════════════════════════════════════
    HOME
 ════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════
+   DAILY DROP — one destination per day
+════════════════════════════════════════════════ */
+function getDailyDest(){
+  const d=new Date();
+  const key=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
+  return DESTS[key%DESTS.length];
+}
+function initDailyDrop(){
+  const D=getDailyDest();
+  const nameEl=document.getElementById('dd-name');
+  const subEl=document.getElementById('dd-sub');
+  if(nameEl) nameEl.textContent=D.name;
+  if(subEl) subEl.textContent=D.country+' · '+CATS[D.cat].emoji+' '+CATS[D.cat].name;
+}
+function openDailyDrop(){
+  const D=getDailyDest();
+  const cd=shuffle(DESTS.filter(d=>d.cat===D.cat));
+  const ci=cd.findIndex(d=>d.name===D.name);
+  activeDests=cd;curIdx=ci>=0?ci:0;
+  showDest('');
+}
+
+/* ════════════════════════════════════════════════
+   LOCATION DETECTION
+════════════════════════════════════════════════ */
+let userLat=null,userLng=null,rangeMode='any';
+
+function detectLocation(){
+  const btn=document.getElementById('loc-btn');
+  if(btn) btn.textContent='Detecting…';
+  navigator.geolocation?.getCurrentPosition(pos=>{
+    userLat=pos.coords.latitude;
+    userLng=pos.coords.longitude;
+    if(btn) btn.textContent='📍 Location detected';
+    const det=document.getElementById('loc-detected');
+    if(det) det.textContent='Found you! Choose range below.';
+  },()=>{
+    if(btn) btn.textContent='📍 Could not detect';
+  });
+}
+
+function setRange(mode){
+  rangeMode=mode;
+  document.getElementById('range-any').classList.toggle('active',mode==='any');
+  document.getElementById('range-near').classList.toggle('active',mode==='near');
+}
+
+function distKm(lat1,lng1,lat2,lng2){
+  const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+// Modified matchDest to consider location
+function matchDestWithLocation(need){
+  let pool=DESTS;
+  if(rangeMode==='near'&&userLat!==null){
+    const nearby=DESTS.filter(d=>distKm(userLat,userLng,d.lat,d.lng)<3000);
+    if(nearby.length>=5) pool=nearby;
+  }
+  const scored=pool.map(d=>{
+    const p=getP(d);let dist=0;
+    for(let i=0;i<6;i++) dist+=W[i]*Math.pow(p[i]-need[i],2);
+    return{d,dist:Math.sqrt(dist)};
+  }).sort((a,b)=>a.dist-b.dist);
+  const top=scored.slice(0,5);
+  const ws=top.map(x=>1/(x.dist+0.1));
+  const tw=ws.reduce((a,b)=>a+b,0);
+  let r=Math.random()*tw;
+  for(let i=0;i<top.length;i++){r-=ws[i];if(r<=0)return top[i].d;}
+  return top[0].d;
+}
+
+/* ════════════════════════════════════════════════
+   GLOBE — VIBE FILTERS (right panel)
+════════════════════════════════════════════════ */
+const VIBES=[
+  {id:'serene',  name:'Serene',    emoji:'🕊️', desc:'Still & peaceful',    vec:[3,1,1,4,1,4]},
+  {id:'wild',    name:'Wild',      emoji:'⚡',  desc:'Raw & powerful',     vec:[5,2,1,4,5,2]},
+  {id:'ancient', name:'Ancient',   emoji:'🗿',  desc:'Timeless & vast',    vec:[4,1,1,5,1,3]},
+  {id:'romantic',name:'Romantic',  emoji:'🌹',  desc:'Warm & beautiful',   vec:[2,3,2,2,2,5]},
+  {id:'wonder',  name:'Wonder',    emoji:'✨',  desc:'Extraordinary',      vec:[4,3,1,4,4,4]},
+  {id:'culture', name:'Culture',   emoji:'🏛️', desc:'Alive & vibrant',    vec:[2,5,5,3,4,5]},
+  {id:'healing', name:'Healing',   emoji:'🌿',  desc:'Gentle & restoring', vec:[2,2,1,4,1,4]},
+  {id:'epic',    name:'Epic',      emoji:'🏔️', desc:'Breathtaking scale', vec:[5,2,1,5,4,2]},
+];
+
+let gVibeFilter=null;
+
+function buildVibeFilters(){
+  const w=document.getElementById('g-vibes');if(!w)return;
+  w.innerHTML='';
+  // All button
+  const allBtn=document.createElement('button');
+  allBtn.className='g-filter-btn active';allBtn.id='vibe-all';
+  allBtn.innerHTML='<span class="g-filter-em">🌍</span><div><div class="g-filter-nm">All Vibes</div></div>';
+  allBtn.onclick=()=>{gVibeFilter=null;document.querySelectorAll('.g-filter-btn').forEach(b=>b.classList.remove('active'));allBtn.classList.add('active');updateCount();};
+  w.appendChild(allBtn);
+  VIBES.forEach(v=>{
+    const b=document.createElement('button');
+    b.className='g-filter-btn';b.id='vibe-'+v.id;
+    b.innerHTML='<span class="g-filter-em">'+v.emoji+'</span><div><div class="g-filter-nm">'+v.name+'</div><div class="g-filter-ct">'+v.desc+'</div></div>';
+    b.onclick=()=>{
+      gVibeFilter=v;
+      document.querySelectorAll('#g-vibes .g-filter-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      updateCount();
+    };
+    w.appendChild(b);
+  });
+}
+
+// Updated buildCatFilter for new design
+function buildCatFilter(){
+  const w=document.getElementById('g-cats');if(!w)return;
+  w.innerHTML='';
+  const all=document.createElement('button');
+  all.className='g-filter-btn active';all.id='cat-all';
+  all.innerHTML='<span class="g-filter-em">🌍</span><div><div class="g-filter-nm">All Worlds</div><div class="g-filter-ct">'+DESTS.length+' places</div></div>';
+  all.onclick=()=>{gFilter=null;document.querySelectorAll('#g-cats .g-filter-btn').forEach(b=>b.classList.remove('active'));all.classList.add('active');updateCount();};
+  w.appendChild(all);
+  Object.entries(CATS).forEach(([k,c])=>{
+    const n=DESTS.filter(d=>d.cat===k).length;
+    const b=document.createElement('button');
+    b.className='g-filter-btn';
+    b.innerHTML='<span class="g-filter-em">'+c.emoji+'</span><div><div class="g-filter-nm">'+c.name+'</div><div class="g-filter-ct">'+n+' places</div></div>';
+    b.onclick=()=>{gFilter=k;document.querySelectorAll('#g-cats .g-filter-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');updateCount();};
+    w.appendChild(b);
+  });
+}
+
+function updateCount(){
+  let pool=gFilter?DESTS.filter(d=>d.cat===gFilter):DESTS;
+  if(gVibeFilter){
+    const vec=gVibeFilter.vec;
+    pool=pool.filter(d=>{
+      const p=getP(d);let dist=0;
+      for(let i=0;i<6;i++) dist+=Math.pow(p[i]-vec[i],2);
+      return Math.sqrt(dist)<3.5;
+    });
+  }
+  const el=document.getElementById('g-count');
+  if(el) el.textContent=pool.length+' destinations';
+}
+
+// Updated drawLoop to use vibe filter
+function getFilteredDests(){
+  let pool=gFilter?DESTS.filter(d=>d.cat===gFilter):DESTS;
+  if(gVibeFilter){
+    const vec=gVibeFilter.vec;
+    pool=pool.filter(d=>{
+      const p=getP(d);let dist=0;
+      for(let i=0;i<6;i++) dist+=Math.pow(p[i]-vec[i],2);
+      return Math.sqrt(dist)<3.5;
+    });
+  }
+  return pool;
+}
+
+/* ════════════════════════════════════════════════
+   CUISINE DATA
+════════════════════════════════════════════════ */
+const CUISINE_DATA={
+  'Maldives Atoll':{em:'🐟',name:'Mas Huni',desc:'The soul of Maldivian breakfast — shredded smoked tuna with fresh coconut and fiery chilli.',ings:['Smoked tuna','Fresh coconut','Onion','Green chilli','Lime','Salt'],steps:['Shred the smoked tuna finely by hand','Grate fresh coconut into a bowl','Mix tuna with coconut, finely chopped onion and chilli','Squeeze lime over and season with salt','Serve with warm Roshi flatbread'],tags:['🌶 Spicy','🥥 Coconut','🐟 Seafood']},
+  'Amalfi Coast':{em:'🍋',name:'Pasta al Limone',desc:'Sun-drenched lemons from the cliffs above, turned into the creamiest pasta you\'ve ever tasted.',ings:['Spaghetti','Amalfi lemons (2)','Parmesan','Butter','Black pepper','Pasta water'],steps:['Cook spaghetti until al dente','Zest and juice both lemons into a pan','Melt butter, add lemon and a ladle of pasta water','Toss drained pasta through the sauce','Finish with generous Parmesan and cracked pepper'],tags:['🍋 Citrus','🧀 Creamy','⚡ Quick']},
+  'Swiss Alps':{em:'🫕',name:'Raclette',desc:'Mountain cheese melted over glowing coals, scraped onto boiled potatoes with pickles. The Alps in a dish.',ings:['Raclette cheese (500g)','Baby potatoes','Cornichons','Pickled onions','Paprika'],steps:['Boil potatoes in salted water until tender','Slice raclette into thick rounds','Melt under a hot grill or raclette machine','Scrape melted cheese over potatoes','Serve with cornichons and pickled onions'],tags:['🧀 Cheese','🥔 Hearty','🏔 Alpine']},
+  'Kyoto Gion':{em:'🍵',name:'Kaiseki & Matcha',desc:'The most refined meal in the world — a procession of tiny perfect dishes, ending in a bowl of bitter green tea.',ings:['Matcha powder','Hot water (80°C)','Bamboo whisk','Seasonal vegetables','Dashi stock','Miso'],steps:['Sift matcha into a warm bowl','Add 70ml water at 80°C — never boiling','Whisk in a W-shape until frothy','For a simple kaiseki: simmer dashi with miso and seasonal veg','Serve in small portions — the eye eats first'],tags:['🍵 Tea','🎋 Refined','🌸 Seasonal']},
+  'Marrakech Djemaa':{em:'🥘',name:'Tagine',desc:'Slow-cooked lamb with preserved lemons and olives in a conical clay pot that concentrates every flavour.',ings:['Lamb shoulder','Preserved lemon','Green olives','Onion','Ras el hanout','Saffron','Coriander'],steps:['Brown lamb pieces in olive oil until golden','Add sliced onion and cook until soft','Add ras el hanout, saffron, and 200ml water','Layer preserved lemon strips and olives on top','Cover and cook on very low heat for 2 hours','Finish with fresh coriander'],tags:['🌶 Spiced','🏺 Clay-cooked','🕰 Slow']},
+  'Aurora Borealis':{em:'🫐',name:'Cloudberry Skyr',desc:'Tart Nordic cloudberries folded into thick Icelandic skyr — the most delicious thing the Arctic produces.',ings:['Icelandic skyr (500g)','Cloudberries','Honey','Vanilla','Oats'],steps:['Spoon skyr into bowls','Warm cloudberries gently in a pan with a tablespoon of honey','Pour warm berry sauce over cold skyr','Sprinkle toasted oats for texture','Drizzle with extra honey to serve'],tags:['❄️ Arctic','🫐 Berry','🍯 Natural']},
+  'Sahara Dunes':{em:'🍵',name:'Moroccan Mint Tea',desc:'Three glasses are tradition — the first is as gentle as life, the second is as strong as love, the third is as bitter as death.',ings:['Gunpowder green tea','Fresh mint (large bunch)','Sugar cubes','Boiling water'],steps:['Rinse the teapot with a little boiling water','Add 2 tsp gunpowder tea and rinse once','Add mint and sugar to taste','Pour boiling water and steep 3 minutes','Pour from height to aerate','Always serve three glasses'],tags:['🌿 Mint','☕ Ritual','🏜 Desert']},
+  'Arashiyama Bamboo':{em:'🍡',name:'Matcha Mochi',desc:'Chewy rice cakes dusted in roasted soybean flour — a Kyoto street food unchanged for five centuries.',ings:['Glutinous rice flour','Matcha powder','Sugar','Water','Kinako (roasted soybean flour)'],steps:['Mix rice flour, matcha, sugar and water into a smooth paste','Steam for 20 minutes until set','Dust hands in kinako and knead until smooth','Shape into small rounds','Roll in more kinako to coat'],tags:['🍡 Chewy','🍵 Matcha','🎋 Traditional']},
+  'Varanasi Ghats':{em:'🍛',name:'Banarasi Paan & Chaat',desc:'Varanasi\'s streets run on chaat — fried dough loaded with chutneys, yoghurt and spice in dangerous quantities.',ings:['Puri (fried bread)','Boiled chickpeas','Tamarind chutney','Green chutney','Yoghurt','Chaat masala','Onion'],steps:['Lay puris on a plate and crack them gently','Spoon cold yoghurt over generously','Add chickpeas and diced onion','Drizzle both chutneys in patterns','Dust with chaat masala and cumin','Eat immediately before it goes soggy'],tags:['🌶 Tangy','🇮🇳 Street food','⚡ Complex']},
+  'Cappadocia':{em:'🫓',name:'Gözleme',desc:'Paper-thin flatbread folded over spinach and cheese, cooked on a curved iron griddle by hands that have done it ten thousand times.',ings:['Thin yufka dough','Spinach','White cheese (beyaz peynir)','Butter','Yoghurt to serve'],steps:['Lay yufka flat on a sac griddle over flame','Spread wilted spinach and crumbled cheese on half','Fold dough over to enclose','Press with a cloth and cook 2 min each side','Brush with butter while hot','Serve with cold yoghurt and tomato'],tags:['🫓 Flatbread','🧀 Cheese','🔥 Griddle']},
+  'Santorini':{em:'🍅',name:'Tomato Keftedes',desc:'Santorini\'s volcanic soil grows tomatoes so sweet they barely need cooking. Fried into fritters with mint and feta.',ings:['Santorini tomatoes (500g)','Feta (100g)','Fresh mint','Onion','Flour','Olive oil','Salt'],steps:['Grate tomatoes and drain in a colander 30 minutes','Mix with crumbled feta, mint and grated onion','Add flour until mixture holds shape','Form into small patties','Fry in olive oil until golden each side','Serve with a squeeze of lemon'],tags:['🍅 Tomato','🇬🇷 Greek','☀️ Summer']},
+  'Grand Canyon':{em:'🌽',name:'Navajo Fry Bread',desc:'Golden fried dough that tells the history of the American Southwest — simple, chewy, and impossible to put down.',ings:['Flour (2 cups)','Baking powder','Salt','Warm water','Oil for frying'],steps:['Mix flour, baking powder, salt','Add warm water gradually to form soft dough','Rest 30 minutes covered','Tear into balls and flatten thin','Fry in hot oil until puffed and golden','Top with beans, cheese and honey — or both'],tags:['🌽 Indigenous','🍯 Sweet or Savoury','🔥 Fried']},
+  'Amazon Rainforest':{em:'🍲',name:'Tucupi & Manioc',desc:'Yellow broth made from fermented wild cassava, served with jambu leaf that numbs your tongue. Nothing else like it on earth.',ings:['Manioc (cassava)','Jambu leaves','Duck or chicken','Garlic','Chilli','Tucupi broth'],steps:['Peel and grate manioc, press out liquid','Leave liquid to ferment 2-3 days until sour','Boil tucupi broth and add jambu leaves','Cook duck or chicken separately until tender','Combine in bowl — the jambu will tingle your lips','Serve with fried manioc'],tags:['🌿 Amazonian','🦆 Duck','✨ Unique']},
+  'Lavender Fields':{em:'🌸',name:'Lavender Honey Cake',desc:'Provence in one bite — almond cake perfumed with lavender from the same fields you can see from the window.',ings:['Almond flour','Lavender honey','Eggs','Butter','Dried lavender','Lemon zest'],steps:['Preheat oven to 170°C','Mix almond flour with melted butter and honey','Beat in eggs one at a time','Add lemon zest and a pinch of dried lavender','Pour into tin and bake 35 minutes','Cool completely and dust with icing sugar'],tags:['🌸 Floral','🍯 Honey','🇫🇷 Provençal']},
+  'Tokyo Shinjuku':{em:'🍜',name:'Tonkotsu Ramen',desc:'Twelve hours of simmering pork bones produce a broth so rich it coats the bowl. Tokyo\'s most comforting meal.',ings:['Pork bones (1kg)','Ramen noodles','Chashu pork belly','Soft-boiled egg','Nori','Spring onion','Soy tare'],steps:['Blanch bones in boiling water 10 minutes, then drain','Simmer bones 12 hours in fresh water — it must never stop boiling','Strain and season with soy tare and salt','Cook noodles separately 2 minutes','Arrange noodles in bowl with hot broth','Top with chashu, egg, nori and spring onion'],tags:['🍜 Rich broth','🐷 Pork','🕰 12-hour cook']},
+};
+
+// Country-level fallback
+const CUISINE_COUNTRY={
+  'Japan':{em:'🍱',name:'Bento & Miso',desc:'Japanese cuisine is about balance — umami depth in miso, precision in rice, harmony in every element.',ings:['Dashi stock','Miso paste','Tofu','Wakame','Rice','Pickled vegetables'],steps:['Dissolve miso in warm dashi — never boil it','Add cubed tofu and wakame','Cook rice until each grain is separate','Arrange with pickles','Serve immediately'],tags:['🍱 Balanced','🌊 Umami','🎌 Japanese']},
+  'Italy':{em:'🍝',name:'Fresh Pasta',desc:'Italian cooking is about restraint — great ingredients left to speak for themselves.',ings:['00 flour','Eggs','Olive oil','Salt','Parmesan'],steps:['Mix flour and eggs into smooth dough','Rest 30 minutes wrapped','Roll thin and cut to shape','Cook in heavily salted boiling water 2-3 min','Toss with sauce and pasta water'],tags:['🍝 Classic','🇮🇹 Italian','🥚 Egg pasta']},
+  'France':{em:'🧅',name:'French Onion Soup',desc:'Three hours of slowly caramelising onions. Then cheese. Then a crust. The French know what they\'re doing.',ings:['Onions (1kg)','Beef stock','Baguette','Gruyère','Butter','Thyme','White wine'],steps:['Slice onions thin and cook in butter 1 hour until deep brown','Add wine and reduce','Add hot beef stock and thyme','Simmer 30 min','Ladle into bowls, top with bread and grated Gruyère','Grill until bubbling and golden'],tags:['🧅 Slow-cooked','🧀 Cheese','🇫🇷 Classic']},
+  'Morocco':{em:'🍊',name:'Harira Soup',desc:'The soup that breaks the Ramadan fast — tomatoes, lentils, chickpeas and a cloud of warm spices.',ings:['Tomatoes','Lentils','Chickpeas','Coriander','Turmeric','Cinnamon','Lemon'],steps:['Fry onion with turmeric and ginger','Add chopped tomatoes and cook down','Add lentils and chickpeas with stock','Simmer 30 minutes','Finish with lemon and fresh coriander','Serve with dates and honey cakes'],tags:['🍊 Warming','🌿 Spiced','🌙 Ramadan']},
+  'Norway':{em:'🐟',name:'Gravlax',desc:'Salmon cured in salt, sugar and dill for two days — Scandinavia\'s most elegant dish.',ings:['Salmon fillet','Salt','Sugar','Fresh dill','Black pepper','Mustard sauce'],steps:['Mix equal parts salt and sugar with cracked pepper','Coat salmon generously and pack with dill','Wrap tightly and refrigerate 48 hours, turning once','Scrape off cure and slice paper-thin','Serve with mustard-dill sauce on dark rye bread'],tags:['🐟 Cured','🌿 Dill','❄️ Nordic']},
+  'Iceland':{em:'🐑',name:'Skyr & Lamb',desc:'The two pillars of Icelandic food — protein-rich skyr dairy and slow-roasted Arctic lamb.',ings:['Icelandic lamb leg','Rosemary','Garlic','Skyr','Berries','Honey'],steps:['Stud lamb with garlic and rosemary','Roast slowly at 160°C for 4 hours','Rest 20 minutes before carving','Serve skyr with wild berries for dessert','Drizzle honey to finish'],tags:['🐑 Lamb','❄️ Icelandic','🫐 Berries']},
+  'Peru':{em:'🍋',name:'Ceviche',desc:'Fish cured in lime juice in minutes — the acid does what heat does elsewhere. The greatest thing Lima has given the world.',ings:['White fish (500g)','Lime juice (12 limes)','Red onion','Coriander','Ají amarillo chilli','Salt'],steps:['Cut fish into small cubes and season with salt','Pour lime juice over and stir — it will turn opaque in 10 minutes','Add sliced onion, chilli and coriander','The "leche de tigre" liquid is drunk as a shot','Serve immediately with sweet potato and corn'],tags:['🍋 Citrus-cured','🐟 Raw fish','🇵🇪 Peruvian']},
+  'India':{em:'🍛',name:'Dal & Rice',desc:'A billion people begin their day with lentils. Simple, nourishing, endlessly variable — the foundation of Indian cooking.',ings:['Red lentils','Turmeric','Cumin seeds','Garlic','Tomato','Ginger','Ghee'],steps:['Boil lentils with turmeric until soft and collapsing','Fry cumin seeds in ghee until popping','Add garlic and ginger paste, then tomato','Pour tarka over lentils and stir','Adjust salt and serve with rice and pickles'],tags:['🍛 Comfort','🌶 Spiced','🇮🇳 Staple']},
+};
+
+function getCuisineForDest(dest){
+  if(CUISINE_DATA[dest.name]) return CUISINE_DATA[dest.name];
+  // Country lookup
+  for(const [co,data] of Object.entries(CUISINE_COUNTRY)){
+    if(dest.country.includes(co)) return data;
+  }
+  // Category fallback
+  const catFallbacks={
+    waters:{em:'🐚',name:'Fresh Seafood',desc:'The ocean provides — simply grilled fish with lemon and herbs.',ings:['Fresh fish','Lemon','Olive oil','Garlic','Herbs','Salt'],steps:['Season fish with salt and herbs','Grill over high heat 3-4 min per side','Squeeze lemon over','Serve with crusty bread'],tags:['🐟 Seafood','🍋 Fresh','🌊 Ocean']},
+    mountain:{em:'🧀',name:'Mountain Cheese & Bread',desc:'High altitude, cold air, and long winters produce the richest cheeses and heartiest breads.',ings:['Mountain cheese','Dark rye bread','Honey','Walnuts','Apple'],steps:['Slice cheese thick','Toast bread until crisp','Arrange with honey, walnuts and sliced apple','Eat slowly'],tags:['🧀 Cheese','🍯 Honey','🏔 Alpine']},
+    forest:{em:'🍄',name:'Wild Mushroom Broth',desc:'Ancient forests produce extraordinary mushrooms. A simple broth that tastes of the earth itself.',ings:['Mixed wild mushrooms','Butter','Thyme','Garlic','Stock','Cream'],steps:['Clean mushrooms carefully','Fry in butter with garlic until golden','Add stock and thyme, simmer 15 min','Finish with a swirl of cream','Season and serve with bread'],tags:['🍄 Foraged','🌿 Earthy','🌲 Forest']},
+    desert:{em:'🫓',name:'Flatbread & Dates',desc:'The desert diet — unleavened bread baked on hot stones, eaten with dates and camel milk.',ings:['Flour','Water','Salt','Medjool dates','Olive oil'],steps:['Mix flour, water and salt into stiff dough','Divide into balls and flatten very thin','Cook on a hot dry skillet 1-2 min each side','Eat warm with dates and a drizzle of oil'],tags:['🫓 Simple','🌴 Dates','🏜 Ancient']},
+    garden:{em:'🌸',name:'Floral Tea & Pastry',desc:'Garden cuisine is delicate — flower waters, light pastry, honey from nearby hives.',ings:['Rose water','Flour','Butter','Honey','Almonds','Pistachios'],steps:['Make simple shortbread with butter and flour','Press into moulds or cut into shapes','Bake until just golden','Brush with honey while hot','Dust with ground pistachios'],tags:['🌸 Delicate','🍯 Honey','🌺 Floral']},
+    waterfall:{em:'🐟',name:'River Fish',desc:'The rivers that feed waterfalls are cold, clear and full of extraordinary fish.',ings:['River trout','Lemon','Herbs','Butter','Almonds'],steps:['Season trout inside and out','Melt butter with slivered almonds until golden','Fry fish 4 min each side','Spoon butter over and serve with lemon'],tags:['🐟 Trout','🌿 Simple','💧 River']},
+    city:{em:'🥘',name:'Street Food',desc:'Cities are built on street food — the most honest and delicious expression of a place.',ings:['Local ingredients','Spices','Fresh bread','Sauce'],steps:['Follow your nose through the market','Choose the stall with the longest queue','Watch how it\'s made','Eat standing up — it always tastes better'],tags:['🌆 Urban','🚶 Street','⚡ Fast']},
+    arctic:{em:'🫐',name:'Arctic Berries & Reindeer',desc:'The short Arctic summer produces intensely flavoured berries. Reindeer is slow-cooked until tender.',ings:['Reindeer/venison','Lingonberries','Root vegetables','Juniper','Cream'],steps:['Brown meat in butter in a heavy pot','Add root vegetables and juniper berries','Add stock and simmer 2 hours','Make lingonberry sauce separately','Serve with mashed potato and berries'],tags:['❄️ Arctic','🫐 Berries','🦌 Game']},
+  };
+  return catFallbacks[dest.cat] || catFallbacks.city;
+}
+
+function openCuisine(){
+  const D=activeDests[curIdx];if(!D)return;
+  const c=getCuisineForDest(D);
+  document.getElementById('cuis-em').textContent=c.em;
+  document.getElementById('cuis-name').textContent=c.name+' — '+D.name;
+  document.getElementById('cuis-desc').textContent=c.desc;
+  // Ingredients
+  const ings=document.getElementById('cuis-ings');
+  ings.innerHTML=c.ings.map(i=>'<span class="cuisine-ing">'+i+'</span>').join('');
+  // Steps
+  const steps=document.getElementById('cuis-steps');
+  steps.innerHTML=c.steps.map((s,i)=>'<div class="cuisine-step"><div class="cuisine-step-n">'+(i+1)+'</div><div class="cuisine-step-txt">'+s+'</div></div>').join('');
+  // Tags
+  const more=document.getElementById('cuis-more');
+  more.innerHTML=c.tags.map(t=>'<div class="cuisine-tag">'+t+'</div>').join('');
+  document.getElementById('cuisine-ov').classList.add('show');
+}
+function closeCuisine(){document.getElementById('cuisine-ov').classList.remove('show');}
+
+/* ════════════════════════════════════════════════
+   SCAPEDEX
+════════════════════════════════════════════════ */
+const DEX_KEY='ss_dex_v1';
+function getDexVisited(){try{return new Set(JSON.parse(localStorage.getItem(DEX_KEY)||'[]'));}catch(e){return new Set();}}
+function dexStamp(name){try{const s=getDexVisited();s.add(name);localStorage.setItem(DEX_KEY,JSON.stringify([...s]));}catch(e){}}
+
+const DEX_FACTS={
+  'Maldives Atoll':{story:'Arab traders named it "Mahal Dibiyat" — the garland of islands — in the 12th century. Ibn Battuta was so enchanted he became the Chief Qadi and stayed for 18 months.',fact:'The Maldives will be entirely submerged if sea levels rise just 1.5m — making it the most climate-vulnerable nation on earth.',cuisine:'Mas Huni — smoked tuna with fresh coconut',time:'Nov – Apr'},
+  'Swiss Alps':{story:'William Tell refused to bow to the Habsburg hat mounted on a pole in 1307. His punishment — shoot an apple off his son\'s head from 80 paces. He did it. The shot that launched Swiss independence.',fact:'Switzerland has 208 mountains above 3,000m. The Matterhorn was not climbed until 1865 — and four of the seven who reached the summit died on the way down.',cuisine:'Raclette — melted mountain cheese',time:'Jun – Sep (hiking), Dec – Mar (ski)'},
+  'Aurora Borealis':{story:'The Sami people of Norway believed the aurora was the bridge the dead used to cross into the afterlife. Others thought it was the reflections of Arctic herrings. Both feel equally true at 2am.',fact:'Auroras occur because charged solar particles collide with atmospheric gases 100km up. A single aurora can release more energy than a nuclear bomb — silently.',cuisine:'Cloudberry Skyr with honey',time:'Sep – Mar'},
+  'Grand Canyon':{story:'In 1869, John Wesley Powell led the first documented boat expedition through the canyon. For months, no one on earth knew if they were alive. They emerged to find themselves presumed dead in the newspapers.',fact:'The canyon is 6 million years old, but the rocks at the bottom — the Vishnu Basement Rocks — are 1.84 billion years old. You can touch nearly half the age of the Earth.',cuisine:'Navajo Fry Bread',time:'Mar – May, Sep – Nov'},
+  'Machu Picchu':{story:'For 400 years, Machu Picchu was completely unknown to the outside world. In 1911, Hiram Bingham arrived looking for a different city entirely. A local boy named Pablito led him up through the cloud forest. He\'d been playing there his whole life.',fact:'Machu Picchu is built entirely without mortar. The stones fit so precisely you cannot slide a credit card between them — and the city has survived every earthquake since 1450.',cuisine:'Ceviche & Quinoa',time:'Apr – Oct'},
+  'Sahara Dunes':{story:'The Sahara was a green savannah 10,000 years ago — with lakes, rivers, and hippopotamus. Cave paintings across the desert show giraffes and cattle. Climate change stripped it bare in just 1,000 years.',fact:'The Sahara is the size of the United States. Every few years, Saharan dust blows across the Atlantic and fertilises the Amazon rainforest — the desert feeds the jungle.',cuisine:'Mint Tea (three glasses ritual)',time:'Oct – Apr'},
+  'Arashiyama Bamboo':{story:'In 1994, UNESCO almost rejected Kyoto\'s world heritage application because there was too much to protect. They eventually listed 17 locations simultaneously — including Arashiyama — which remains the largest single world heritage designation ever made.',fact:'The bamboo in Arashiyama grove can grow 90cm in a single day. The sound it makes in wind is considered one of the 100 Soundscapes of Japan worth preserving.',cuisine:'Matcha Mochi',time:'Mar – May, Oct – Nov'},
+  'Varanasi Ghats':{story:'Varanasi is the oldest continuously inhabited city on earth — older than Rome, older than Athens. Mark Twain wrote: "Varanasi is older than history, older than tradition, older even than legend."',fact:'Bodies have been cremated on Manikarnika Ghat continuously for 3,500 years. The fire at its centre has supposedly never gone out in all that time.',cuisine:'Pani Puri & Banarasi Paan',time:'Oct – Mar'},
+  'Cappadocia':{story:'Early Christians fleeing Roman persecution carved an entire underground city at Derinkuyu — 18 floors deep, with space for 20,000 people, stables, wineries and a chapel. It was sealed from inside and forgotten until 1963.',fact:'The fairy chimneys were formed by volcanic eruption 60 million years ago. The soft tufa was then carved by Hittites, Phrygians, Greeks, Romans and Ottomans — each leaving rooms inside the same rock.',cuisine:'Gözleme flatbread with cheese and spinach',time:'Apr – Jun, Sep – Oct'},
+  'Halong Bay':{story:'Ha Long means "Descending Dragon" — legend says a family of dragons spat jade into the sea, which became the thousands of islands that protect the bay from invaders. The geography made the legend inevitable.',fact:'The bay contains 1,969 islands. Many are hollow — containing their own lakes, beaches and ecosystems entirely sealed from the sea outside.',cuisine:'Bánh Cuốn (steamed rice rolls)',time:'Oct – Apr'},
+};
+
+function getFallbackFacts(dest){
+  return {
+    story:'Every place holds a story older than memory. '+dest.name+' has been shaped by centuries of human longing, conflict, and wonder.',
+    fact:dest.desc,
+    cuisine:getCuisineForDest(dest).name,
+    time:'Check local seasonal guides'
+  };
+}
+
+let dexCurrentDest=null;
+
+function openScapedex(){
+  const visited=getDexVisited();
+  const prog=document.getElementById('dex-progress');
+  if(prog) prog.textContent=visited.size+' / '+DESTS.length+' discovered';
+  const grid=document.getElementById('dex-grid');
+  if(!grid){goto('ssdex');return;}
+  grid.innerHTML='';
+  DESTS.forEach((d,i)=>{
+    const unlocked=visited.has(d.name);
+    const card=document.createElement('div');
+    card.className='dex-card'+(unlocked?' unlocked':' locked');
+    card.innerHTML='<div class="dex-card-num">#'+(i+1)+'</div><div class="dex-card-em">'+CATS[d.cat].emoji+'</div><div class="dex-card-name">'+(unlocked?d.name:'???')+'</div>';
+    if(unlocked) card.onclick=()=>openDexModal(d);
+    grid.appendChild(card);
+  });
+  goto('ssdex');
+}
+
+function openDexModal(dest){
+  dexCurrentDest=dest;
+  const facts=DEX_FACTS[dest.name]||getFallbackFacts(dest);
+  document.getElementById('dex-m-em').textContent=CATS[dest.cat].emoji;
+  document.getElementById('dex-m-name').textContent=dest.name;
+  document.getElementById('dex-m-co').textContent=dest.country+' · '+CATS[dest.cat].name;
+  document.getElementById('dex-m-story').textContent=facts.story;
+  document.getElementById('dex-m-fact').textContent=facts.fact;
+  document.getElementById('dex-m-cuisine').textContent=facts.cuisine;
+  document.getElementById('dex-m-time').textContent=facts.time;
+  document.getElementById('dex-modal').classList.add('show');
+}
+function closeDexModal(){document.getElementById('dex-modal').classList.remove('show');}
+function visitFromDex(){
+  if(!dexCurrentDest)return;
+  closeDexModal();
+  const cd=shuffle(DESTS.filter(d=>d.cat===dexCurrentDest.cat));
+  const ci=cd.findIndex(d=>d.name===dexCurrentDest.name);
+  activeDests=cd;curIdx=ci>=0?ci:0;
+  showDest('');
+}
+
+/* ════════════════════════════════════════════════
+   PASSPORT — GAMIFIED 15 TIERS
+════════════════════════════════════════════════ */
+const PASSPORT_TIERS=[
+  {n:1, name:'Dreamer',        icon:'🌱', desc:'Your first step into the world.',      req:1,   type:'visits'},
+  {n:2, name:'Wanderer',       icon:'🎒', desc:'Restlessness has a beautiful address.', req:3,   type:'visits'},
+  {n:3, name:'Explorer',       icon:'🧭', desc:'Curiosity is your compass.',            req:7,   type:'visits'},
+  {n:4, name:'Nomad',          icon:'🌄', desc:'No single place can hold you.',         req:12,  type:'visits'},
+  {n:5, name:'Pathfinder',     icon:'⛺', desc:'You find places others overlook.',       req:20,  type:'visits'},
+  {n:6, name:'World Citizen',  icon:'🌍', desc:'Three continents in your heart.',        req:3,   type:'worlds'},
+  {n:7, name:'Collector',      icon:'🗺️', desc:'Five types of world, explored.',         req:5,   type:'worlds'},
+  {n:8, name:'Voyager',        icon:'⛵', desc:'30 destinations and still going.',        req:30,  type:'visits'},
+  {n:9, name:'Seeker',         icon:'🔭', desc:'You travel with your whole self.',        req:40,  type:'visits'},
+  {n:10,name:'Globetrotter',   icon:'✈️', desc:'All eight worlds discovered.',            req:8,   type:'worlds'},
+  {n:11,name:'Cartographer',   icon:'🗾', desc:'50 places. You could draw the map.',      req:50,  type:'visits'},
+  {n:12,name:'Pilgrim',        icon:'🕊️', desc:'Some journeys are for the soul.',         req:'complete_cat', type:'special'},
+  {n:13,name:'Legend',         icon:'⭐', desc:'Your passport has no more empty pages.',  req:100, type:'visits'},
+  {n:14,name:'Sage',           icon:'🌠', desc:'The world has no more secrets from you.', req:150, type:'visits'},
+  {n:15,name:'SoulScape',      icon:'∞',  desc:'You have become the journey itself.',     req:184, type:'visits'},
+];
+
+function getCurrentTier(visited,worlds){
+  let current=null;
+  for(const tier of PASSPORT_TIERS){
+    let unlocked=false;
+    if(tier.type==='visits') unlocked=visited>=tier.req;
+    else if(tier.type==='worlds') unlocked=worlds>=tier.req;
+    else if(tier.type==='special') unlocked=worlds>=8;
+    if(unlocked) current=tier;
+  }
+  return current||PASSPORT_TIERS[0];
+}
+
+function getNextTier(visited,worlds){
+  for(const tier of PASSPORT_TIERS){
+    let unlocked=false;
+    if(tier.type==='visits') unlocked=visited>=tier.req;
+    else if(tier.type==='worlds') unlocked=worlds>=tier.req;
+    else if(tier.type==='special') unlocked=worlds>=8;
+    if(!unlocked) return tier;
+  }
+  return null;
+}
+
+function openPassport(){
+  const p=getPassport();
+  const visited=p.length;
+  const worlds=new Set(p.map(x=>x.cat)).size;
+  const currentTier=getCurrentTier(visited,worlds);
+  const nextTier=getNextTier(visited,worlds);
+
+  // Current tier card
+  const card=document.getElementById('psp-current-card');
+  if(card){
+    document.getElementById('psp-ci').textContent=currentTier.icon;
+    document.getElementById('psp-cn').textContent=currentTier.name;
+    document.getElementById('psp-cd').textContent=currentTier.desc;
+    // Progress to next
+    if(nextTier){
+      const prog=nextTier.type==='visits'?visited:worlds;
+      const req=nextTier.type==='visits'?nextTier.req:nextTier.req;
+      const pct=Math.min(100,Math.round(prog/req*100));
+      document.getElementById('psp-pf').style.width=pct+'%';
+      document.getElementById('psp-pt').textContent=prog+' / '+req+' to unlock '+nextTier.name;
+    } else {
+      document.getElementById('psp-pf').style.width='100%';
+      document.getElementById('psp-pt').textContent='Maximum level reached';
+    }
+  }
+
+  // Stats
+  const ns=document.getElementById('psp-n');if(ns)ns.textContent=visited;
+  const nw=document.getElementById('psp-w');if(nw)nw.textContent=worlds;
+  const nr=document.getElementById('psp-tier-rank');if(nr)nr.textContent=currentTier.n+'/15';
+
+  // Tier grid
+  const grid=document.getElementById('psp-tier-grid');
+  if(grid){
+    grid.innerHTML='';
+    PASSPORT_TIERS.forEach(tier=>{
+      let unlocked=false;
+      if(tier.type==='visits') unlocked=visited>=tier.req;
+      else if(tier.type==='worlds') unlocked=worlds>=tier.req;
+      else if(tier.type==='special') unlocked=worlds>=8;
+      const isCurrent=tier.n===currentTier.n;
+      const div=document.createElement('div');
+      div.className='psp-tier'+(unlocked?' unlocked':'  locked')+(isCurrent?' current':'');
+      div.innerHTML=(isCurrent?'<div class="psp-tier-badge">NOW</div>':'')+
+        '<div class="psp-tier-icon">'+tier.icon+'</div>'+
+        '<div class="psp-tier-name">'+tier.name+'</div>'+
+        '<div class="psp-tier-req">'+(tier.type==='visits'?tier.req+' visits':tier.req+' worlds')+'</div>';
+      if(unlocked) div.onclick=()=>showTierDetail(tier);
+      grid.appendChild(div);
+    });
+  }
+  goto('spsp');
+}
+
+function showTierDetail(tier){
+  alert(tier.icon+' '+tier.name+'\n\n'+tier.desc);
+}
+
+
 function goHome(){
   stopSnd();stopClips();
+  const co=document.getElementById('cuisine-ov');if(co)co.classList.remove('show');
   if(gRaf)cancelAnimationFrame(gRaf);
   ['va','vb'].forEach(id=>{const v=document.getElementById(id);v.pause();v.src='';v.classList.remove('on');});
   activeVid='a';
@@ -1756,7 +2376,49 @@ function goHome(){
 }
 
 // Init on load
-window.addEventListener('load',checkIncomingPostcard);
+window.addEventListener('load',()=>{checkIncomingPostcard();initDailyDrop();});
 </script>
+
+<!-- ── SCAPEDEX SCREEN ── -->
+<div class="sc" id="ssdex">
+  <div style="max-width:500px;width:100%">
+    <div class="dex-header">
+      <div class="dex-eyebrow">📖 ScapeDex</div>
+      <h2 class="dex-title">Your Collection</h2>
+      <p class="dex-progress" id="dex-progress">0 / 184 discovered</p>
+    </div>
+    <div class="dex-grid" id="dex-grid"></div>
+    <div style="display:flex;justify-content:center;margin-top:8px">
+      <button class="bw" onclick="goto('sd')" style="width:auto;padding:12px 26px;font-size:13px">← Back</button>
+    </div>
+  </div>
+  <!-- Detail modal -->
+  <div class="dex-modal" id="dex-modal">
+    <div class="dex-modal-card">
+      <button class="dex-modal-close" onclick="closeDexModal()">✕</button>
+      <span class="dex-modal-em" id="dex-m-em">🌊</span>
+      <div class="dex-modal-name" id="dex-m-name"></div>
+      <div class="dex-modal-co" id="dex-m-co"></div>
+      <div class="dex-fact-row">
+        <div class="dex-fact-label">Famous Story</div>
+        <div class="dex-fact-val" id="dex-m-story"></div>
+      </div>
+      <div class="dex-fact-row">
+        <div class="dex-fact-label">Did You Know</div>
+        <div class="dex-fact-val" id="dex-m-fact"></div>
+      </div>
+      <div class="dex-fact-row">
+        <div class="dex-fact-label">Culinary Special</div>
+        <div class="dex-fact-val" id="dex-m-cuisine"></div>
+      </div>
+      <div class="dex-fact-row">
+        <div class="dex-fact-label">Best Time to Visit</div>
+        <div class="dex-fact-val" id="dex-m-time"></div>
+      </div>
+      <button class="bp" onclick="visitFromDex()" style="margin-top:14px;padding:14px">Visit this place →</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
