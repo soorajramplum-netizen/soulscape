@@ -299,13 +299,158 @@ body{font-family:'DM Sans',sans-serif;color:var(--sand);
   .cp{padding:0 12px}
   .cp-nm{font-size:clamp(14px,5vw,24px)}
 }
+
+.ai-back-btn{position:absolute;top:max(16px,calc(var(--st)+8px));left:18px;z-index:30;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:rgba(240,232,214,.6);padding:7px 14px;border-radius:100px;font-size:13px;cursor:pointer}
+
+/* ══════════════════════════════════════════════
+   TALK / AI SCREEN
+══════════════════════════════════════════════ */
+#st{background:var(--ink);align-items:center;justify-content:center;
+  padding:max(50px,calc(var(--st)+24px)) 26px max(36px,calc(var(--sb)+20px))}
+.ai-back-btn{position:absolute;top:max(16px,calc(var(--st)+8px));left:18px;z-index:30;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:rgba(240,232,214,.6);padding:8px 16px;border-radius:100px;
+  font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.ai-wrap{width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center}
+.ai-intro{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center}
+.ai-logo{font-size:38px;margin-bottom:22px;animation:breathe 4s ease-in-out infinite;
+  filter:drop-shadow(0 4px 14px rgba(232,146,74,.3))}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.ai-head{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,8vw,56px);
+  font-weight:300;color:var(--sand);letter-spacing:-1px;margin-bottom:10px;line-height:1.05}
+.ai-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;
+  color:var(--mist);max-width:340px;line-height:1.7;margin-bottom:22px}
+.ai-location-row{display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap;justify-content:center}
+.ai-loc-btn{background:var(--ink2);border:1px solid rgba(240,232,214,.12);
+  color:rgba(240,232,214,.5);padding:8px 16px;border-radius:100px;font-size:12px;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;
+  font-family:'DM Sans',sans-serif;white-space:nowrap}
+.ai-loc-btn.active{border-color:var(--amber);color:var(--amber);background:rgba(232,146,74,.1)}
+.ai-loc-detected{font-size:11px;color:var(--mist);text-align:center;margin-bottom:8px;min-height:16px}
+.ai-inp-wrap{width:100%;position:relative}
+.ai-ta{width:100%;background:rgba(255,255,255,.05);
+  border:1px solid rgba(240,232,214,.12);border-radius:20px;
+  padding:22px 64px 22px 22px;font-family:'Cormorant Garamond',serif;
+  font-size:19px;line-height:1.75;color:var(--sand);resize:none;
+  min-height:160px;outline:none;
+  transition:border-color .3s,box-shadow .3s;
+  box-shadow:none}
+.ai-ta:focus{border-color:rgba(232,146,74,.4);
+  box-shadow:0 0 0 4px rgba(232,146,74,.06);
+  background:rgba(255,255,255,.06)}
+.ai-ta::placeholder{color:rgba(240,232,214,.2);font-style:italic}
+.ai-send{position:absolute;bottom:16px;right:16px;width:44px;height:44px;
+  border-radius:50%;background:var(--amber);color:var(--ink);border:none;
+  font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .2s,transform .15s,opacity .2s;font-weight:700;
+  box-shadow:0 4px 16px rgba(232,146,74,.4)}
+.ai-send:disabled{opacity:.25;cursor:default;transform:none;box-shadow:none}
+.ai-send:not(:disabled):active{transform:scale(.9);background:var(--amber2)}
+.think-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;display:none}
+.think-wrap.show{display:flex}
+.think-dots{display:flex;gap:8px;align-items:center}
+.think-dots span{width:8px;height:8px;border-radius:50%;background:var(--amber);
+  animation:tdot 1.4s ease-in-out infinite}
+.think-dots span:nth-child(2){animation-delay:.2s}
+.think-dots span:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,80%,100%{transform:scale(.5);opacity:.3}40%{transform:scale(1);opacity:1}}
+.think-txt{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;
+  color:var(--mist);text-align:center;animation:lp 2s ease-in-out infinite;max-width:260px}
+@keyframes lp{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* ══════════════════════════════════════════════
+   DESTINATION SCREEN — 75/25 layout
+══════════════════════════════════════════════ */
+#sd{padding:0;display:flex;flex-direction:column}
+.vs{position:relative;flex:0 0 75%;overflow:hidden;background:var(--ink)}
+.ve{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
+  transition:opacity 1s ease}
+.ve.on{opacity:1}
+.vbg{position:absolute;inset:0;z-index:0;transition:background 1.4s}
+.vl{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:10px;transition:opacity .6s}
+.vl.done{opacity:0;pointer-events:none}
+.vring{width:32px;height:32px;border:2px solid rgba(232,146,74,.2);
+  border-top-color:var(--amber);border-radius:50%;animation:spin .85s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vtxt{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--mist)}
+.vtop{position:absolute;top:max(14px,calc(var(--st)+6px));left:14px;right:14px;
+  z-index:20;display:flex;justify-content:space-between;align-items:center}
+.vlogo{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:15px;
+  color:rgba(255,255,255,.85);text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.vctr{font-size:11px;color:rgba(255,255,255,.7);background:rgba(0,0,0,.4);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:100px}
+.vcp-row{position:absolute;top:max(50px,calc(var(--st)+42px));left:50%;
+  transform:translateX(-50%);z-index:20;display:flex;gap:5px}
+.vcp{width:30px;height:3px;border-radius:100px;background:rgba(255,255,255,.22);overflow:hidden}
+.vcp-f{height:100%;width:0%;background:#fff;border-radius:100px;transition:width linear}
+.vcp.done .vcp-f{width:100%;background:rgba(255,255,255,.5)}
+.varr{position:absolute;top:50%;transform:translateY(-50%);z-index:20;width:40px;height:40px;
+  border-radius:50%;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.16);
+  color:rgba(255,255,255,.85);font-size:20px;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;transition:background .2s}
+.varr.vp{left:10px}.varr.vn{right:10px}
+.varr:active{background:rgba(0,0,0,.6)}
+.vdots{position:absolute;bottom:10px;left:0;right:0;z-index:20;
+  display:flex;justify-content:center;gap:4px;pointer-events:none}
+.vd{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.2);
+  transition:background .3s,transform .3s}
+.vd.cur{background:#fff;transform:scale(1.35)}.vd.nb{background:rgba(255,255,255,.45)}
+.vcat{position:absolute;bottom:28px;left:16px;z-index:20;font-size:9px;letter-spacing:3px;
+  text-transform:uppercase;color:rgba(255,255,255,.6);background:rgba(0,0,0,.3);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.1);padding:4px 11px;border-radius:100px}
+.vai{position:absolute;bottom:calc(25% + 28px);left:0;right:0;z-index:25;
+  padding:0 22px;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
+.vai.show{opacity:1}
+.vai-txt{font-family:'Cormorant Garamond',serif;font-size:clamp(15px,4vw,20px);
+  font-style:italic;color:rgba(255,255,255,.9);text-align:center;line-height:1.7;
+  text-shadow:0 2px 20px rgba(0,0,0,.8);max-width:380px;margin:0 auto}
+/* Content panel */
+.cp{flex:1;background:var(--ink);border-top:1px solid rgba(232,146,74,.1);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:0 18px;overflow:hidden;min-height:0}
+.cp-cr{display:flex;align-items:center;gap:6px;margin-bottom:2px;flex-shrink:0}
+.cp-co{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--mist);white-space:nowrap}
+.cp-sep{font-size:9px;color:rgba(154,136,120,.35)}
+.cp-ct{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--mist);white-space:nowrap}
+.cp-nm{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,5.5vw,36px);
+  font-weight:700;color:var(--sand);line-height:1;letter-spacing:-.5px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px;flex-shrink:0}
+.cp-ds{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;
+  color:rgba(240,232,214,.45);line-height:1.4;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;flex-shrink:0}
+.cp-acts{display:flex;gap:6px;align-items:center;margin-top:6px;flex-wrap:nowrap;flex-shrink:0}
+.ca{background:var(--ink3);border:1px solid rgba(240,232,214,.1);
+  color:rgba(240,232,214,.7);padding:8px 13px;border-radius:6px;
+  font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;
+  display:flex;align-items:center;gap:5px;transition:all .2s;
+  white-space:nowrap;letter-spacing:.3px;flex-shrink:0}
+.ca:active{transform:scale(.95);border-color:var(--amber);color:var(--amber)}
+.ca.on{border-color:var(--amber);color:var(--amber)}
+.vrow{display:flex;align-items:center;gap:6px}
+input[type=range].vsl{-webkit-appearance:none;appearance:none;width:60px;height:3px;
+  border-radius:100px;background:rgba(240,232,214,.15);outline:none;cursor:pointer}
+input[type=range].vsl::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;
+  border-radius:50%;background:var(--amber);cursor:pointer}
+.share-row{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;flex-shrink:0}
+.sbtn{background:rgba(232,146,74,.1);border:1px solid rgba(232,146,74,.25);
+  color:var(--amber2);padding:7px 13px;border-radius:6px;font-family:'DM Sans',sans-serif;
+  font-size:11px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;
+  transition:all .2s;white-space:nowrap;letter-spacing:.3px}
+.sbtn:active{transform:scale(.95);background:rgba(232,146,74,.22)}
+.sbtn.psp{background:rgba(123,108,176,.12);border-color:rgba(123,108,176,.3);color:#C0B4E8}
 </style>
 </head>
 <body>
 
 <!-- ── LANDING ── -->
 <div class="sc on" id="sl">
-  <div class="l-badge"><div class="l-dot"></div>184 Destinations</div>
+  <div class="l-badge"><div class="l-dot"></div>334 Destinations</div>
   <div class="l-title"><span class="l-t1">Soul</span><span class="l-t2">Scape</span></div>
   <p class="l-sub">A place in this world speaks to exactly how you feel right now.</p>
   <div class="l-ctas">
@@ -366,23 +511,19 @@ body{font-family:'DM Sans',sans-serif;color:var(--sand);
 
 <!-- ── TALK / AI ── -->
 <div class="sc" id="st">
-  <div class="nav-bar">
-    <button class="nav-back" onclick="goto('sl')">← Back</button>
-    <span style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(240,232,214,.6)">SoulScape</span>
-    <button class="nav-home" onclick="goto('sl')">🏠</button>
-  </div>
+  <button class="ai-back-btn" onclick="goto('sl')">← Back</button>
   <div class="ai-wrap">
     <div class="ai-intro" id="ai-intro">
       <div class="ai-logo">🌿</div>
       <h2 class="ai-head">Tell me what's going on.</h2>
-      <p class="ai-sub">I'll find the place that speaks to exactly how you feel right now.</p>
+      <p class="ai-sub">I'll find the place in the world that speaks to exactly how you feel right now.</p>
       <div class="ai-location-row">
-        <button class="ai-loc-btn" id="loc-btn" onclick="detectLocation()">📍 Detect my location</button>
+        <button class="ai-loc-btn" id="loc-btn" onclick="detectLocation()">📍 My location</button>
         <button class="ai-loc-btn active" id="range-any" onclick="setRange('any')">🌍 Anywhere</button>
-        <button class="ai-loc-btn" id="range-near" onclick="setRange('near')">📡 Nearby only</button>
+        <button class="ai-loc-btn" id="range-near" onclick="setRange('near')">📡 Nearby</button>
       </div>
       <div class="ai-loc-detected" id="loc-detected"></div>
-      <div class="ai-inp-wrap" style="margin-top:14px">
+      <div class="ai-inp-wrap">
         <textarea class="ai-ta" id="ai-ta" maxlength="800"
           placeholder="Just write whatever comes. No right answer. This is only for you."></textarea>
         <button class="ai-send" id="ai-send" onclick="sendToAI()" disabled>→</button>
@@ -395,11 +536,12 @@ body{font-family:'DM Sans',sans-serif;color:var(--sand);
   </div>
 </div>
 
+
 <!-- ── LOADING ── -->
 <div class="sc" id="slo">
   <div class="lc">🧭</div>
   <p class="lm" id="lmsg">Charting your course…</p>
-  <p class="ls">searching 184 destinations</p>
+  <p class="ls">searching 334 destinations</p>
 </div>
 
 <!-- ── BROWSE ── -->
@@ -796,6 +938,165 @@ D('arctic','Churchill Polar Bears','Manitoba, Canada',58.8,-94.2,'wind','Polar b
 D('arctic','Faroe Islands','Kingdom of Denmark',62.0,-6.8,'wind','Grass-roofed villages on dramatic Atlantic cliffs.','faroe islands aerial drone cliffs cinematic','atlantic cliff aerial timelapse faroe'),
 D('arctic','Finnish Lapland Snow','Finland',68.9,27.0,'wind','Snow-laden trees and a total silence more restorative than sleep.','finland snow forest aerial drone cinematic','snowy forest aerial timelapse finland'),
 D('arctic','Midnight Sun Lofoten','Norway',67.5,15.5,'wind','The sun that never sets. Gilded landscapes at midnight.','norway midnight sun aerial drone cinematic','midnight sun aerial timelapse norway'),
+
+/* WATERS - additional */
+D('waters','Komodo Waters','Indonesia',-8.5,119.5,'ocean','Dragons above, mantas below. Ancient and untamed.','komodo island aerial drone cinematic','komodo waters aerial timelapse'),
+D('waters','Palau Jellyfish Lake','Palau',7.2,134.4,'ocean','Swim through millions of harmless jellyfish in a landlocked lake.','palau jellyfish lake aerial drone cinematic','jellyfish lake aerial timelapse snorkel'),
+D('waters','Cocos Island','Costa Rica',5.5,-87.1,'ocean','The shark capital of the world. Hammerheads in schools of hundreds.','cocos island aerial drone sharks cinematic','shark diving aerial timelapse pacific'),
+D('waters','Lake Malawi','Malawi',-12.0,34.5,'forest','Freshwater sea of Africa. 15% of all freshwater fish species on earth.','lake malawi aerial drone africa cinematic','african lake aerial timelapse cichlids'),
+D('waters','Ha Long Bay Sunrise','Vietnam',20.8,107.1,'ocean','Limestone karsts in morning mist. The world held in one breath.','halong bay sunrise aerial drone cinematic','karst sunrise aerial timelapse mist'),
+D('waters','Pamukkale','Turkey',37.9,29.1,'ocean','Cotton castle — white travertine terraces filled with thermal blue water.','pamukkale aerial drone travertine cinematic','white terraces aerial timelapse turkey'),
+D('waters','Dead Sea','Jordan/Israel',31.5,35.5,'wind','The lowest point on earth. You float without trying.','dead sea aerial drone salt cinematic','salt lake aerial timelapse floating'),
+D('waters','Lake Tekapo','New Zealand',-44.0,170.5,'forest','The most star-filled sky above a turquoise glacial lake.','lake tekapo aerial drone new zealand cinematic','new zealand lake aerial timelapse stars'),
+D('waters','Milky Way Lake','Jiuzhaigou, China',33.3,103.8,'forest','Five-coloured pool — every shade of blue, green, and turquoise.','jiuzhaigou colorful lake aerial drone cinematic','colored lake aerial timelapse china'),
+D('waters','Fakarava Atoll','French Polynesia',-16.1,-145.6,'ocean','A UNESCO biosphere. The clearest lagoon in Polynesia.','fakarava atoll aerial drone cinematic','polynesian atoll aerial timelapse'),
+D('waters','Cenote Ik Kil','Mexico',20.6,-88.6,'ocean','A sacred Mayan cenote — circular opening to an underground world.','cenote ik kil aerial drone mexico cinematic','cenote aerial timelapse jungle'),
+D('waters','Verzasca River','Switzerland',46.2,8.8,'forest','Emerald river so clear you can see every stone from the bridge above.','verzasca river aerial drone cinematic','alpine river aerial timelapse clear'),
+D('waters','Derwent Water','Lake District, UK',54.6,-3.1,'forest','The most English of lakes — cloud-reflected, still, melancholy.','lake district aerial drone cinematic','english lake aerial timelapse clouds'),
+D('waters','Lago di Braies','South Tyrol, Italy',46.7,12.1,'forest','Alpine lake in a valley so perfect it looks painted.','lago di braies aerial drone cinematic','dolomites lake aerial timelapse'),
+D('waters','Queenstown Lakes','New Zealand',-45.0,168.7,'forest','Adventure capital ringed by the most dramatic lake scenery.','queenstown lake aerial drone new zealand cinematic','new zealand fjord aerial timelapse'),
+D('waters','Bay of Fundy','Canada',45.3,-64.8,'ocean','The highest tidal range on earth — 16 metres of ocean in and out twice daily.','bay of fundy aerial drone tide cinematic','tidal aerial timelapse canada'),
+D('waters','Lake Wakatipu','New Zealand',-45.2,168.5,'forest','An S-shaped glacial lake with a legendary heartbeat — it rises and falls 12cm every 5 minutes.','lake wakatipu aerial drone cinematic','new zealand lake aerial timelapse mountain'),
+D('waters','Loch Ness','Scotland',57.3,-4.4,'forest','Dark peat-stained water in a dramatic Highland valley. Something is watching.','loch ness aerial drone scotland cinematic','scotland loch aerial timelapse mist'),
+D('waters','Crystal River','Florida, USA',28.9,-82.6,'ocean','The only place in the USA where you can legally swim with wild manatees.','crystal river manatee aerial drone cinematic','river manatee aerial timelapse florida'),
+D('waters','Moeraki Boulders','New Zealand',-45.3,170.8,'ocean','Perfectly spherical boulders scattered on a South Island beach — 60 million years old.','moeraki boulders aerial drone cinematic','boulder beach aerial timelapse new zealand'),
+D('waters','Emerald Pool','Dominica',15.3,-61.3,'forest','A hidden pool at the end of a rainforest trail. Worth every step.','dominica emerald pool aerial drone cinematic','tropical pool aerial timelapse rainforest'),
+D('waters','Phang Nga Bay','Thailand',8.3,98.5,'ocean','Vertical limestone islands rising from jade water. Stillness amplified.','phang nga bay aerial drone cinematic','limestone bay aerial timelapse thailand'),
+D('waters','Lake Ercina','Asturias, Spain',43.3,-5.0,'forest','Hidden mountain lake in the Picos de Europa. A secret tucked in Spanish mountains.','lake ercina aerial drone spain cinematic','mountain lake aerial timelapse asturias'),
+D('waters','Marlborough Sounds','New Zealand',-41.1,174.0,'ocean','A drowned river valley system — hundreds of kilometres of sheltered waterways.','marlborough sounds aerial drone cinematic','sounds aerial timelapse new zealand'),
+D('waters','Bioluminescent Bay','Vieques, Puerto Rico',18.1,-65.4,'ocean','Kayak through water that glows blue with every paddle stroke.','bioluminescent bay aerial drone cinematic','glowing bay aerial timelapse'),
+/* FOREST - additional */
+D('forest','Tarkine Rainforest','Tasmania, Australia',-41.5,145.5,'forest','The largest cool-temperate rainforest in the Southern Hemisphere. Ancient beyond reckoning.','tarkine rainforest aerial drone tasmania cinematic','temperate rainforest aerial timelapse tasmania'),
+D('forest','Monteverde Cloud','Costa Rica',10.3,-84.8,'forest','Quetzals, orchids, and a forest that drinks from the clouds.','monteverde cloud forest aerial drone cinematic','cloud forest aerial timelapse costa rica'),
+D('forest','Zhangjiajie Forest','Hunan, China',29.3,110.4,'forest','Ancient forest surrounding the famous pillar mountains.','zhangjiajie forest aerial drone cinematic','pillar forest aerial timelapse mist'),
+D('forest','Bwindi Impenetrable','Uganda',-1.0,29.8,'forest','Gorilla forest. Dense, dark, extraordinary. You are the visitor.','bwindi forest aerial drone gorilla cinematic','gorilla forest aerial timelapse uganda'),
+D('forest','Croajingolong','Victoria, Australia',-37.7,149.7,'ocean','Where ancient forest meets an untouched wilderness coast.','croajingolong aerial drone cinematic','forest coast aerial timelapse australia'),
+D('forest','Sagano Bamboo Grove','Kyoto, Japan',35.0,135.7,'forest','A different bamboo grove — less visited, more sacred.','bamboo grove japan aerial drone cinematic','bamboo grove aerial timelapse sacred'),
+D('forest','Periyar Forest','Kerala, India',9.5,77.2,'forest','Elephants, tigers, and ancient spice trees in India most dramatic forest reserve.','periyar forest aerial drone kerala cinematic','indian forest aerial timelapse elephants'),
+D('forest','Bavarian Forest','Germany',48.9,13.4,'forest','Central Europe largest forest — primeval and fog-wrapped.','bavarian forest aerial drone germany cinematic','german forest aerial timelapse mist'),
+D('forest','Borneo Rainforest','Malaysia',2.0,115.0,'forest','One of the oldest rainforests on earth. Orangutans swing overhead.','borneo rainforest aerial drone cinematic','orangutan rainforest aerial timelapse'),
+D('forest','Alishan Forest','Taiwan',23.5,120.8,'forest','Ancient red cypress trees and a sea of clouds at dawn.','alishan forest aerial drone taiwan cinematic','cloud forest aerial timelapse taiwan'),
+D('forest','Białowieża Bison','Poland',52.7,23.9,'forest','The last truly wild bison in Europe roam these primeval woods.','bison forest aerial drone poland cinematic','primeval forest aerial timelapse bison'),
+D('forest','Crooked Forest','Poland',53.4,14.6,'forest','300 pine trees all bent 90° north at the base. Nobody knows why.','crooked forest aerial drone poland cinematic','curved forest aerial timelapse mystery'),
+D('forest','Daintree Cape Tribulation','Queensland, Australia',-16.1,145.5,'ocean','Where the oldest rainforest on earth meets the reef.','daintree cape tribulation aerial drone cinematic','rainforest coast aerial timelapse'),
+D('forest','Valdivian Temperate','Chile',-40.0,-73.0,'forest','Chilean temperate rainforest — monkey puzzle trees and volcanic lakes.','valdivian forest aerial drone chile cinematic','south america forest aerial timelapse'),
+D('forest','Knysna Forest','Western Cape, South Africa',-34.0,23.0,'ocean','South Africa last ancient forest. Elephants still hide here.','knysna forest aerial drone south africa cinematic','african forest aerial timelapse elephant'),
+D('forest','Haida Gwaii','BC, Canada',53.0,-132.0,'ocean','Ancient Sitka spruce forest on islands sacred to the Haida Nation.','haida gwaii aerial drone canada cinematic','island forest aerial timelapse pacific'),
+D('forest','Sagarmatha Rhododendron','Nepal',27.8,86.7,'forest','The highest rhododendron forests burst into crimson every spring.','nepal rhododendron forest aerial drone cinematic','himalayan forest aerial timelapse bloom'),
+D('forest','Waipoua Kauri','New Zealand',-35.6,173.6,'forest','Home to Tāne Mahuta — Lord of the Forest, a kauri tree 2,000 years old.','kauri forest aerial drone new zealand cinematic','ancient tree aerial timelapse new zealand'),
+/* MOUNTAIN - additional */
+D('mountain','Aoraki Mount Cook','New Zealand',-43.6,170.1,'wind','New Zealand highest peak reflected in Hooker Lake. Absolute silence.','mount cook aerial drone new zealand cinematic','new zealand mountain aerial timelapse glacier'),
+D('mountain','Faroe Cliffs','Denmark',62.0,-6.8,'wind','Vertical basalt into Atlantic ocean. Puffins everywhere. Wind that takes your breath.','faroe islands cliff aerial drone cinematic','atlantic cliff aerial timelapse puffin'),
+D('mountain','Pirin Mountains','Bulgaria',41.7,23.4,'forest','Marble peaks, glacial lakes, and Balkan wilderness.','pirin mountains aerial drone bulgaria cinematic','balkan mountain aerial timelapse lake'),
+D('mountain','Dades Gorge','Morocco',31.3,-5.8,'desert','A dramatic river gorge cut through red rock Atlas mountains.','dades gorge aerial drone morocco cinematic','morocco gorge aerial timelapse red'),
+D('mountain','Rwenzori Mountains','Uganda',0.4,29.9,'forest','The Mountains of the Moon — glaciers on the equator.','rwenzori mountains aerial drone cinematic','equatorial mountain aerial timelapse glacier'),
+D('mountain','Altai Mountains','Mongolia',49.0,88.0,'wind','Eagles, nomads, and the most dramatic steppe highlands on earth.','altai mountains aerial drone mongolia cinematic','mongolian mountain aerial timelapse'),
+D('mountain','Tepuis Venezuela','Venezuela',5.0,-62.0,'wind','Ancient tabletop mountains older than the Andes. Conan Doyle invented worlds here.','tepui venezuela aerial drone cinematic','tabletop mountain aerial timelapse jungle'),
+D('mountain','Tatras Mountains','Poland/Slovakia',49.3,20.1,'forest','The smallest alpine range, but the most dramatic. Eagles above glacial lakes.','tatra mountains aerial drone cinematic','alpine lake aerial timelapse tatras'),
+D('mountain','Virunga Mountains','Rwanda',-1.5,29.5,'forest','Volcanic range where you come eye to eye with mountain gorillas.','virunga mountains aerial drone rwanda cinematic','volcanic mountain aerial timelapse gorilla'),
+D('mountain','Kyrgyz Tian Shan','Kyrgyzstan',42.0,78.0,'wind','The Celestial Mountains — nomad yurts, eagles, and impossible blue lakes.','tian shan mountains aerial drone cinematic','silk road mountain aerial timelapse'),
+D('mountain','Anti-Atlas Morocco','Morocco',30.0,-8.0,'desert','Ancient geological formation — the most colourful eroded landscape on earth.','anti atlas morocco aerial drone cinematic','morocco atlas aerial timelapse colourful'),
+D('mountain','Georgian Caucasus','Georgia',42.5,44.5,'wind','Europe highest range, wilder than the Alps and completely unknown.','caucasus mountains georgia aerial drone cinematic','georgia mountain aerial timelapse'),
+D('mountain','Ethiopian Simien','Ethiopia',13.3,38.3,'wind','Gelada baboons on the edge of escarpments 3,000m above Africa.','simien mountains ethiopia aerial drone cinematic','africa mountain aerial timelapse baboon'),
+D('mountain','Laugavegur Highlands','Iceland',64.0,-19.5,'wind','Steaming vents, obsidian deserts, and rhyolite mountains in every colour.','iceland highlands aerial drone cinematic','volcanic highland aerial timelapse colourful'),
+D('mountain','Dolomiti di Brenta','Trentino, Italy',46.2,10.9,'wind','A separate Dolomites massif — more remote, more dramatic, fewer crowds.','brenta dolomites aerial drone cinematic','dolomites aerial timelapse dramatic'),
+D('mountain','Havasupai Canyon','Arizona, USA',36.2,-112.7,'wind','A hidden canyon village accessible only on foot or horseback. Waterfalls at the end.','havasupai canyon aerial drone cinematic','hidden canyon aerial timelapse falls'),
+D('mountain','Pinnacles Desert','WA, Australia',-30.6,115.2,'desert','Thousands of limestone pillars rising from yellow desert sand.','pinnacles desert aerial drone australia cinematic','limestone desert aerial timelapse'),
+D('mountain','Dachstein Alps','Austria',47.5,13.6,'wind','Glaciers, caves, and salt mines hidden inside the Austrian Alps.','dachstein alps aerial drone cinematic','austrian alps aerial timelapse glacier'),
+/* DESERT - additional */
+D('desert','Namib Ancient Desert','Namibia',-24.0,15.0,'wind','The oldest desert in the world — 55 million years old. Shipwreck coast.','namib desert aerial drone cinematic','ancient desert aerial timelapse namibia'),
+D('desert','Dasht-e Kavir','Iran',34.0,55.0,'wind','The Great Salt Desert of Iran. Ancient caravanserais on the Silk Road.','iran salt desert aerial drone cinematic','salt desert aerial timelapse iran'),
+D('desert','Rann of Kutch','India',23.7,69.9,'wind','The Great White Desert — salt flats that turn to sea in monsoon season.','rann of kutch aerial drone india cinematic','white salt desert aerial timelapse'),
+D('desert','Namib Dead Vlei','Namibia',-24.7,15.3,'wind','900-year-old dead camelthorn trees in a calcified pan. Time stopped here.','dead vlei aerial drone namibia cinematic','dead tree desert aerial timelapse'),
+D('desert','Erg Chebbi','Morocco',31.5,-3.9,'wind','The quintessential Saharan dune sea. Nothing but sky and sand.','erg chebbi aerial drone morocco cinematic','sahara dunes aerial timelapse morocco'),
+D('desert','Sonoran Desert','Arizona, USA',32.0,-112.0,'wind','The most biodiverse desert. Saguaro cacti like sentinels.','sonoran desert aerial drone cinematic','saguaro cactus aerial timelapse arizona'),
+D('desert','Atacama Salt Flats','Chile',-23.5,-68.0,'wind','The driest non-polar desert. Flamingos on salt lakes at altitude.','atacama salt flat flamingo aerial drone cinematic','flamingo salt lake aerial timelapse'),
+D('desert','Wahba Crater','Saudi Arabia',22.9,45.2,'wind','A 250,000-year-old volcanic crater, 2km wide, half-filled with white salt.','wahba crater aerial drone saudi cinematic','volcanic crater aerial timelapse desert'),
+D('forest','Bolaven Plateau','Laos',15.2,106.5,'forest','Coffee-growing highlands where jungle meets cloud.','bolaven plateau aerial drone laos cinematic','plateau aerial timelapse laos'),
+D('desert','Ténéré Desert','Niger',17.0,11.0,'wind','The most remote desert on earth. The tree of Ténéré — the loneliest tree.','tenere desert aerial drone niger cinematic','remote desert aerial timelapse'),
+D('desert','Valley of the Gods','Utah, USA',37.2,-109.9,'wind','Less visited cousin to Monument Valley. Equal drama, total solitude.','valley gods utah aerial drone cinematic','sandstone desert aerial timelapse utah'),
+D('desert','Bardenas Reales','Spain',42.2,-1.6,'wind','Spanish badlands — lunar landscape of eroded clay and gypsum.','bardenas reales aerial drone spain cinematic','spain badlands aerial timelapse'),
+D('desert','Qinghai Lake','China',36.9,100.1,'wind','The largest lake in China, 3,200m above sea level, salt water, flamingos.','qinghai lake aerial drone china cinematic','tibetan lake aerial timelapse'),
+D('desert','Taklamakan Desert','China',39.0,83.0,'wind','Enter and you may not come out — the Silk Road most feared crossing.','taklamakan desert aerial drone cinematic','silk road desert aerial timelapse'),
+D('desert','Judean Desert','Israel',31.5,35.2,'wind','The desert of the prophets. The Dead Sea glistens below.','judean desert aerial drone israel cinematic','holy land desert aerial timelapse'),
+D('desert','Karakum Desert','Turkmenistan',39.0,59.0,'wind','The Darvaza gas crater burns in the middle of a vast desert. The Gates of Hell.','karakum desert crater aerial drone cinematic','burning crater aerial timelapse desert'),
+/* GARDEN - additional */
+D('garden','Wisteria Tunnel','Kawachi, Japan',33.5,130.5,'forest','A 100-metre tunnel of hanging purple wisteria. Ten days a year in full bloom.','wisteria tunnel japan aerial drone cinematic','purple wisteria aerial timelapse japan'),
+D('garden','Antelope Canyon Slot','Arizona, USA',36.9,-111.4,'wind','Light beams through narrow sandstone slots. Heaven filtered through rock.','antelope canyon aerial drone light beams cinematic','slot canyon aerial timelapse light'),
+D('garden','Plitvice Spring Bloom','Croatia',44.9,15.6,'forest','When the waterfalls run highest and the forest erupts in green.','plitvice spring aerial drone cinematic','spring waterfall aerial timelapse bloom'),
+D('garden','Chelsea Physic Garden','London, UK',51.5,-0.2,'forest','The oldest botanic garden in London, hidden behind a high wall.','chelsea physic garden aerial drone cinematic','botanic garden aerial timelapse london'),
+D('garden','Tokinokimata','Wakayama, Japan',33.6,135.7,'forest','A hillside of 30,000 plum trees in February pink.','japan plum blossom aerial drone cinematic','plum blossom aerial timelapse mountain'),
+D('garden','Villa dEste Gardens','Tivoli, Italy',41.9,12.8,'forest','Renaissance fountains and terraced gardens. Water everywhere.','villa d este aerial drone italy cinematic','renaissance garden aerial timelapse fountain'),
+D('garden','Boboli Gardens','Florence, Italy',43.8,11.2,'forest','Renaissance pleasure garden behind the Palazzo Pitti. Cypress allées.','boboli gardens aerial drone florence cinematic','italian garden aerial timelapse cypress'),
+D('garden','Kew Gardens Bluebell Wood','London, UK',51.5,-0.3,'forest','Ancient woodland carpeted in blue from March to May.','bluebell wood aerial drone uk cinematic','bluebell forest aerial timelapse spring'),
+D('garden','Ninfa Gardens','Lazio, Italy',41.5,13.0,'forest','Medieval ruins swallowed by one of the most romantic gardens.','ninfa gardens aerial drone italy cinematic','ruined garden aerial timelapse romantic'),
+D('garden','Flower Island Mainau','Germany',47.7,9.2,'forest','An island in Lake Constance covered entirely in flowers year-round.','mainau flower island aerial drone cinematic','flower island aerial timelapse germany'),
+D('garden','Bodnant Garden','Wales, UK',53.2,-3.8,'forest','A Welsh garden famous for its laburnum arch — a tunnel of yellow in May.','bodnant garden aerial drone wales cinematic','laburnum garden aerial timelapse'),
+D('garden','Yuyuan Garden','Shanghai, China',31.2,121.5,'forest','Ming Dynasty classical garden in the middle of a modern city.','yuyuan garden aerial drone shanghai cinematic','chinese classical garden aerial timelapse'),
+D('garden','Generalife Gardens','Granada, Spain',37.2,-3.6,'forest','The summer palace gardens of the Nasrid sultans. Water, roses, and shade.','generalife garden aerial drone granada cinematic','moorish palace garden aerial timelapse'),
+D('garden','Boboli Cascades','Florence, Italy',43.8,11.2,'forest','The grotto gardens and cascades below the Boboli amphitheatre.','boboli cascade aerial drone cinematic','renaissance cascade aerial timelapse'),
+D('garden','Cloud Forest Singapore','Singapore',1.3,103.9,'forest','A 35m mountain inside a glass dome, covered in cloud forest.','cloud forest dome singapore aerial drone cinematic','dome garden aerial timelapse singapore'),
+D('garden','Monet Agapanthus','Giverny, France',49.1,1.5,'forest','The far garden at Giverny — all blue agapanthus and lush borders.','monet garden agapanthus aerial drone cinematic','impressionist garden aerial timelapse'),
+D('garden','Powerscourt Gardens','Ireland',53.2,-6.2,'forest','Ireland most celebrated garden — Italianate terraces above Wicklow mountains.','powerscourt garden aerial drone ireland cinematic','irish garden aerial timelapse mountain'),
+/* WATERFALL - additional */
+D('waterfall','Plitvice Falls Upper','Croatia',44.9,15.6,'rain','The upper lakes — wilder and less visited than the famous lower trail.','plitvice upper falls aerial drone cinematic','upper waterfall aerial timelapse'),
+D('waterfall','Erawan Falls','Kanchanaburi, Thailand',14.4,99.1,'rain','Seven-tiered emerald waterfall through the jungle. Freshwater fish swim at your feet.','erawan waterfall aerial drone cinematic','tiered waterfall aerial timelapse jungle'),
+D('waterfall','Sutherland Falls','New Zealand',-44.8,167.8,'rain','Three-drop waterfall in a valley only accessible by walking several days.','sutherland falls aerial drone new zealand cinematic','remote waterfall aerial timelapse'),
+D('waterfall','Tegenungan','Bali, Indonesia',-8.6,115.3,'rain','A dramatic Balinese waterfall surrounded by jungle and rice.','tegenungan waterfall aerial drone bali cinematic','bali waterfall aerial timelapse'),
+D('waterfall','Kuang Si Falls','Luang Prabang, Laos',19.8,102.0,'rain','Turquoise blue stepped pools through the Laos jungle.','kuang si falls aerial drone laos cinematic','turquoise waterfall aerial timelapse laos'),
+D('waterfall','Krimmler Falls','Austria',47.2,12.2,'rain','The tallest waterfall in Austria — 380 metres of thundering white water.','krimml falls aerial drone austria cinematic','austrian waterfall aerial timelapse'),
+D('waterfall','Njupeskär','Sweden',61.9,12.7,'forest','Sweden highest waterfall plunges through birch forest.','njupeskar waterfall aerial drone sweden cinematic','scandinavian waterfall aerial timelapse'),
+D('waterfall','Blue Falls Grimsá','Iceland',64.9,-20.8,'rain','A hidden blue waterfall in a lava field — almost no one goes here.','grimsá waterfall iceland aerial drone cinematic','hidden waterfall aerial timelapse iceland'),
+D('waterfall','Sipi Falls','Uganda',1.4,34.3,'rain','Three-tier falls on the slopes of Mount Elgon. Coffee grows around them.','sipi falls aerial drone uganda cinematic','africa waterfall aerial timelapse coffee'),
+D('waterfall','Bridal Veil Falls','Utah, USA',40.4,-111.7,'rain','A thin cascade dropping 60m off a sheer cliff — bridal veil in wind.','bridal veil falls aerial drone utah cinematic','veil waterfall aerial timelapse canyon'),
+D('waterfall','Cascadas Agua Azul','Chiapas, Mexico',17.3,-92.1,'rain','Brilliant turquoise limestone waterfalls through Mexican jungle.','agua azul waterfall aerial drone cinematic','turquoise cascade aerial timelapse'),
+D('waterfall','Rainbow Falls','Maui, Hawaii',20.9,-156.2,'rain','A cave hidden behind the falls where Hina, goddess of the moon, was said to live.','rainbow falls hawaii aerial drone cinematic','hawaii falls aerial timelapse rainbow'),
+D('waterfall','Tumpak Sewu','East Java, Indonesia',-8.2,112.9,'rain','A curtain waterfall — 100m wide, dropping simultaneously into a canyon.','tumpak sewu aerial drone cinematic','curtain waterfall aerial timelapse java'),
+D('waterfall','Plitvice Veliki Slap','Croatia',44.9,15.6,'rain','The tallest single waterfall in Croatia — 78m of white thunder.','veliki slap aerial drone croatia cinematic','tall waterfall aerial timelapse croatia'),
+D('waterfall','Empress Falls','Blue Mountains, Australia',-33.7,150.4,'rain','Hidden waterfall in the Blue Mountains canyon country.','empress falls aerial drone australia cinematic','australia waterfall aerial timelapse canyon'),
+D('waterfall','Bigar Waterfall','Romania',44.9,21.9,'rain','A delicate mossy cascade voted one of the most beautiful in the world.','bigar waterfall aerial drone romania cinematic','moss waterfall aerial timelapse romania'),
+D('waterfall','Urlatoarea','Romania',45.4,25.6,'rain','A hidden Carpathian waterfall in a fir forest gorge.','urlatoarea waterfall aerial drone cinematic','carpathian waterfall aerial timelapse'),
+/* CITY - additional */
+D('city','Medina Fez','Morocco',34.1,-5.0,'forest','The largest car-free urban zone. 9,000 medieval streets.','fez medina aerial drone cinematic','medieval city aerial timelapse morocco'),
+D('city','Kotor Old City','Montenegro',42.4,18.8,'ocean','A walled city in a fjord. Cats and church bells and a harbour wall.','kotor aerial drone city cinematic','adriatic city aerial timelapse walls'),
+D('city','Lviv Old Town','Ukraine',49.8,24.0,'forest','A city of coffee houses and baroque architecture that Europe forgot to spoil.','lviv ukraine aerial drone cinematic','ukraine city aerial timelapse baroque'),
+D('city','Tbilisi Sulfur Baths','Georgia',41.7,44.8,'forest','A city built over hot springs. Carved balconies. Wine in every house.','tbilisi aerial drone georgia cinematic','caucasus city aerial timelapse balcony'),
+D('city','Hoi An Lanterns','Vietnam',15.9,108.3,'forest','Ancient port city of lanterns and tailor shops — the most charming in Asia.','hoi an aerial drone lanterns cinematic','lantern city aerial timelapse vietnam'),
+D('city','Yazd Wind Towers','Iran',31.9,54.4,'desert','The city of wind catchers — ancient cooling towers above mud brick alleys.','yazd aerial drone iran cinematic','iran city aerial timelapse wind tower'),
+D('city','San Cristóbal de las Casas','Chiapas, Mexico',16.7,-92.6,'forest','Highland Maya city — colonial churches, markets, fog, and weaving.','san cristobal aerial drone mexico cinematic','highland city aerial timelapse mexico'),
+D('city','Ghardaia Mzab','Algeria',32.5,3.7,'desert','A UNESCO valley of five medieval ksour — the original planned cities.','ghardaia aerial drone algeria cinematic','desert city aerial timelapse algeria'),
+D('city','Bagan Temples','Myanmar',21.2,94.9,'forest','4,000 ancient temples across a plain. Sunrise by hot air balloon.','bagan temples aerial drone cinematic','temple city aerial timelapse myanmar'),
+D('city','Colmar','Alsace, France',48.1,7.4,'forest','The most beautiful village in France — half-timbered houses and canal reflections.','colmar aerial drone france cinematic','alsace village aerial timelapse canal'),
+D('city','San Gimignano','Tuscany, Italy',43.5,11.0,'forest','A medieval Manhattan — 14 towers still standing above the Tuscan hills.','san gimignano aerial drone cinematic','tuscany tower city aerial timelapse'),
+D('city','Procida','Bay of Naples, Italy',40.8,14.0,'ocean','Italy smallest island capital — a chaos of lemon yellow and terracotta pink.','procida aerial drone italy cinematic','island city aerial timelapse naples'),
+D('city','Paro Taktsang','Bhutan',27.5,89.4,'forest','The Tigers Nest monastery clinging to a cliff 900m above the valley.','taktsang bhutan aerial drone cinematic','cliff monastery aerial timelapse bhutan'),
+D('city','Oia Sunset','Santorini, Greece',36.5,25.4,'ocean','The most photographed sunset in the world. Completely worth it.','oia sunset aerial drone cinematic','santorini sunset aerial timelapse golden'),
+D('city','Ronda Bridge','Andalusia, Spain',36.7,-5.2,'wind','An 18th century bridge spanning a 120m gorge. Impossible and beautiful.','ronda bridge aerial drone spain cinematic','gorge bridge aerial timelapse spain'),
+D('city','Bruges Canals','Belgium',51.2,3.2,'forest','The Venice of the North — perfectly preserved medieval waterways.','bruges aerial drone belgium cinematic','medieval canal aerial timelapse belgium'),
+D('city','Shiraz Nasirolmolk','Iran',29.6,52.5,'desert','The Pink Mosque — stained glass at dawn turns it into a jewel box.','pink mosque shiraz aerial drone cinematic','iran mosque aerial timelapse stained glass'),
+D('city','Sanaa Old City','Yemen',15.4,44.2,'desert','Tower houses of alabaster and stained glass. Oldest continuously inhabited city.','sanaa old city aerial drone cinematic','yemen city aerial timelapse tower'),
+D('city','Valparaíso','Chile',-33.0,-71.6,'ocean','42 hillside neighbourhoods of colour, chaos, and poetry.','valparaiso aerial drone chile cinematic','colorful hillside city aerial timelapse'),
+D('city','Bansko','Bulgaria',41.8,23.5,'forest','Bulgarian mountain town — stone streets, mehanas, and rose-oil tradition.','bansko aerial drone bulgaria cinematic','mountain town aerial timelapse bulgaria'),
+D('city','Alberobello Trulli','Puglia, Italy',40.8,17.2,'forest','A town of conical stone roofs — trulli — built without mortar since the 14th century.','alberobello trulli aerial drone cinematic','trulli town aerial timelapse puglia'),
+/* ARCTIC - additional */
+D('arctic','Greenland Icefjord','Greenland',68.7,-51.0,'wind','UNESCO icefjord where the fastest-moving glacier on earth calves into the sea.','greenland icefjord aerial drone cinematic','calving glacier aerial timelapse arctic'),
+D('arctic','Svalbar Polar Night','Norway',78.2,15.5,'wind','The polar night — six weeks of total darkness. The sky does extraordinary things.','svalbard polar night aerial drone cinematic','polar night aerial timelapse arctic sky'),
+D('arctic','Kerguelen Islands','French Southern Territories',-49.3,70.2,'wind','The most isolated archipelago on earth. 50 permanent residents. No tourists.','kerguelen islands aerial drone cinematic','remote island aerial timelapse subantarctic'),
+D('arctic','Baffin Island','Nunavut, Canada',67.0,-72.0,'wind','Fjords and tundra deeper than Norway, wilder than anywhere.','baffin island aerial drone cinematic','arctic fjord aerial timelapse canada'),
+D('arctic','Wrangel Island','Russia',71.0,-180.0,'wind','More polar bears per square kilometre than anywhere on earth.','wrangel island aerial drone cinematic','polar bear island aerial timelapse'),
+D('arctic','Finnish Sauna Lake','Finland',62.0,26.0,'forest','Midsummer sauna by a lake at midnight — Finland highest ritual.','finland lake sauna aerial drone cinematic','sauna lake aerial timelapse finland'),
+D('arctic','North Cape Norway','Norway',71.2,25.8,'wind','The northernmost point in Europe. The midnight sun over the Barents Sea.','north cape norway aerial drone cinematic','midnight sun cape aerial timelapse'),
+D('arctic','McMurdo Ice Shelf','Antarctica',-78.0,165.0,'wind','The largest ice shelf on earth. 500,000 sq km of floating ice.','mcmurdo ice shelf aerial drone cinematic','ice shelf aerial timelapse antarctica'),
+D('arctic','Alert Nunavut','Canada',82.5,-62.3,'wind','The northernmost permanently inhabited place on earth. Inuit and ice.','alert nunavut aerial drone cinematic','extreme north aerial timelapse'),
+D('arctic','Upernavik','Greenland',72.8,-56.1,'wind','A Greenlandic fishing village surrounded by icebergs. Dogs and silence.','upernavik greenland aerial drone cinematic','arctic village icebergs aerial timelapse'),
+D('arctic','Ross Sea Antarctica','Antarctica',-76.0,170.0,'wind','The most pristine ocean on earth. Emperor penguins and blue whales.','ross sea aerial drone antarctica cinematic','pristine ocean aerial timelapse antarctica'),
+D('arctic','Lofoten Winter Storm','Norway',68.0,14.0,'wind','A winter storm over Lofoten — the most dramatic weather in Europe.','lofoten storm aerial drone cinematic','arctic storm aerial timelapse norway'),
+D('arctic','Vatnajökull Ice Cave','Iceland',64.0,-17.0,'wind','Blue ice cave inside Europe largest glacier — carved new each winter.','vatnajokull ice cave aerial drone cinematic','ice cave aerial timelapse iceland'),
+D('arctic','Nordaustlandet','Svalbard',80.0,24.0,'wind','The most remote part of Svalbard. Ice cap and polar desert.','nordaustlandet aerial drone cinematic','polar ice cap aerial timelapse'),
+D('arctic','Churchill Aurora','Manitoba, Canada',58.8,-94.2,'wind','The Northern Lights above the tundra. Polar bears below.','churchill aurora aerial drone cinematic','tundra aurora aerial timelapse canada'),
+D('arctic','White Sea Russia','Russia',64.5,34.0,'wind','A frozen inland sea where beluga whales come to calve in spring.','white sea russia aerial drone cinematic','frozen sea aerial timelapse russia'),
+D('arctic','Quttinirpaaq','Ellesmere Island, Canada',83.0,-75.0,'wind','The most northerly national park on earth. Musk oxen and ice.','ellesmere island aerial drone cinematic','arctic wilderness aerial timelapse'),
+D('arctic','Spitsbergen Coast','Norway',77.5,14.0,'wind','Wild fjords, glaciers calving, and walruses hauled out on beaches.','spitsbergen aerial drone cinematic','glacier coast aerial timelapse walrus'),
 ];
 
 /* ════════════════════════════════════════════════
@@ -876,21 +1177,7 @@ let gHov=null,gFilter=null,gStars=[],gRaf;
 let gCvs,gCtx,gCx,gCy,gR,gW,gH;
 const CAT_COL=Object.fromEntries(Object.entries(CATS).map(([k,v])=>[k,v.color]));
 
-function initGlobe(){
-  gCvs=document.getElementById('gc');
-  const resize=()=>{gW=gCvs.width=innerWidth;gH=gCvs.height=innerHeight;gCx=gW/2;gCy=gH/2;gR=Math.min(gW,gH)*0.40;if(!gStars.length)genStars();};
-  resize();window.addEventListener('resize',resize);
-  gCvs.addEventListener('mousedown',e=>{gDrag=true;gLx=e.clientX;gLy=e.clientY;gAuto=false;clearTimeout(gAutoTm);document.getElementById('g-tip').style.opacity='0';});
-  window.addEventListener('mousemove',e=>{if(gDrag){gLon+=(e.clientX-gLx)*0.4;gLat=Math.max(-80,Math.min(80,gLat-(e.clientY-gLy)*0.4));gLx=e.clientX;gLy=e.clientY;}doHov(e.clientX,e.clientY);});
-  window.addEventListener('mouseup',()=>{gDrag=false;gAutoTm=setTimeout(()=>gAuto=true,4000);});
-  gCvs.addEventListener('click',e=>{doHov(e.clientX,e.clientY);if(gHov)openDestFromGlobe(gHov);});
-  let pt0=null;
-  gCvs.addEventListener('touchstart',e=>{gDrag=true;gLx=e.touches[0].clientX;gLy=e.touches[0].clientY;gAuto=false;clearTimeout(gAutoTm);document.getElementById('g-tip').style.opacity='0';pt0={x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};},{passive:true});
-  gCvs.addEventListener('touchmove',e=>{if(gDrag&&e.touches.length===1){gLon+=(e.touches[0].clientX-gLx)*0.4;gLat=Math.max(-80,Math.min(80,gLat-(e.touches[0].clientY-gLy)*0.4));gLx=e.touches[0].clientX;gLy=e.touches[0].clientY;}},{passive:true});
-  gCvs.addEventListener('touchend',e=>{gDrag=false;gAutoTm=setTimeout(()=>gAuto=true,4000);if(pt0){const dx=e.changedTouches[0].clientX-pt0.x,dy=e.changedTouches[0].clientY-pt0.y;if(Math.sqrt(dx*dx+dy*dy)<18){doHov(e.changedTouches[0].clientX,e.changedTouches[0].clientY);if(gHov)openDestFromGlobe(gHov);}}});
-  if(gRaf)cancelAnimationFrame(gRaf);drawLoop();updateGlobeCount();
-}
-function genStars(){gStars=Array.from({length:280},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.2+0.2,a:Math.random()*0.6+0.1}));}
+
 function buildCatFilter(){
   const w=document.getElementById('g-cats');w.innerHTML='';
   const all=document.createElement('button');all.className='gcat a';all.textContent='🌍 All';
@@ -994,6 +1281,7 @@ function getFilteredDests(){
 function initGlobe(){
   const cvs=document.getElementById('gc');
   if(!cvs)return;
+  gCvs=cvs;
   // Canvas fills entire parent
   const resize=()=>{
     cvs.width=cvs.offsetWidth||innerWidth;
@@ -1242,7 +1530,7 @@ function initAI(){
   ta.value='';btn.disabled=true;
   ta.oninput=()=>{
     btn.disabled=ta.value.trim().split(/\s+/).filter(w=>w.length>0).length<3;
-    ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,260)+'px';
+    ta.style.height='auto';ta.style.height=Math.max(160,Math.min(ta.scrollHeight,300))+'px';
   };
   ta.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey&&!btn.disabled){e.preventDefault();sendToAI();}};
 }
